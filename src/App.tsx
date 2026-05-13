@@ -1,21 +1,53 @@
-import { Button } from "@/components/ui/button"
+import { lazy, Suspense, useEffect, type ReactNode } from "react"
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { Toaster } from "sonner"
+import { Navbar } from "@/components/Navbar"
 
-export function App() {
+const HomePage = lazy(() => import("./Pages/Homepage"))
+const Register = lazy(() => import("@/Pages/Register"))
+
+function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
+    <>
+      <HashScroll />
+      <Navbar />
+      {children}
+    </>
   )
 }
 
-export default App
+function HashScroll() {
+  const { hash } = useLocation()
+
+  useEffect(() => {
+    if (!hash) return
+    const frame = requestAnimationFrame(() => {
+      document.querySelector(hash)?.scrollIntoView({ block: "start" })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [hash])
+
+  return null
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Toaster richColors />
+      <Layout>
+        <Suspense
+          fallback={
+            <div className="min-h-screen bg-[#070b17] px-6 pt-28 text-white">
+              Yuklanmoqda...
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Suspense>
+      </Layout>
+    </BrowserRouter>
+  )
+}
