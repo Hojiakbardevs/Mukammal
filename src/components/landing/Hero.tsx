@@ -3,6 +3,8 @@ import { ArrowRight, BadgeCheck, BrainCircuit, DatabaseZap } from "lucide-react"
 import { Link } from "react-router-dom"
 
 import CountdownBadge from "@/components/CountDown"
+// import NeonNodes from "@/components/NeonNodes"
+import NeuralNoise from "../NeuralNoise"
 
 const trustPoints = [
   "Oliy ta'lim",
@@ -17,10 +19,8 @@ const Hero = () => {
       id="hero"
       className="relative flex min-h-screen items-center overflow-hidden px-6 pt-28 pb-16"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.22),transparent_32%),radial-gradient(circle_at_82%_28%,rgba(139,92,246,0.22),transparent_30%),linear-gradient(135deg,#070b17_0%,#0b1530_48%,#070b17_100%)]" />
-      <div className="data-grid absolute inset-0 opacity-45" />
-      <div className="neural-lines absolute inset-0 opacity-50" />
-
+      {/* <NeonNodes style={{ background: "linear-gradient(135deg,#070b17 0%,#0b1530 48%,#070b17 100%)" }} /> */}
+      <NeuralNoise/>
       <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
