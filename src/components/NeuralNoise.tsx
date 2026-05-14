@@ -44,21 +44,20 @@ void main() {
   pointer.x *= u_ratio;
   float p = clamp(length(pointer), 0.0, 1.0);
   p = 0.5 * pow(1.0 - p, 2.0);
-  float t = 0.001 * u_time;
+  float t = 0.00042 * u_time;
   vec3 color = vec3(0.0);
   float noise = neuro_shape(uv, t, p);
-  noise = 1.2 * pow(noise, 3.0);
+  noise = 0.95 * pow(noise, 3.0);
   noise += pow(noise, 10.0);
-  noise = max(0.0, noise - 0.5);
+  noise = max(0.0, noise - 0.44);
   noise *= (1.0 - length(vUv - 0.5));
-  // Blue-forward palette responding to scroll
-  color = normalize(vec3(
-    0.15 + 0.05 * sin(2.0 * u_scroll_progress),
-    0.35 + 0.25 * cos(2.5 * u_scroll_progress),
-    0.7 + 0.2 * sin(3.0 * u_scroll_progress)
-  ));
-  color = color * noise;
-  gl_FragColor = vec4(color, noise);
+  // Soft cyan-white palette — no normalize to avoid oversaturation
+  color = vec3(
+    0.42 + 0.12 * sin(u_scroll_progress * 0.7),
+    0.78 + 0.14 * cos(u_scroll_progress * 0.5),
+    0.98
+  ) * noise;
+  gl_FragColor = vec4(color, noise * 0.58);
 }
 `
 

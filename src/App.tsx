@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar"
 
 const HomePage = lazy(() => import("./Pages/Homepage"))
 const Register = lazy(() => import("@/Pages/Register"))
+const CourseDetail = lazy(() => import("@/Pages/CourseDetail"))
 
 function Layout({ children }: { children: ReactNode }) {
   return (
@@ -45,6 +46,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/courses/:slug" element={<CourseDetail />} />
           </Routes>
         </Suspense>
       </Layout>

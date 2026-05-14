@@ -33,11 +33,6 @@ const formSchema = z.object({
   position: z.string().trim().min(1, "Lavozim kiritish majburiy"),
   academicDegree: z.string().trim().min(1, "Ilmiy daraja kiritish majburiy"),
   participationMode: z.enum(["offline", "online"]),
-  motivationLetter: z
-    .string()
-    .trim()
-    .min(30, "Kamida 30 ta belgi yozing.")
-    .max(1200, "1200 ta belgidan oshmasin."),
 })
 
 type RegistrationFormData = z.infer<typeof formSchema>
@@ -61,11 +56,8 @@ export default function Register() {
       position: "",
       academicDegree: "",
       participationMode: "offline",
-      motivationLetter: "",
     },
   })
-
-  const motivationLetter = form.watch("motivationLetter")
 
   async function onSubmit(data: RegistrationFormData) {
     setIsSubmitting(true)
@@ -79,7 +71,6 @@ export default function Register() {
       body.append("position", data.position)
       body.append("academicDegree", data.academicDegree)
       body.append("participationMode", data.participationMode)
-      body.append("motivationLetter", data.motivationLetter)
 
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
@@ -343,32 +334,6 @@ export default function Register() {
                             </option>
                           </select>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="motivationLetter"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-white/75">
-                          Motivatsion xat *
-                        </FormLabel>
-                        <FormControl>
-                          <textarea
-                            rows={6}
-                            maxLength={1200}
-                            placeholder="Nima uchun ushbu dasturga qo'shilmoqchisiz, qaysi sohalarga qiziqasiz va bu dastur sizning ilmiy yoki kasbiy maqsadlaringiz uchun qanday foydali bo'ladi — qisqacha yozing."
-                            {...field}
-                            className="min-h-36 w-full resize-none rounded-lg border border-white/10 bg-white/5 px-3 py-3 text-sm text-white transition outline-none placeholder:text-white/30 focus:border-primary/50"
-                          />
-                        </FormControl>
-                        <div className="flex items-center justify-between text-xs text-white/40">
-                          <span>Tavsiya: 80–150 so'z</span>
-                          <span>{motivationLetter?.length || 0}/1200</span>
-                        </div>
                         <FormMessage />
                       </FormItem>
                     )}

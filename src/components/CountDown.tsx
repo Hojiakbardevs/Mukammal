@@ -53,54 +53,54 @@ function CountdownBadge({
   }, [target])
 
   return (
-    <div className="group relative inline-flex w-full flex-col items-center gap-3">
-      <span className="text-center text-xs font-medium tracking-[0.2em] text-white/70 uppercase md:text-sm">
+    <div className="group relative inline-flex w-full scale-[1.01] flex-col items-center gap-3">
+      <span className="text-center text-sm font-heading tracking-wider text-white/70 uppercase md:text-md">
         Ro‘yxatdan o‘tish yakunlanishiga qoldi
       </span>
       <div className="absolute inset-0 rounded-2xl bg-blue-500/10 blur-xl transition-all duration-500 group-hover:bg-blue-500/20" />
 
       <div className="relative z-10 grid w-full grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-3 shadow-[0_0_24px_rgba(255,255,255,0.1)] backdrop-blur-md sm:gap-3 sm:px-5">
         {started ? (
-          <span className="col-span-7 text-center text-base font-semibold tracking-wider text-cyan-300 uppercase sm:text-lg">
+          <span className="col-span-7 text-center text-base font-heading tracking-wider text-cyan-300 uppercase sm:text-lg">
             {actualStartedText}
           </span>
         ) : (
           <>
             <div className="flex flex-col items-center">
-              <span className="text-xl leading-none font-bold text-white tabular-nums sm:text-3xl">
+              <span className="text-xl leading-none font-heading text-white tabular-nums sm:text-3xl">
                 {String(timeLeft.days).padStart(2, "0")}
               </span>
               <span className="mt-1 text-[10px] font-medium tracking-wide text-white/50 uppercase sm:text-xs">
                 Kun
               </span>
             </div>
-            <span className="pb-3 text-lg font-bold text-white/35 sm:text-2xl">
+            <span className="pb-3 text-lg font-heading text-white/35 sm:text-2xl">
               :
             </span>
             <div className="flex flex-col items-center">
-              <span className="text-xl leading-none font-bold text-white tabular-nums sm:text-3xl">
+              <span className="text-xl leading-none font-heading text-white tabular-nums sm:text-3xl">
                 {String(timeLeft.hours).padStart(2, "0")}
               </span>
               <span className="mt-1 text-[10px] font-medium tracking-wide text-white/50 uppercase sm:text-xs">
                 Soat
               </span>
             </div>
-            <span className="pb-3 text-lg font-bold text-white/35 sm:text-2xl">
+            <span className="pb-3 text-lg font-heading text-white/35 sm:text-2xl">
               :
             </span>
             <div className="flex flex-col items-center">
-              <span className="text-xl leading-none font-bold text-white tabular-nums sm:text-3xl">
+              <span className="text-xl leading-none font-heading text-white tabular-nums sm:text-3xl">
                 {String(timeLeft.minutes).padStart(2, "0")}
               </span>
               <span className="mt-1 text-[10px] font-medium tracking-wide text-white/50 uppercase sm:text-xs">
                 Daqiqa
               </span>
             </div>
-            <span className="pb-3 text-lg font-bold text-white/35 sm:text-2xl">
+            <span className="pb-3 text-lg font-heading text-white/35 sm:text-2xl">
               :
             </span>
             <div className="flex flex-col items-center">
-              <span className="text-xl leading-none font-bold text-white tabular-nums sm:text-3xl">
+              <span className="text-xl leading-none font-heading text-white tabular-nums sm:text-3xl">
                 {String(timeLeft.seconds).padStart(2, "0")}
               </span>
               <span className="mt-1 text-[10px] font-medium tracking-wide text-white/50 uppercase sm:text-xs">

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+import { ArrowRight } from "lucide-react"
 import { courseTracks } from "@/components/landing/data"
 import { SectionHeader } from "@/components/landing/SectionHeader"
 
@@ -16,21 +18,30 @@ export function CourseTracks() {
           {courseTracks.map((track, index) => (
             <article
               key={track.title}
-              className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/55 p-6 backdrop-blur-xl transition duration-300 hover:border-violet-300/35"
+              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/55 p-6 backdrop-blur-xl transition duration-300 hover:border-violet-300/35"
             >
               <div className="absolute top-5 right-5 text-6xl font-black text-white/[0.035]">
                 0{index + 1}
               </div>
-              <div className="relative">
+              <div className="relative flex h-full flex-col">
                 <div className="mb-5 flex h-[52px] w-[52px] items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
                   <track.icon className="h-6 w-6" />
                 </div>
                 <h3 className="max-w-xl text-xl font-bold text-white">
                   {track.title}
                 </h3>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+                <p className="mt-3 max-w-2xl flex-1 text-sm leading-6 text-slate-400">
                   {track.description}
                 </p>
+                <div className="mt-6">
+                  <Link
+                    to={`/courses/${track.slug}`}
+                    className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-cyan-400 transition-all duration-200 hover:gap-3 hover:text-cyan-300"
+                  >
+                    Batafsil ko'rish
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
               </div>
             </article>
           ))}

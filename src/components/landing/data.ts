@@ -28,11 +28,14 @@ export type IconItem = {
   description: string
 }
 
+export type CourseTrackItem = IconItem & { slug: string }
 export const benefits = [
-  "AI vositalarini ta'lim va ilmiy izlanishlarda qo'llash bo'yicha amaliy ko'nikma",
-  "O'quv materiallari, video yozuvlar va mustaqil ta'lim topshiriqlari",
-  "Offline va online qatnashish formatlari",
-  "Baholash, sertifikat va yakuniy tahliliy hisobot",
+  "Sunʼiy intellekt vositalarini taʼlim va ilmiy-tadqiqot jarayonida qoʻllash boʻyicha amaliy ko‘nikmalar",
+  "Zamonaviy oʻqitish metodlari, keyslar, amaliy mashgʻulotlar va mustaqil topshiriqlar",
+  "Oʻzbek tilidagi oʻquv materiallari, taqdimotlar, qoʻllanmalar va videoyozuvlar",
+  "Toshkent shahrida auditoriya mashgʻulotlari hamda ayrim tinglovchilar uchun masofaviy qatnashish imkoniyati",
+  "Dastlabki va yakuniy baholash orqali bilim va koʻnikmalarni aniq tahlil qilish",
+  "Kurs yakunida sertifikat hamda dastur natijalari boʻyicha tahliliy hisobot",
 ]
 
 export const goals: IconItem[] = [
@@ -56,27 +59,31 @@ export const goals: IconItem[] = [
   },
 ]
 
-export const courseTracks: IconItem[] = [
+export const courseTracks: CourseTrackItem[] = [
   {
     icon: Sparkles,
+    slug: "ai-basics",
     title: "Sun'iy intellektni qo'llash asoslari",
     description:
       "AI tushunchalari, prompt engineering, mas'uliyatli foydalanish va ta'lim jarayonidagi real ssenariylar.",
   },
   {
     icon: Binary,
+    slug: "ml-data",
     title: "Sun'iy intellekt, mashinaviy o'rganish va ma'lumotlar tahlili",
     description:
       "ML modellar, datasetlar, vizual tahlil, baholash metrikalari va amaliy laboratoriya ishlari.",
   },
   {
     icon: Eye,
+    slug: "computer-vision",
     title: "Kompyuterli ko'rish",
     description:
       "Tasvirlarni qayta ishlash, obyekt aniqlash, klassifikatsiya va ilmiy-amaliy loyihalar.",
   },
   {
     icon: Languages,
+    slug: "nlp",
     title: "Tabiiy tilni qayta ishlash",
     description:
       "Matn tahlili, chatbotlar, o'zbek tilidagi korpuslar va akademik yozuvda AI yordamchilari.",
@@ -167,6 +174,38 @@ export const stats = [
   { value: "3", label: "guruh", icon: Route },
   { value: "4", label: "yo'nalish", icon: BookOpenCheck },
   { value: "5 oy", label: "dastur muddati", icon: CalendarClock },
+]
+
+export const strategicGoal = {
+  description:
+    "Professor-o'qituvchilarda AI asosidagi yondashuv va vositalarni o'quv jarayonida qo'llash ko'nikmalarini shakllantirish.",
+}
+
+export const strategicItems = [
+  {
+    number: "01",
+    title: "Dasturlar yaratish",
+    description: "Xalqaro standartlar asosida o'quv dasturlarini ishlab chiqish.",
+    accent: "border-l-violet-400",
+  },
+  {
+    number: "02",
+    title: "Tanlab olish",
+    description: "Iqtidorli va salohiyatli kadrlar saralash.",
+    accent: "border-l-amber-400",
+  },
+  {
+    number: "03",
+    title: "Amaliy mashg'ulotlar",
+    description: "Real loyihalar ustida ishlash tizimi.",
+    accent: "border-l-violet-400",
+  },
+  {
+    number: "04",
+    title: "Baholash",
+    description: "Olingan bilimlarni test va loyihalar orqali tekshirish.",
+    accent: "border-l-violet-400",
+  },
 ]
 
 export const faqs = [

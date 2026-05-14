@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { BrainCircuit, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Logos from "@/assets/airi_oq.png"
 
 const navLinks = [
-  { href: "/#hero", label: "Bosh sahifa" },
-  { href: "/#about", label: "Loyiha haqida" },
+  { href: "/#about", label: "Dastur" },
   { href: "/#courses", label: "Yo'nalishlar" },
-  { href: "/#timeline", label: "Timeline" },
-  { href: "/#process", label: "O'quv jarayoni" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/#faq", label: "Savollar" },
 ]
 
 export function Navbar() {
@@ -25,20 +23,15 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 right-0 left-0 z-50 transition-all duration-300",
+        "fixed top-0 right-0 left-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-white/10 bg-black/70 backdrop-blur-xl"
+          ? "border-b border-sky-500/10 bg-[linear-gradient(to_right,#08152b,#010b2f)] shadow-[0_4px_40px_rgba(0,0,0,0.6)]"
           : "bg-transparent"
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-100">
-            <BrainCircuit className="h-5 w-5" />
-          </div>
-          <span className="hidden font-bold text-white sm:block">
-            Mukammal trening
-          </span>
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <Link to="/">
+          <img src={Logos} alt="AirI Logo" className="h-12 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -46,7 +39,7 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="rounded-lg px-3 py-1.5 text-sm text-white/65 transition-colors hover:bg-white/5 hover:text-white"
+              className="relative rounded-xl px-5 py-2.5 font-sans text-[14px] font-medium tracking-wide text-sky-100/70 transition-all duration-200 hover:bg-sky-400/10 hover:text-sky-50 hover:shadow-[0_0_12px_rgba(56,189,248,0.15)]"
             >
               {link.label}
             </a>
@@ -56,14 +49,14 @@ export function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           <Link
             to="/register"
-            className="inline-flex h-9 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-black transition-all hover:scale-105 hover:bg-white/90"
+            className="inline-flex h-10 items-center justify-center rounded-xl bg-linear-to-r from-sky-500 to-cyan-400 px-6 font-heading text-[12px] font-bold tracking-widest text-white shadow-[0_0_20px_rgba(56,189,248,0.35)] transition-all duration-200 hover:scale-105 hover:from-sky-400 hover:to-cyan-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.55)] active:scale-95"
           >
-            Ro'yxatdan o'tish
+            RO'YXATDAN O'TISH
           </Link>
         </div>
 
         <button
-          className="rounded-lg p-1.5 text-white/70 transition-colors hover:bg-white/10 hover:text-white md:hidden"
+          className="rounded-xl p-2.5 text-sky-200/70 transition-all hover:bg-sky-500/15 hover:text-sky-100 md:hidden"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Menyu"
         >
@@ -71,14 +64,19 @@ export function Navbar() {
         </button>
       </div>
 
-      {isOpen && (
-        <div className="border-t border-white/10 bg-black/90 px-6 py-4 backdrop-blur-xl md:hidden">
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300 md:hidden",
+          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        )}
+      >
+        <div className="border-t border-sky-500/10 bg-[linear-gradient(to_right,#08152b,#010b2f)] px-6 py-4">
           <div className="flex flex-col gap-1">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-lg px-3 py-2.5 text-sm text-white/75 transition-colors hover:bg-white/10 hover:text-white"
+                className="rounded-xl px-4 py-3 font-sans text-[14px] font-medium tracking-wide text-sky-100/65 transition-all hover:bg-sky-400/10 hover:text-sky-50"
                 onClick={() => setIsOpen(false)}
               >
                 {link.label}
@@ -86,14 +84,14 @@ export function Navbar() {
             ))}
             <Link
               to="/register"
-              className="mt-2 rounded-xl bg-primary px-3 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-primary/80"
+              className="mt-3 flex items-center justify-center rounded-xl bg-linear-to-r from-sky-500 to-cyan-400 px-4 py-3 font-heading text-[12px] font-bold tracking-widest text-white shadow-[0_0_18px_rgba(56,189,248,0.30)] transition-all hover:from-sky-400 hover:to-cyan-300"
               onClick={() => setIsOpen(false)}
             >
-              Ro'yxatdan o'tish
+              RO'YXATDAN O'TISH
             </Link>
           </div>
         </div>
-      )}
+      </div>
     </header>
   )
 }
