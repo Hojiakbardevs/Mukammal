@@ -17,7 +17,7 @@ export default function CourseDetail() {
 
   if (!course) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
+      <div className="flex min-h-screen items-center justify-center bg-[#f6f9ff]">
         <div className="text-center">
           <p className="text-2xl font-bold text-gray-700">Kurs topilmadi</p>
           <Link
@@ -37,64 +37,57 @@ export default function CourseDetail() {
     course.totalHours.independent
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#f6f9ff]">
       {/* Top nav bar */}
-      <div className="sticky top-0 z-50 border-b border-gray-200 bg-white/90 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+      <div className="sticky top-0 z-50 border-b border-blue-100/60 bg-white/95 shadow-sm backdrop-blur-md">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <Link
               to="/#courses"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-[#071126]/60 transition hover:bg-blue-50 hover:text-[#246BFE]"
             >
               <ArrowLeft className="h-4 w-4" />
               Orqaga
             </Link>
-            <div className="h-5 w-px bg-gray-200" />
-            <img src={Logos} alt="AirI" className="h-8 w-auto" />
+            <div className="h-6 w-px bg-slate-200" />
+            <img src={Logos} alt="AirI" className="h-12 w-auto" />
           </div>
           <Link
             to="/register"
-            className="inline-flex h-9 items-center rounded-lg px-5 text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
+            className="inline-flex h-11 items-center rounded-2xl px-6 font-heading text-[11px] font-bold tracking-widest text-white uppercase transition hover:opacity-90 active:scale-95"
             style={{ background: course.accent }}
           >
             Ro'yxatdan o'tish
           </Link>
         </div>
       </div>
-
+      
       {/* Hero */}
-      <div className="relative overflow-hidden border-b border-gray-100 bg-gray-50">
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(99,102,241,0.07) 1px,transparent 1px),linear-gradient(to right,rgba(99,102,241,0.07) 1px,transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
+      <div className="relative overflow-hidden border-b border-blue-100/50 bg-[#f6f9ff]">
+        {/* Grid pattern - matches CourseTracks */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(36,107,254,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(36,107,254,0.04)_1px,transparent_1px)] bg-size-[56px_56px]" />
         {/* Neural animation */}
         <div className="absolute inset-0 opacity-60">
           <NeuralGrid />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-6 py-20">
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Link to="/" className="hover:text-indigo-600">
+          <div className="flex items-center gap-2 text-sm text-[#071126]/50">
+            <Link to="/" className="hover:text-[#246BFE]">
               Bosh sahifa
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
-            <Link to="/#courses" className="hover:text-indigo-600">
+            <Link to="/#courses" className="hover:text-[#246BFE]">
               Yo'nalishlar
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-gray-900">{course.title}</span>
+            <span className="text-[#071126]">{course.title}</span>
           </div>
 
-          <h1 className="mt-6 max-w-3xl text-4xl leading-tight font-extrabold tracking-tight text-gray-900 md:text-5xl">
+          <h1 className="font-heading mt-6 max-w-3xl text-[clamp(2rem,3.5vw,2.8rem)] leading-tight text-[#071126]">
             {course.title}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg text-gray-500">
+          <p className="mt-4 max-w-2xl text-base leading-7 font-medium text-slate-500">
             {course.subtitle}
           </p>
 
@@ -187,7 +180,7 @@ export default function CourseDetail() {
       </div>
 
       {/* Content */}
-      <div className="mx-auto max-w-7xl space-y-16 px-6 py-16">
+      <div className="mx-auto max-w-7xl space-y-16 px-6 py-16 relative">
         {/* Modules table (courses 1, 2, 3) */}
         {course.modules && (
           <section>
@@ -220,10 +213,10 @@ export default function CourseDetail() {
                         key={row.id}
                         className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}
                       >
-                        <td className="border-b border-gray-100 px-4 py-4 text-center font-semibold text-gray-400">
+                        <td className="border-b border-gray-100 px-4 py-4 text-center text-[15px] font-semibold text-[#071126]/30">
                           {row.id}
                         </td>
-                        <td className="border-b border-gray-100 px-4 py-4 leading-relaxed text-gray-700">
+                        <td className="border-b border-gray-100 px-4 py-4 text-[15px] leading-relaxed text-[#071126]/80">
                           {row.topic}
                         </td>
                         <td className="border-b border-gray-100 px-4 py-4 text-center">
@@ -295,10 +288,10 @@ export default function CourseDetail() {
                         key={row.id}
                         className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}
                       >
-                        <td className="border-b border-gray-100 px-4 py-4 text-center font-semibold text-gray-400">
+                        <td className="border-b border-gray-100 px-4 py-4 text-center text-[15px] font-semibold text-[#071126]/30">
                           {row.id}
                         </td>
-                        <td className="border-b border-gray-100 px-4 py-4 leading-relaxed text-gray-700">
+                        <td className="border-b border-gray-100 px-4 py-4 text-[15px] leading-relaxed text-[#071126]/80">
                           {row.topic}
                         </td>
                         <td className="border-b border-gray-100 px-4 py-4 text-center">
@@ -371,10 +364,10 @@ export default function CourseDetail() {
                         key={row.id}
                         className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}
                       >
-                        <td className="border-b border-gray-100 px-4 py-4 text-center font-semibold text-gray-400">
+                        <td className="border-b border-gray-100 px-4 py-4 text-center text-[15px] font-semibold text-[#071126]/30">
                           {row.id}
                         </td>
-                        <td className="border-b border-gray-100 px-4 py-4 leading-relaxed text-gray-700">
+                        <td className="border-b border-gray-100 px-4 py-4 text-[15px] leading-relaxed text-[#071126]/80">
                           {row.topic}
                         </td>
                         <td className="border-b border-gray-100 px-4 py-4 text-center">
@@ -444,12 +437,12 @@ export default function CourseDetail() {
                         key={tool.id}
                         className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}
                       >
-                        <td className="border-b border-gray-100 px-4 py-3.5 text-center font-semibold text-gray-400">
+                        <td className="border-b border-gray-100 px-4 py-3.5 text-center text-[15px] font-semibold text-[#071126]/30">
                           {tool.id}
                         </td>
                         <td className="border-b border-gray-100 px-4 py-3.5">
                           <span
-                            className="inline-block rounded-lg px-3 py-1 text-xs font-bold"
+                            className="inline-block rounded-lg px-3 py-1 text-[13px] font-bold"
                             style={{
                               background: `${course.accent}15`,
                               color: course.accent,
@@ -458,7 +451,7 @@ export default function CourseDetail() {
                             {tool.name}
                           </span>
                         </td>
-                        <td className="border-b border-gray-100 px-4 py-3.5 text-gray-600">
+                        <td className="border-b border-gray-100 px-4 py-3.5 text-[15px] leading-relaxed text-[#071126]/70">
                           {tool.usage}
                         </td>
                       </tr>
@@ -541,7 +534,7 @@ export default function CourseDetail() {
             }}
           />
           <div className="relative">
-            <h2 className="text-2xl font-extrabold text-gray-900">
+            <h2 className="font-heading text-[clamp(1.4rem,2.5vw,1.9rem)] text-[#071126]">
               Ushbu yo'nalishda o'qishni boshlashga tayyormisiz?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-gray-500">
@@ -574,7 +567,7 @@ function SectionTitle({ label, accent }: { label: string; accent: string }) {
   return (
     <div className="flex items-center gap-3">
       <div className="h-7 w-1 rounded-full" style={{ background: accent }} />
-      <h2 className="text-xl font-bold text-gray-900">{label}</h2>
+      <h2 className="font-heading text-[1.45rem] text-[#071126]">{label}</h2>
     </div>
   )
 }

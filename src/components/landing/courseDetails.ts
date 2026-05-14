@@ -39,7 +39,7 @@ export const courseDetails: CourseDetail[] = [
     title: "Sun'iy intellektni qo'llash asoslari",
     subtitle:
       "Malaka oshirish kursi — AI asoslari, prompt engineering, etika va ta'limdagi amaliy qo'llash.",
-    accent: "#6366f1",
+    accent: "#246BFE",
     totalHours: { lecture: 20, practical: 20, independent: 22 },
     modules: [
       {
@@ -214,7 +214,7 @@ export const courseDetails: CourseDetail[] = [
     title: "Sun'iy intellekt, mashinaviy o'rganish va ma'lumotlar tahlili",
     subtitle:
       "ML modellar, Python, datasetlar, vizual tahlil, baholash metrikalari va amaliy laboratoriya ishlari.",
-    accent: "#0ea5e9",
+    accent: "#246BFE",
     totalHours: { lecture: 16, practical: 48, independent: 36 },
     modules: [
       {
@@ -360,7 +360,7 @@ export const courseDetails: CourseDetail[] = [
     title: "Kompyuterli ko'rish",
     subtitle:
       "Tasvirlarni qayta ishlash, obyekt aniqlash, klassifikatsiya va ilmiy-amaliy loyihalar.",
-    accent: "#10b981",
+    accent: "#246BFE",
     totalHours: { lecture: 24, practical: 36, independent: 30 },
     modules: [
       {
@@ -403,7 +403,7 @@ export const courseDetails: CourseDetail[] = [
     title: "Tabiiy tilni qayta ishlash (NLP)",
     subtitle:
       "Matn tahlili, vektorlashtirish, neyron arxitekturalar, transformerlar va agentlar.",
-    accent: "#f59e0b",
+    accent: "#246BFE",
     totalHours: { lecture: 32, practical: 40, independent: 92 },
     lectureTopics: [
       {

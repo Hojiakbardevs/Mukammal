@@ -7,10 +7,11 @@ export function Goals() {
       id="goals"
       className="relative overflow-hidden bg-[#f6f9ff] px-6 py-20 sm:py-24"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(36,107,254,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(36,107,254,0.06)_1px,transparent_1px)] bg-[size:56px_56px]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_15%,rgba(36,107,254,0.13),transparent_34%),radial-gradient(circle_at_88%_12%,rgba(96,78,255,0.12),transparent_30%)]" />
-      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-200 to-transparent" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(36,107,254,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(36,107,254,0.04)_1px,transparent_1px)] bg-[size:56px_56px]" />
 
+      <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-blue-200/20 blur-3xl" />
+
+      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-100 to-transparent" />
       <div className="relative mx-auto max-w-7xl">
         <div className="mb-14 max-w-3xl">
           <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-blue-100 bg-white/80 px-4 py-2 shadow-sm backdrop-blur-xl">

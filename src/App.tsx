@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect, type ReactNode } from "react"
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { lazy, Suspense, useEffect } from "react"
+import { BrowserRouter, Routes, Route, useLocation, Outlet } from "react-router-dom"
 import { Toaster } from "sonner"
 import { Navbar } from "@/components/Navbar"
 
@@ -7,12 +7,20 @@ const HomePage = lazy(() => import("./Pages/Homepage"))
 const Register = lazy(() => import("@/Pages/Register"))
 const CourseDetail = lazy(() => import("@/Pages/CourseDetail"))
 
-function Layout({ children }: { children: ReactNode }) {
+function WithNav() {
   return (
     <>
       <HashScroll />
       <Navbar />
-      {children}
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-[#070b17] px-6 pt-28 text-white">
+            Yuklanmoqda...
+          </div>
+        }
+      >
+        <Outlet />
+      </Suspense>
     </>
   )
 }
@@ -35,21 +43,26 @@ export default function App() {
   return (
     <BrowserRouter>
       <Toaster richColors />
-      <Layout>
-        <Suspense
-          fallback={
-            <div className="min-h-screen bg-[#070b17] px-6 pt-28 text-white">
-              Yuklanmoqda...
-            </div>
+      <Routes>
+        <Route element={<WithNav />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+        <Route
+          path="/courses/:slug"
+          element={
+            <Suspense
+              fallback={
+                <div className="min-h-screen bg-[#f6f9ff] px-6 pt-28 text-[#071126]">
+                  Yuklanmoqda...
+                </div>
+              }
+            >
+              <CourseDetail />
+            </Suspense>
           }
-        >
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/courses/:slug" element={<CourseDetail />} />
-          </Routes>
-        </Suspense>
-      </Layout>
+        />
+      </Routes>
     </BrowserRouter>
   )
 }
