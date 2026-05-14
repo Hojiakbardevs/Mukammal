@@ -29,7 +29,7 @@ export function SuccessModal({ isOpen, onClose, email }: SuccessModalProps) {
           >
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 rounded-full p-1.5 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+              className="absolute top-4 right-4 rounded-full p-1.5 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
             >
               <X size={18} />
             </button>
@@ -43,12 +43,12 @@ export function SuccessModal({ isOpen, onClose, email }: SuccessModalProps) {
             <h2 className="mb-2 text-2xl font-bold text-white">
               Muvaffaqiyatli yuborildi!
             </h2>
-            <p className="mb-1 text-white/60 text-sm">
+            <p className="mb-1 text-sm text-white/60">
               Arizangiz qabul qilindi.
             </p>
             <p className="mb-6 text-sm text-white/60">
-              <span className="font-semibold text-white">{email}</span> manzilingizga
-              tez orada xabar yuboramiz.
+              <span className="font-semibold text-white">{email}</span>{" "}
+              manzilingizga tez orada xabar yuboramiz.
             </p>
 
             <Button

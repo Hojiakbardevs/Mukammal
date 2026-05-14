@@ -1,5 +1,12 @@
 import { useParams, Link } from "react-router-dom"
-import { ArrowLeft, BookOpen, Clock, FlaskConical, Brain, ChevronRight } from "lucide-react"
+import {
+  ArrowLeft,
+  BookOpen,
+  Clock,
+  FlaskConical,
+  Brain,
+  ChevronRight,
+} from "lucide-react"
 import { courseDetails } from "@/components/landing/courseDetails"
 import { NeuralGrid } from "@/components/landing/NeuralGrid"
 import Logos from "@/assets/airi_uz.png"
@@ -13,7 +20,10 @@ export default function CourseDetail() {
       <div className="flex min-h-screen items-center justify-center bg-white">
         <div className="text-center">
           <p className="text-2xl font-bold text-gray-700">Kurs topilmadi</p>
-          <Link to="/" className="mt-4 inline-block text-indigo-600 hover:underline">
+          <Link
+            to="/"
+            className="mt-4 inline-block text-indigo-600 hover:underline"
+          >
             Bosh sahifaga qaytish
           </Link>
         </div>
@@ -22,7 +32,9 @@ export default function CourseDetail() {
   }
 
   const total =
-    course.totalHours.lecture + course.totalHours.practical + course.totalHours.independent
+    course.totalHours.lecture +
+    course.totalHours.practical +
+    course.totalHours.independent
 
   return (
     <div className="min-h-screen bg-white">
@@ -79,10 +91,12 @@ export default function CourseDetail() {
             <span className="text-gray-900">{course.title}</span>
           </div>
 
-          <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-5xl">
+          <h1 className="mt-6 max-w-3xl text-4xl leading-tight font-extrabold tracking-tight text-gray-900 md:text-5xl">
             {course.title}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg text-gray-500">{course.subtitle}</p>
+          <p className="mt-4 max-w-2xl text-lg text-gray-500">
+            {course.subtitle}
+          </p>
 
           {/* Hours summary */}
           <div className="mt-10 flex flex-wrap gap-4">
@@ -91,11 +105,18 @@ export default function CourseDetail() {
                 className="flex h-10 w-10 items-center justify-center rounded-xl"
                 style={{ background: `${course.accent}18` }}
               >
-                <BookOpen className="h-5 w-5" style={{ color: course.accent }} />
+                <BookOpen
+                  className="h-5 w-5"
+                  style={{ color: course.accent }}
+                />
               </div>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">Ma'ruza</p>
-                <p className="text-xl font-bold text-gray-900">{course.totalHours.lecture} soat</p>
+                <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
+                  Ma'ruza
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                  {course.totalHours.lecture} soat
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm">
@@ -103,11 +124,18 @@ export default function CourseDetail() {
                 className="flex h-10 w-10 items-center justify-center rounded-xl"
                 style={{ background: `${course.accent}18` }}
               >
-                <FlaskConical className="h-5 w-5" style={{ color: course.accent }} />
+                <FlaskConical
+                  className="h-5 w-5"
+                  style={{ color: course.accent }}
+                />
               </div>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">Amaliyot</p>
-                <p className="text-xl font-bold text-gray-900">{course.totalHours.practical} soat</p>
+                <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
+                  Amaliyot
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                  {course.totalHours.practical} soat
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm">
@@ -118,11 +146,21 @@ export default function CourseDetail() {
                 <Brain className="h-5 w-5" style={{ color: course.accent }} />
               </div>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-400">Mustaqil ish</p>
-                <p className="text-xl font-bold text-gray-900">{course.totalHours.independent} soat</p>
+                <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
+                  Mustaqil ish
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                  {course.totalHours.independent} soat
+                </p>
               </div>
             </div>
-            <div className="flex items-center gap-3 rounded-2xl border px-5 py-3.5 shadow-sm" style={{ borderColor: `${course.accent}40`, background: `${course.accent}0d` }}>
+            <div
+              className="flex items-center gap-3 rounded-2xl border px-5 py-3.5 shadow-sm"
+              style={{
+                borderColor: `${course.accent}40`,
+                background: `${course.accent}0d`,
+              }}
+            >
               <div
                 className="flex h-10 w-10 items-center justify-center rounded-xl"
                 style={{ background: `${course.accent}25` }}
@@ -130,8 +168,18 @@ export default function CourseDetail() {
                 <Clock className="h-5 w-5" style={{ color: course.accent }} />
               </div>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide" style={{ color: course.accent }}>Jami</p>
-                <p className="text-xl font-bold" style={{ color: course.accent }}>{total} soat</p>
+                <p
+                  className="text-xs font-medium tracking-wide uppercase"
+                  style={{ color: course.accent }}
+                >
+                  Jami
+                </p>
+                <p
+                  className="text-xl font-bold"
+                  style={{ color: course.accent }}
+                >
+                  {total} soat
+                </p>
               </div>
             </div>
           </div>
@@ -139,8 +187,7 @@ export default function CourseDetail() {
       </div>
 
       {/* Content */}
-      <div className="mx-auto max-w-7xl px-6 py-16 space-y-16">
-
+      <div className="mx-auto max-w-7xl space-y-16 px-6 py-16">
         {/* Modules table (courses 1, 2, 3) */}
         {course.modules && (
           <section>
@@ -150,19 +197,19 @@ export default function CourseDetail() {
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr style={{ background: `${course.accent}10` }}>
-                      <th className="w-12 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      <th className="w-12 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
                         T.r.
                       </th>
-                      <th className="border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      <th className="border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
                         Modul / Mavzular
                       </th>
-                      <th className="w-24 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      <th className="w-24 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold tracking-wide text-gray-500 uppercase">
                         Ma'ruza
                       </th>
-                      <th className="w-24 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      <th className="w-24 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold tracking-wide text-gray-500 uppercase">
                         Amaliyot
                       </th>
-                      <th className="w-24 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      <th className="w-24 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold tracking-wide text-gray-500 uppercase">
                         Mustaqil
                       </th>
                     </tr>
@@ -183,14 +230,20 @@ export default function CourseDetail() {
                           {row.lecture === 0 ? (
                             <span className="text-gray-300">—</span>
                           ) : (
-                            <HourBadge value={row.lecture} color={course.accent} />
+                            <HourBadge
+                              value={row.lecture}
+                              color={course.accent}
+                            />
                           )}
                         </td>
                         <td className="border-b border-gray-100 px-4 py-4 text-center">
                           {row.practical === 0 ? (
                             <span className="text-gray-300">—</span>
                           ) : (
-                            <HourBadge value={row.practical} color={course.accent} />
+                            <HourBadge
+                              value={row.practical}
+                              color={course.accent}
+                            />
                           )}
                         </td>
                         <td className="border-b border-gray-100 px-4 py-4 text-center">
@@ -222,27 +275,62 @@ export default function CourseDetail() {
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr style={{ background: `${course.accent}10` }}>
-                      <th className="w-12 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">T.r.</th>
-                      <th className="border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Ma'ruza mavzusi</th>
-                      <th className="w-28 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Ma'ruza, soat</th>
-                      <th className="w-28 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Mustaqil, soat</th>
+                      <th className="w-12 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        T.r.
+                      </th>
+                      <th className="border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        Ma'ruza mavzusi
+                      </th>
+                      <th className="w-28 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        Ma'ruza, soat
+                      </th>
+                      <th className="w-28 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        Mustaqil, soat
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {course.lectureTopics.map((row, i) => (
-                      <tr key={row.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}>
-                        <td className="border-b border-gray-100 px-4 py-4 text-center font-semibold text-gray-400">{row.id}</td>
-                        <td className="border-b border-gray-100 px-4 py-4 leading-relaxed text-gray-700">{row.topic}</td>
-                        <td className="border-b border-gray-100 px-4 py-4 text-center"><HourBadge value={row.contactHours} color={course.accent} /></td>
-                        <td className="border-b border-gray-100 px-4 py-4 text-center"><HourBadge value={row.independent} color="#64748b" /></td>
+                      <tr
+                        key={row.id}
+                        className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}
+                      >
+                        <td className="border-b border-gray-100 px-4 py-4 text-center font-semibold text-gray-400">
+                          {row.id}
+                        </td>
+                        <td className="border-b border-gray-100 px-4 py-4 leading-relaxed text-gray-700">
+                          {row.topic}
+                        </td>
+                        <td className="border-b border-gray-100 px-4 py-4 text-center">
+                          <HourBadge
+                            value={row.contactHours}
+                            color={course.accent}
+                          />
+                        </td>
+                        <td className="border-b border-gray-100 px-4 py-4 text-center">
+                          <HourBadge value={row.independent} color="#64748b" />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot>
                     <tr style={{ background: `${course.accent}08` }}>
-                      <td colSpan={2} className="px-4 py-3.5 text-right text-sm font-bold text-gray-700">Jami</td>
-                      <td className="px-4 py-3.5 text-center"><HourBadge value={course.totalHours.lecture} color={course.accent} bold /></td>
-                      <td className="px-4 py-3.5 text-center"><HourBadge value={32} color="#64748b" bold /></td>
+                      <td
+                        colSpan={2}
+                        className="px-4 py-3.5 text-right text-sm font-bold text-gray-700"
+                      >
+                        Jami
+                      </td>
+                      <td className="px-4 py-3.5 text-center">
+                        <HourBadge
+                          value={course.totalHours.lecture}
+                          color={course.accent}
+                          bold
+                        />
+                      </td>
+                      <td className="px-4 py-3.5 text-center">
+                        <HourBadge value={32} color="#64748b" bold />
+                      </td>
                     </tr>
                   </tfoot>
                 </table>
@@ -254,33 +342,71 @@ export default function CourseDetail() {
         {/* NLP: Practical topics */}
         {course.practicalTopics && (
           <section>
-            <SectionTitle accent={course.accent} label="Amaliyot mashg'ulotlari mavzulari" />
+            <SectionTitle
+              accent={course.accent}
+              label="Amaliyot mashg'ulotlari mavzulari"
+            />
             <div className="mt-6 overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr style={{ background: `${course.accent}10` }}>
-                      <th className="w-12 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">T.r.</th>
-                      <th className="border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Amaliyot mavzusi</th>
-                      <th className="w-28 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Amaliyot, soat</th>
-                      <th className="w-28 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold uppercase tracking-wide text-gray-500">Mustaqil, soat</th>
+                      <th className="w-12 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        T.r.
+                      </th>
+                      <th className="border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        Amaliyot mavzusi
+                      </th>
+                      <th className="w-28 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        Amaliyot, soat
+                      </th>
+                      <th className="w-28 border-b border-gray-200 px-4 py-3.5 text-center text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        Mustaqil, soat
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {course.practicalTopics.map((row, i) => (
-                      <tr key={row.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}>
-                        <td className="border-b border-gray-100 px-4 py-4 text-center font-semibold text-gray-400">{row.id}</td>
-                        <td className="border-b border-gray-100 px-4 py-4 leading-relaxed text-gray-700">{row.topic}</td>
-                        <td className="border-b border-gray-100 px-4 py-4 text-center"><HourBadge value={row.contactHours} color={course.accent} /></td>
-                        <td className="border-b border-gray-100 px-4 py-4 text-center"><HourBadge value={row.independent} color="#64748b" /></td>
+                      <tr
+                        key={row.id}
+                        className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}
+                      >
+                        <td className="border-b border-gray-100 px-4 py-4 text-center font-semibold text-gray-400">
+                          {row.id}
+                        </td>
+                        <td className="border-b border-gray-100 px-4 py-4 leading-relaxed text-gray-700">
+                          {row.topic}
+                        </td>
+                        <td className="border-b border-gray-100 px-4 py-4 text-center">
+                          <HourBadge
+                            value={row.contactHours}
+                            color={course.accent}
+                          />
+                        </td>
+                        <td className="border-b border-gray-100 px-4 py-4 text-center">
+                          <HourBadge value={row.independent} color="#64748b" />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot>
                     <tr style={{ background: `${course.accent}08` }}>
-                      <td colSpan={2} className="px-4 py-3.5 text-right text-sm font-bold text-gray-700">Jami</td>
-                      <td className="px-4 py-3.5 text-center"><HourBadge value={course.totalHours.practical} color={course.accent} bold /></td>
-                      <td className="px-4 py-3.5 text-center"><HourBadge value={60} color="#64748b" bold /></td>
+                      <td
+                        colSpan={2}
+                        className="px-4 py-3.5 text-right text-sm font-bold text-gray-700"
+                      >
+                        Jami
+                      </td>
+                      <td className="px-4 py-3.5 text-center">
+                        <HourBadge
+                          value={course.totalHours.practical}
+                          color={course.accent}
+                          bold
+                        />
+                      </td>
+                      <td className="px-4 py-3.5 text-center">
+                        <HourBadge value={60} color="#64748b" bold />
+                      </td>
                     </tr>
                   </tfoot>
                 </table>
@@ -292,30 +418,49 @@ export default function CourseDetail() {
         {/* AI Tools */}
         {course.tools && (
           <section>
-            <SectionTitle accent={course.accent} label="Mashg'ulotlarda foydalaniladigan SI vositalari" />
+            <SectionTitle
+              accent={course.accent}
+              label="Mashg'ulotlarda foydalaniladigan SI vositalari"
+            />
             <div className="mt-6 overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr style={{ background: `${course.accent}10` }}>
-                      <th className="w-12 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">T.r.</th>
-                      <th className="w-44 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">SI vositasi</th>
-                      <th className="border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Qo'llanish yo'nalishi</th>
+                      <th className="w-12 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        T.r.
+                      </th>
+                      <th className="w-44 border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        SI vositasi
+                      </th>
+                      <th className="border-b border-gray-200 px-4 py-3.5 text-left text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        Qo'llanish yo'nalishi
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {course.tools.map((tool, i) => (
-                      <tr key={tool.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}>
-                        <td className="border-b border-gray-100 px-4 py-3.5 text-center font-semibold text-gray-400">{tool.id}</td>
+                      <tr
+                        key={tool.id}
+                        className={i % 2 === 0 ? "bg-white" : "bg-gray-50/60"}
+                      >
+                        <td className="border-b border-gray-100 px-4 py-3.5 text-center font-semibold text-gray-400">
+                          {tool.id}
+                        </td>
                         <td className="border-b border-gray-100 px-4 py-3.5">
                           <span
                             className="inline-block rounded-lg px-3 py-1 text-xs font-bold"
-                            style={{ background: `${course.accent}15`, color: course.accent }}
+                            style={{
+                              background: `${course.accent}15`,
+                              color: course.accent,
+                            }}
                           >
                             {tool.name}
                           </span>
                         </td>
-                        <td className="border-b border-gray-100 px-4 py-3.5 text-gray-600">{tool.usage}</td>
+                        <td className="border-b border-gray-100 px-4 py-3.5 text-gray-600">
+                          {tool.usage}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -328,7 +473,10 @@ export default function CourseDetail() {
         {/* Outcomes */}
         {course.outcomes && (
           <section>
-            <SectionTitle accent={course.accent} label="Kurs yakunida egallash kerak bo'lgan bilim va ko'nikmalar" />
+            <SectionTitle
+              accent={course.accent}
+              label="Kurs yakunida egallash kerak bo'lgan bilim va ko'nikmalar"
+            />
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {course.outcomes.map((outcome, i) => (
                 <div
@@ -341,7 +489,9 @@ export default function CourseDetail() {
                   >
                     {i + 1}
                   </div>
-                  <p className="text-sm leading-relaxed text-gray-600">{outcome}</p>
+                  <p className="text-sm leading-relaxed text-gray-600">
+                    {outcome}
+                  </p>
                 </div>
               ))}
             </div>
@@ -351,7 +501,10 @@ export default function CourseDetail() {
         {/* Assessments */}
         {course.assessments && (
           <section>
-            <SectionTitle accent={course.accent} label="Tinglovchilarni baholash shakllari" />
+            <SectionTitle
+              accent={course.accent}
+              label="Tinglovchilarni baholash shakllari"
+            />
             <div className="mt-6 space-y-3">
               {course.assessments.map((a, i) => (
                 <div
@@ -372,7 +525,13 @@ export default function CourseDetail() {
         )}
 
         {/* CTA */}
-        <section className="relative overflow-hidden rounded-3xl p-10 text-center" style={{ background: `linear-gradient(135deg, ${course.accent}15, ${course.accent}05)`, border: `1px solid ${course.accent}25` }}>
+        <section
+          className="relative overflow-hidden rounded-3xl p-10 text-center"
+          style={{
+            background: `linear-gradient(135deg, ${course.accent}15, ${course.accent}05)`,
+            border: `1px solid ${course.accent}25`,
+          }}
+        >
           <div
             className="absolute inset-0 opacity-5"
             style={{
@@ -386,7 +545,8 @@ export default function CourseDetail() {
               Ushbu yo'nalishda o'qishni boshlashga tayyormisiz?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-gray-500">
-              Ariza qoldiring va bizning mutaxassislar siz uchun mos yo'nalishni tavsiya qiladi.
+              Ariza qoldiring va bizning mutaxassislar siz uchun mos yo'nalishni
+              tavsiya qiladi.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link
@@ -419,7 +579,15 @@ function SectionTitle({ label, accent }: { label: string; accent: string }) {
   )
 }
 
-function HourBadge({ value, color, bold }: { value: number; color: string; bold?: boolean }) {
+function HourBadge({
+  value,
+  color,
+  bold,
+}: {
+  value: number
+  color: string
+  bold?: boolean
+}) {
   return (
     <span
       className={`inline-block rounded-lg px-2.5 py-0.5 text-sm ${bold ? "font-bold" : "font-semibold"}`}
@@ -444,7 +612,9 @@ function TotalRow({
   return (
     <tr style={{ background: `${accent}08` }}>
       <td />
-      <td className="px-4 py-3.5 text-right text-sm font-bold text-gray-700">Jami</td>
+      <td className="px-4 py-3.5 text-right text-sm font-bold text-gray-700">
+        Jami
+      </td>
       <td className="px-4 py-3.5 text-center">
         <HourBadge value={lecture} color={accent} bold />
       </td>

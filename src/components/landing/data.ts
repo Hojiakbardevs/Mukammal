@@ -92,22 +92,22 @@ export const courseTracks: CourseTrackItem[] = [
 
 export const timeline = [
   {
-    duration: "1 oy",
-    title: "O'quv dasturlari va materiallar",
+    duration: "15 kun",
+    title: "Sun'iy intellektni qo'llash asoslari",
     description:
-      "Kurs modullari, amaliy topshiriqlar, video kontent va metodik materiallar tayyorlanadi.",
+      "Tinglovchilar AI tushunchalari, promptlar, mas'uliyatli foydalanish va ta'limdagi amaliy ssenariylarni o'rganadi.",
+  },
+  {
+    duration: "Tanlov bosqichi",
+    title: "Ixtisoslashuv yo'nalishini tanlash",
+    description:
+      "Birinchi bosqichdan keyin tinglovchi ML & Data Analysis, Computer Vision yoki NLP yo'nalishlaridan birini tanlaydi.",
   },
   {
     duration: "1 oy",
-    title: "Tinglovchilar va jadval",
+    title: "Tanlangan yo'nalish bo'yicha amaliy kurs",
     description:
-      "Ishtirokchilar shakllantiriladi, 3 guruh bo'yicha o'quv jadvali va qatnashish formati tasdiqlanadi.",
-  },
-  {
-    duration: "3 oy",
-    title: "Kurslar, baholash, sertifikat, hisobot",
-    description:
-      "O'quv mashg'ulotlari o'tkaziladi, bilimlar baholanadi, sertifikat beriladi va yakuniy hisobot tayyorlanadi.",
+      "Tanlangan yo'nalish bo'yicha chuqurlashtirilgan mashg'ulotlar, amaliy topshiriqlar va loyiha ishlari bajariladi.",
   },
 ]
 
@@ -185,7 +185,8 @@ export const strategicItems = [
   {
     number: "01",
     title: "Dasturlar yaratish",
-    description: "Xalqaro standartlar asosida o'quv dasturlarini ishlab chiqish.",
+    description:
+      "Xalqaro standartlar asosida o'quv dasturlarini ishlab chiqish.",
     accent: "border-l-violet-400",
   },
   {
