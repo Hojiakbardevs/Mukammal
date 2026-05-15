@@ -23,7 +23,7 @@ import { SuccessModal } from "@/components/registration/SuccessModal"
 import { NeuralGrid } from "@/components/landing/NeuralGrid"
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwfuEtBehYe9SkiW8sk-hVud8Sw0ya-T-PvSfx8RCLmgoua6eWUQ_3jectdX9uqn-zjPA/exec"
+  "https://script.google.com/macros/s/AKfycbyOKaocY_Vp_QS0IGPyD7yNXIfmwonislNH3L_i8tKCT6UwHuH7ZsSMoTJWNe6Ri0EN0g/exec"
 
 const formSchema = z.object({
   firstName: z.string().trim().min(1, "Ism kiritish majburiy"),
