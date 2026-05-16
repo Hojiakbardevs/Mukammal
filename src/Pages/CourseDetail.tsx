@@ -82,7 +82,7 @@ export default function CourseDetail() {
 
         <div className="relative mx-auto max-w-7xl px-6 py-10 sm:py-12 lg:py-16">
           <figure
-            className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border bg-white shadow-[0_28px_80px_rgba(36,107,254,0.18)] sm:aspect-[16/8.5] lg:aspect-[21/9]"
+            className="relative aspect-16/10 w-full overflow-hidden rounded-3xl border bg-white shadow-[0_28px_80px_rgba(36,107,254,0.18)] sm:aspect-[16/8.5] lg:aspect-[21/9]"
             style={{ borderColor: `${course.accent}30` }}
           >
             <img

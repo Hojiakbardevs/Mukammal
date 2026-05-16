@@ -7,7 +7,7 @@ export function Goals() {
       id="goals"
       className="relative overflow-hidden bg-[#f6f9ff] px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20 xl:py-24"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(36,107,254,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(36,107,254,0.04)_1px,transparent_1px)] bg-[size:56px_56px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(36,107,254,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(36,107,254,0.04)_1px,transparent_1px)] bg-size-[56px_56px]" />
 
       <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-blue-200/20 blur-3xl" />
 
@@ -43,7 +43,7 @@ export function Goals() {
               className="absolute right-7 bottom-7 h-36 w-36 text-white/6 sm:h-52 sm:w-52"
             />
 
-            <div className="relative flex min-h-0 flex-col justify-between lg:min-h-[360px] xl:min-h-105">
+            <div className="relative flex min-h-0 flex-col justify-between lg:min-h-90 xl:min-h-105">
               <div>
                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-[#8dbbff] ring-1 ring-white/15 backdrop-blur sm:h-14 sm:w-14 sm:rounded-2xl lg:mb-8">
                   <Target className="h-6 w-6" strokeWidth={1.8} />

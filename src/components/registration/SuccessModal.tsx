@@ -42,10 +42,10 @@ export function SuccessModal({ isOpen, onClose, email }: SuccessModalProps) {
               stiffness: 260,
             }}
             onClick={(event) => event.stopPropagation()}
-            className="relative z-10 w-full max-w-[440px] overflow-hidden rounded-[2rem] border border-white/10 bg-[#081225] shadow-[0_30px_120px_rgba(15,23,42,0.65)]"
+            className="relative z-10 w-full max-w-110 overflow-hidden rounded-[2rem] border border-white/10 bg-[#081225] shadow-[0_30px_120px_rgba(15,23,42,0.65)]"
           >
             {/* Background texture */}
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:42px_42px]" />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-size-[42px_42px]" />
             <div className="pointer-events-none absolute -top-28 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-sky-400/20 blur-3xl" />
             <div className="pointer-events-none absolute -right-24 bottom-0 h-64 w-64 rounded-full bg-blue-600/15 blur-3xl" />
 
@@ -126,7 +126,7 @@ export function SuccessModal({ isOpen, onClose, email }: SuccessModalProps) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.36 }}
-                  className="mt-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-left"
+                  className="mt-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-left"
                 >
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-400/10">
                     <Mail className="h-4 w-4 text-sky-300" />
@@ -150,7 +150,7 @@ export function SuccessModal({ isOpen, onClose, email }: SuccessModalProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.44 }}
                 onClick={onClose}
-                className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-400 via-blue-500 to-[#246BFE] px-6 py-3.5 font-heading text-xs font-bold uppercase tracking-[0.18em] text-white shadow-[0_18px_44px_rgba(36,107,254,0.32)] transition hover:shadow-[0_22px_58px_rgba(36,107,254,0.44)] active:scale-[0.98]"
+                className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-sky-400 via-blue-500 to-[#246BFE] px-6 py-3.5 font-heading text-xs font-bold uppercase tracking-[0.18em] text-white shadow-[0_18px_44px_rgba(36,107,254,0.32)] transition hover:shadow-[0_22px_58px_rgba(36,107,254,0.44)] active:scale-[0.98]"
               >
                 Bosh sahifaga qaytish
                 <ArrowRight className="h-4 w-4" />

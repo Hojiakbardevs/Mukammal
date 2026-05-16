@@ -8,12 +8,12 @@ export function FAQ() {
       id="faq"
       className="relative overflow-hidden bg-[#071126] px-4 py-14 text-white sm:px-6 sm:py-16 lg:px-8 lg:py-20 xl:py-24"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.06)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.06)_1px,transparent_1px)] bg-size-[60px_60px]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(37,99,235,0.18),transparent_44%),linear-gradient(180deg,rgba(7,17,38,0.12),rgba(7,17,38,0.88))]" />
 
       <div className="absolute inset-x-0 top-0 h-px bg-blue-200/10" />
 
-      <div className="relative mx-auto max-w-[1414px]">
+      <div className="relative mx-auto max-w-353.5">
         <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12 lg:mb-14">
           <div className="mx-auto mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-blue-200/10 bg-[#0f1b33]/90 shadow-[0_18px_50px_rgba(0,0,0,0.25)] backdrop-blur-xl sm:mb-5 sm:h-12 sm:w-12 sm:rounded-2xl">
             <HelpCircle className="h-5 w-5 text-[#8dbbff]" strokeWidth={2.3} />

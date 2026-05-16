@@ -67,12 +67,12 @@ export function CourseTracks() {
       id="courses"
       className="relative overflow-hidden bg-[#f6f9ff] px-4 py-14 text-[#071126] sm:px-6 sm:py-16 lg:px-8 lg:py-20 xl:py-24"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(36,107,254,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(36,107,254,0.04)_1px,transparent_1px)] bg-[size:56px_56px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(36,107,254,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(36,107,254,0.04)_1px,transparent_1px)] bg-size-[56px_56px]" />
 
       <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-blue-200/20 blur-3xl" />
 
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-100 to-transparent" />
-      <div className="relative mx-auto max-w-[1180px]">
+      <div className="relative mx-auto max-w-295">
         <h2 className="font-heading text-[clamp(1.75rem,6vw,2.35rem)] leading-tight text-[#071126] lg:text-[clamp(2rem,3vw,2.55rem)]">
           Malaka oshirish yo'nalishlari
         </h2>
@@ -81,16 +81,16 @@ export function CourseTracks() {
           {courseTracks.map((track, index) => (
             <article
               key={track.title}
-              className="group relative flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white/86 shadow-[0_22px_60px_rgba(36,107,254,0.12)] backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:border-blue-200 hover:bg-white hover:shadow-[0_30px_80px_rgba(36,107,254,0.18)] sm:rounded-2xl lg:min-h-[420px] xl:min-h-[480px]"
+              className="group relative flex min-h-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white/86 shadow-[0_22px_60px_rgba(36,107,254,0.12)] backdrop-blur-xl transition duration-500 hover:-translate-y-2 hover:border-blue-200 hover:bg-white hover:shadow-[0_30px_80px_rgba(36,107,254,0.18)] sm:rounded-2xl lg:min-h-105 xl:min-h-120"
             >
               <div
-                className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${track.glow} opacity-0 transition duration-500 group-hover:opacity-100`}
+                className={`pointer-events-none absolute inset-0 bg-linear-to-br ${track.glow} opacity-0 transition duration-500 group-hover:opacity-100`}
               />
               <div className="pointer-events-none absolute inset-x-8 top-0 h-px scale-x-0 bg-linear-to-r from-[#246BFE] via-sky-300 to-transparent transition duration-500 group-hover:scale-x-100" />
               <div className="sr-only">{track.iconLabel}</div>
 
               <div className="relative flex h-full flex-col">
-                <div className="relative aspect-[16/9] overflow-hidden">
+                <div className="relative aspect-video overflow-hidden">
                   <img
                     src={track.image}
                     alt={track.title}
@@ -108,7 +108,7 @@ export function CourseTracks() {
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
-                  <div className="absolute bottom-4 left-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/55 bg-white/88 text-[#246BFE] shadow-[0_14px_34px_rgba(7,17,38,0.22)] backdrop-blur-md sm:bottom-5 sm:left-5 sm:h-[52px] sm:w-[52px]">
+                  <div className="absolute bottom-4 left-4 flex h-12 w-12 items-center justify-center rounded-xl border border-white/55 bg-white/88 text-[#246BFE] shadow-[0_14px_34px_rgba(7,17,38,0.22)] backdrop-blur-md sm:bottom-5 sm:left-5 sm:h-13 sm:w-13">
                     <track.icon className="h-5 w-5" strokeWidth={2.35} />
                   </div>
                 </div>

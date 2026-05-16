@@ -197,7 +197,7 @@ const Hero = () => {
         >
           <MotionLink
             to="/register"
-            className="inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-sky-500 to-cyan-400 px-8 text-sm font-bold text-white shadow-[0_0_24px_rgba(56,189,248,0.35)] sm:w-auto"
+            className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-sky-500 to-cyan-400 px-8 text-sm font-bold text-white shadow-[0_0_24px_rgba(56,189,248,0.35)] sm:w-auto"
             whileHover={{
               y: -2,
               boxShadow: "0 0 38px rgba(56,189,248,0.55)",

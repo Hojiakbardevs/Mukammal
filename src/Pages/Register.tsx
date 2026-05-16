@@ -372,7 +372,7 @@ export default function Register() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="h-12 w-full rounded-xl bg-gradient-to-r from-sky-500 to-[#246BFE] font-heading text-[12px] font-bold tracking-widest text-white uppercase shadow-[0_0_24px_rgba(36,107,254,0.35)] transition-all hover:from-sky-400 hover:to-blue-500 hover:shadow-[0_0_36px_rgba(36,107,254,0.55)] active:scale-[0.98]"
+                  className="h-12 w-full rounded-xl bg-linear-to-r from-sky-500 to-[#246BFE] font-heading text-[12px] font-bold tracking-widest text-white uppercase shadow-[0_0_24px_rgba(36,107,254,0.35)] transition-all hover:from-sky-400 hover:to-blue-500 hover:shadow-[0_0_36px_rgba(36,107,254,0.55)] active:scale-[0.98]"
                 >
                   {isSubmitting ? (
                     <>

@@ -107,7 +107,7 @@ export function Timeline() {
         </div>
 
         <div className="relative mx-auto mt-12 hidden max-w-5xl space-y-7 lg:block xl:mt-14 xl:space-y-8">
-          <div className="absolute top-10 bottom-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-blue-200/20 to-transparent" />
+          <div className="absolute top-10 bottom-10 left-1/2 w-px -translate-x-1/2 bg-linear-to-b from-transparent via-blue-200/20 to-transparent" />
 
           {timeline.map((step, index) => {
             const isLeft = index % 2 === 0
@@ -142,7 +142,7 @@ export function Timeline() {
         </div>
 
         <div className="relative mx-auto mt-10 max-w-2xl space-y-6 lg:hidden">
-          <div className="absolute top-7 bottom-7 left-7 w-px bg-gradient-to-b from-transparent via-blue-200/20 to-transparent sm:left-8" />
+          <div className="absolute top-7 bottom-7 left-7 w-px bg-linear-to-b from-transparent via-blue-200/20 to-transparent sm:left-8" />
 
           {timeline.map((step, index) => (
             <div
