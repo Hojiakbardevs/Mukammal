@@ -1,3 +1,8 @@
+import AiBasicsImage from "@/assets/Suniy intellekt qo'llash.png"
+import MlDataImage from "@/assets/SuniyIntelektMashinaviy.png"
+import ComputerVisionImage from "@/assets/ComputerVision.png"
+import NlpImage from "@/assets/NLP.png"
+
 export type ModuleRow = {
   id: number
   topic: string
@@ -24,6 +29,9 @@ export type CourseDetail = {
   title: string
   subtitle: string
   accent: string
+  image: string
+  imageWidth: number
+  imageHeight: number
   totalHours: { lecture: number; practical: number; independent: number }
   modules?: ModuleRow[]
   tools?: ToolRow[]
@@ -40,6 +48,9 @@ export const courseDetails: CourseDetail[] = [
     subtitle:
       "Malaka oshirish kursi — AI asoslari, prompt engineering, etika va ta'limdagi amaliy qo'llash.",
     accent: "#246BFE",
+    image: AiBasicsImage,
+    imageWidth: 1448,
+    imageHeight: 1086,
     totalHours: { lecture: 20, practical: 20, independent: 22 },
     modules: [
       {
@@ -215,6 +226,9 @@ export const courseDetails: CourseDetail[] = [
     subtitle:
       "ML modellar, Python, datasetlar, vizual tahlil, baholash metrikalari va amaliy laboratoriya ishlari.",
     accent: "#246BFE",
+    image: MlDataImage,
+    imageWidth: 1672,
+    imageHeight: 941,
     totalHours: { lecture: 16, practical: 48, independent: 36 },
     modules: [
       {
@@ -361,6 +375,9 @@ export const courseDetails: CourseDetail[] = [
     subtitle:
       "Tasvirlarni qayta ishlash, obyekt aniqlash, klassifikatsiya va ilmiy-amaliy loyihalar.",
     accent: "#246BFE",
+    image: ComputerVisionImage,
+    imageWidth: 1672,
+    imageHeight: 941,
     totalHours: { lecture: 24, practical: 36, independent: 30 },
     modules: [
       {
@@ -404,6 +421,9 @@ export const courseDetails: CourseDetail[] = [
     subtitle:
       "Matn tahlili, vektorlashtirish, neyron arxitekturalar, transformerlar va agentlar.",
     accent: "#246BFE",
+    image: NlpImage,
+    imageWidth: 1672,
+    imageHeight: 941,
     totalHours: { lecture: 32, practical: 40, independent: 92 },
     lectureTopics: [
       {

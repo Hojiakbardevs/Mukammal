@@ -63,6 +63,7 @@ export function Footer() {
                 height={473}
                 loading="lazy"
                 decoding="async"
+                sizes="282px"
                 className="h-12 w-auto object-contain"
               />
             </Link>
@@ -128,6 +129,7 @@ export function Footer() {
                       height={32}
                       loading="lazy"
                       decoding="async"
+                      sizes="32px"
                       aria-hidden="true"
                       className="h-8 w-8 object-contain"
                     />

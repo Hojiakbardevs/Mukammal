@@ -5,7 +5,6 @@ import {
   Clock,
   FlaskConical,
   Brain,
-  ChevronRight,
 } from "lucide-react"
 import { courseDetails } from "@/components/landing/courseDetails"
 import { NeuralGrid } from "@/components/landing/NeuralGrid"
@@ -55,7 +54,9 @@ export default function CourseDetail() {
               alt="AirI"
               width={2779}
               height={472}
+              loading="eager"
               decoding="async"
+              sizes="282px"
               fetchPriority="high"
               className="h-12 w-auto"
             />
@@ -79,108 +80,124 @@ export default function CourseDetail() {
           <NeuralGrid />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-6 py-20">
-          <div className="flex items-center gap-2 text-sm text-[#071126]/50">
-            <Link to="/" className="hover:text-[#246BFE]">
-              Bosh sahifa
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <Link to="/#courses" className="hover:text-[#246BFE]">
-              Yo'nalishlar
-            </Link>
-            <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-[#071126]">{course.title}</span>
-          </div>
-
-          <h1 className="font-heading mt-6 max-w-3xl text-[clamp(2rem,3.5vw,2.8rem)] leading-tight text-[#071126]">
-            {course.title}
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 font-medium text-slate-500">
-            {course.subtitle}
-          </p>
-
-          {/* Hours summary */}
-          <div className="mt-10 flex flex-wrap gap-4">
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-xl"
-                style={{ background: `${course.accent}18` }}
-              >
-                <BookOpen
-                  className="h-5 w-5"
-                  style={{ color: course.accent }}
-                />
-              </div>
-              <div>
-                <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
-                  Ma'ruza
-                </p>
-                <p className="text-xl font-bold text-gray-900">
-                  {course.totalHours.lecture} soat
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-xl"
-                style={{ background: `${course.accent}18` }}
-              >
-                <FlaskConical
-                  className="h-5 w-5"
-                  style={{ color: course.accent }}
-                />
-              </div>
-              <div>
-                <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
-                  Amaliyot
-                </p>
-                <p className="text-xl font-bold text-gray-900">
-                  {course.totalHours.practical} soat
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm">
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-xl"
-                style={{ background: `${course.accent}18` }}
-              >
-                <Brain className="h-5 w-5" style={{ color: course.accent }} />
-              </div>
-              <div>
-                <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
-                  Mustaqil ish
-                </p>
-                <p className="text-xl font-bold text-gray-900">
-                  {course.totalHours.independent} soat
-                </p>
-              </div>
-            </div>
+        <div className="relative mx-auto max-w-7xl px-6 py-10 sm:py-12 lg:py-16">
+          <figure
+            className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border bg-white shadow-[0_28px_80px_rgba(36,107,254,0.18)] sm:aspect-[16/8.5] lg:aspect-[21/9]"
+            style={{ borderColor: `${course.accent}30` }}
+          >
+            <img
+              src={course.image}
+              alt={`${course.title} kursi`}
+              width={course.imageWidth}
+              height={course.imageHeight}
+              loading="eager"
+              decoding="async"
+              sizes="(min-width: 1024px) 600px, calc(100vw - 48px)"
+              fetchPriority="high"
+              className="h-full w-full object-cover"
+            />
             <div
-              className="flex items-center gap-3 rounded-2xl border px-5 py-3.5 shadow-sm"
+              className="pointer-events-none absolute inset-0"
               style={{
-                borderColor: `${course.accent}40`,
-                background: `${course.accent}0d`,
+                background: `linear-gradient(180deg, transparent 58%, ${course.accent}1f 100%)`,
               }}
-            >
-              <div
-                className="flex h-10 w-10 items-center justify-center rounded-xl"
-                style={{ background: `${course.accent}25` }}
-              >
-                <Clock className="h-5 w-5" style={{ color: course.accent }} />
+            />
+          </figure>
+
+          <div className="mt-10 max-w-4xl sm:mt-12">
+            <h1 className="font-heading max-w-3xl text-[clamp(2rem,3.5vw,2.8rem)] leading-tight text-[#071126]">
+              {course.title}
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 font-medium text-slate-500">
+              {course.subtitle}
+            </p>
+
+            {/* Hours summary */}
+            <div className="mt-8 flex flex-wrap gap-4 sm:mt-10">
+              <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm">
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-xl"
+                  style={{ background: `${course.accent}18` }}
+                >
+                  <BookOpen
+                    className="h-5 w-5"
+                    style={{ color: course.accent }}
+                  />
+                </div>
+                <div>
+                  <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
+                    Ma'ruza
+                  </p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {course.totalHours.lecture} soat
+                  </p>
+                </div>
               </div>
-              <div>
-                <p
-                  className="text-xs font-medium tracking-wide uppercase"
-                  style={{ color: course.accent }}
+              <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm">
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-xl"
+                  style={{ background: `${course.accent}18` }}
                 >
-                  Jami
-                </p>
-                <p
-                  className="text-xl font-bold"
-                  style={{ color: course.accent }}
+                  <FlaskConical
+                    className="h-5 w-5"
+                    style={{ color: course.accent }}
+                  />
+                </div>
+                <div>
+                  <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
+                    Amaliyot
+                  </p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {course.totalHours.practical} soat
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-5 py-3.5 shadow-sm">
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-xl"
+                  style={{ background: `${course.accent}18` }}
                 >
-                  {total} soat
-                </p>
+                  <Brain
+                    className="h-5 w-5"
+                    style={{ color: course.accent }}
+                  />
+                </div>
+                <div>
+                  <p className="text-xs font-medium tracking-wide text-gray-400 uppercase">
+                    Mustaqil ish
+                  </p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {course.totalHours.independent} soat
+                  </p>
+                </div>
+              </div>
+              <div
+                className="flex items-center gap-3 rounded-2xl border px-5 py-3.5 shadow-sm"
+                style={{
+                  borderColor: `${course.accent}40`,
+                  background: `${course.accent}0d`,
+                }}
+              >
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-xl"
+                  style={{ background: `${course.accent}25` }}
+                >
+                  <Clock className="h-5 w-5" style={{ color: course.accent }} />
+                </div>
+                <div>
+                  <p
+                    className="text-xs font-medium tracking-wide uppercase"
+                    style={{ color: course.accent }}
+                  >
+                    Jami
+                  </p>
+                  <p
+                    className="text-xl font-bold"
+                    style={{ color: course.accent }}
+                  >
+                    {total} soat
+                  </p>
+                </div>
               </div>
             </div>
           </div>

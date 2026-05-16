@@ -44,7 +44,9 @@ export function Navbar() {
             alt="AirI Logo"
             width={2780}
             height={473}
+            loading="eager"
             decoding="async"
+            sizes="282px"
             fetchPriority="high"
             className="h-12 w-auto"
           />
