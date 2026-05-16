@@ -15,7 +15,7 @@ const TYPING_TEXTS = [
   "Raqamli ta'lim va ilmiy-tadqiqot ko'nikmalarini rivojlantirish",
 ]
 
-const MotionLink = motion(Link)
+const MotionLink = motion.create(Link)
 
 type WindowWithIdleCallback = Window & {
   requestIdleCallback?: (

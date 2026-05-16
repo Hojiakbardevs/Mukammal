@@ -5,17 +5,22 @@ import { Footer } from "@/components/landing/Footer"
 import { LandingNavbar } from "@/components/landing/Navbar"
 
 function HashScroll() {
-  const { hash } = useLocation()
+  const { hash, pathname } = useLocation()
 
   useEffect(() => {
-    if (!hash) return
-
     const frame = requestAnimationFrame(() => {
-      document.querySelector(hash)?.scrollIntoView({ block: "start" })
+      if (hash) {
+        document.querySelector(hash)?.scrollIntoView({ block: "start" })
+        return
+      }
+
+      if (pathname === "/") {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" })
+      }
     })
 
     return () => cancelAnimationFrame(frame)
-  }, [hash])
+  }, [hash, pathname])
 
   return null
 }

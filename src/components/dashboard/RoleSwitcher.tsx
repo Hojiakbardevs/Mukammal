@@ -10,13 +10,13 @@ type RoleSwitcherProps = {
 const roles = [
   {
     role: "student",
-    label: "Talaba",
+    label: "Tinglovchi",
     href: "/app",
     icon: GraduationCap,
   },
   {
     role: "teacher",
-    label: "Teacher",
+    label: "Trener",
     href: "/teacher",
     icon: UserRoundCog,
   },

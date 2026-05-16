@@ -26,7 +26,7 @@ export function LoginPage() {
           </div>
           <h1 className="mt-5 text-2xl font-bold">AIRI Training LMS</h1>
           <p className="mt-2 text-sm leading-6 text-slate-300">
-            Demo kirish. Role tanlang va mos dashboardga o'ting.
+            Demo kirish. Rol tanlang va mos dashboardga o'ting.
           </p>
         </div>
 
@@ -48,14 +48,14 @@ export function LoginPage() {
             />
           </label>
           <label className="block">
-            <span className="text-sm font-medium text-slate-200">Role</span>
+            <span className="text-sm font-medium text-slate-200">Rol</span>
             <select
               value={role}
               onChange={(event) => setRole(event.target.value as UserRole)}
               className="mt-2 h-11 w-full rounded-lg border border-white/15 bg-slate-950/80 px-3 text-sm text-white outline-none"
             >
-              <option value="student">Talaba</option>
-              <option value="teacher">Teacher</option>
+              <option value="student">Tinglovchi</option>
+              <option value="teacher">Trener</option>
               <option value="admin">Super Admin</option>
             </select>
           </label>

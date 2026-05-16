@@ -16,7 +16,7 @@ export const mockUsers: Record<UserRole, MockUser> = {
   },
   teacher: {
     name: "Aziza Tursunova",
-    title: "Lead Trainer · ML Track",
+    title: "Lead Trener · ML Track",
     initials: "AT",
     role: "teacher",
   },
