@@ -196,7 +196,7 @@ const Hero = () => {
           className="mt-9 flex flex-col items-center gap-4 sm:flex-row"
         >
           <MotionLink
-            to="/register"
+            to="/login"
             className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-sky-500 to-cyan-400 px-8 text-sm font-bold text-white shadow-[0_0_24px_rgba(56,189,248,0.35)] sm:w-auto"
             whileHover={{
               y: -2,
@@ -205,12 +205,12 @@ const Hero = () => {
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
           >
-            Ro'yxatdan o'tish
+            Platformaga kirish
             <ArrowRight className="h-4 w-4" />
           </MotionLink>
 
-          <motion.a
-            href="#about"
+          <MotionLink
+            to="/app"
             className="inline-flex h-13 w-full items-center justify-center rounded-2xl border border-sky-500/30 bg-white/5 px-8 text-sm font-semibold text-sky-100 backdrop-blur-xl sm:w-auto"
             whileHover={{
               y: -2,
@@ -220,8 +220,8 @@ const Hero = () => {
             whileTap={{ scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
           >
-            Dastur haqida
-          </motion.a>
+            Demo dashboard
+          </MotionLink>
         </motion.div>
       </motion.div>
     </section>
