@@ -8,17 +8,24 @@ export function AIChatWidget() {
           <Bot className="h-5 w-5" />
         </div>
         <div>
-          <div className="text-sm font-bold text-slate-950">AIRI AI yordamchi</div>
-          <div className="text-xs text-slate-500">Demo rejim</div>
+          <div className="text-sm font-bold text-slate-950">AIRI SI yordamchi</div>
+          <div className="text-xs text-slate-500">Kurs va baholash maslahatchisi</div>
         </div>
       </div>
       <div className="p-4 text-sm text-slate-600">
-        Kurs, topshiriq yoki baholash bo'yicha savolingizni yozing.
+        Bugungi reja, topshiriq muddati yoki baholash izohi bo‘yicha tezkor maslahat oling.
+      </div>
+      <div className="space-y-2 px-4 pb-3 text-xs text-slate-600">
+        {["Qaysi topshiriq eng yaqin?", "Riskdagi tinglovchilar ro‘yxati", "Sertifikat sharti"].map((prompt) => (
+          <button key={prompt} type="button" className="block w-full rounded-lg bg-slate-50 px-3 py-2 text-left font-semibold hover:bg-cyan-50 hover:text-cyan-700">
+            {prompt}
+          </button>
+        ))}
       </div>
       <div className="flex items-center gap-2 border-t border-slate-200 p-3">
         <input
           className="min-w-0 flex-1 rounded-lg bg-slate-50 px-3 py-2 text-sm outline-none"
-          placeholder="Savol yozing..."
+          placeholder="Savolingizni yozing"
         />
         <button
           type="button"

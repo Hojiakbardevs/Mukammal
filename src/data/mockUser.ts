@@ -10,13 +10,13 @@ export type MockUser = {
 export const mockUsers: Record<UserRole, MockUser> = {
   student: {
     name: "Aziza Mahmudova",
-    title: "NLP-26 · Level 4",
+    title: "NLP-26 · 4-daraja",
     initials: "AM",
     role: "student",
   },
   teacher: {
     name: "Aziza Tursunova",
-    title: "Lead Trainer · ML Track",
+    title: "Yetakchi trener · ML yo‘nalishi",
     initials: "AT",
     role: "teacher",
   },

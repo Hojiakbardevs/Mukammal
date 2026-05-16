@@ -4,23 +4,34 @@ import { Link, useLocation } from "react-router-dom"
 import { useAuth } from "@/hooks/useAuth"
 
 const titleByPath: Record<string, string> = {
-  "/app": "Student dashboard",
-  "/app/courses": "Kurslarim",
+  "/app": "Salom, Aziza!",
+  "/app/courses": "Mening kurslarim",
+  "/app/course": "Kurs tafsiloti",
+  "/app/lesson": "Transformerlar va attention",
   "/app/tasks": "Topshiriqlar",
-  "/app/grades": "Baholar",
+  "/app/grades": "Mening baholarim",
   "/app/schedule": "Dars jadvali",
-  "/app/certificates": "Sertifikatlar",
-  "/teacher": "Teacher dashboard",
-  "/teacher/courses": "Teacher kurslari",
-  "/teacher/grading": "Baholash",
-  "/teacher/students": "Talabalar",
-  "/admin": "Super Admin",
+  "/app/certificates": "Sertifikatlar va yutuqlar",
+  "/app/profile": "Mening profilim",
+  "/teacher": "Xush kelibsiz, Aziza opa",
+  "/teacher/courses": "Mening kurslarim",
+  "/teacher/course-detail": "Kurs va modullar",
+  "/teacher/schedule": "Trener jadvali",
+  "/teacher/attendance": "Davomat",
+  "/teacher/grading": "Tekshirish navbati",
+  "/teacher/ai-grading": "SI baholash nazorati",
+  "/teacher/final": "Yakuniy baholarni tasdiqlash",
+  "/teacher/risk": "Risk paneli",
+  "/teacher/qa": "Q&A moderatsiya",
+  "/admin": "Tahlil markazi",
   "/admin/users": "Foydalanuvchilar",
-  "/admin/courses": "Kurslar",
-  "/admin/learning-streams": "O'quv oqimlari",
-  "/admin/gamification": "Gamifikatsiya",
-  "/admin/reports": "Hisobotlar",
-  "/admin/settings": "Sozlamalar",
+  "/admin/courses": "Kurslar va o‘quv oqimlari",
+  "/admin/roles": "Rollar va ruxsatlar",
+  "/admin/certificates": "Sertifikat shablonlari",
+  "/admin/surveys": "So‘rovnomalar",
+  "/admin/ai-governance": "SI boshqaruvi",
+  "/admin/audit": "Audit jurnali",
+  "/admin/moderation": "Kontent moderatsiyasi",
 }
 
 function resolveTitle(pathname: string) {
@@ -51,8 +62,8 @@ export function Topbar() {
             {user.role === "admin"
               ? "Super Admin"
               : user.role === "teacher"
-                ? "Teacher"
-                : "Talaba"}
+                ? "Trener"
+                : "Tinglovchi"}
           </div>
           <h1 className="truncate text-xl font-bold text-slate-950">{title}</h1>
         </div>
@@ -61,7 +72,7 @@ export function Topbar() {
           <Search className="h-4 w-4" />
           <input
             className="w-full bg-transparent outline-none placeholder:text-slate-400"
-            placeholder="Kurs, dars yoki foydalanuvchi..."
+            placeholder="Kurs, dars yoki foydalanuvchini qidiring"
           />
         </label>
 

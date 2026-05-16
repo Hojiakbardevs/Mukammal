@@ -32,27 +32,40 @@ export function Sidebar() {
       </div>
 
       <nav className="space-y-1 p-4">
-        {navItems.map((item) => {
+        {navItems.map((item, index) => {
           const Icon = item.icon
           const end = item.href === "/app" || item.href === "/teacher" || item.href === "/admin"
+          const previous = navItems[index - 1]
+          const showSection = item.section && item.section !== previous?.section
 
           return (
-            <NavLink
-              key={item.href}
-              to={item.href}
-              end={end}
-              className={({ isActive }) =>
-                [
-                  "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition",
-                  isActive
-                    ? "bg-cyan-400 text-slate-950"
-                    : "text-slate-300 hover:bg-white/10 hover:text-white",
-                ].join(" ")
-              }
-            >
-              <Icon className="h-5 w-5" />
-              {item.label}
-            </NavLink>
+            <div key={item.href}>
+              {showSection ? (
+                <div className="px-4 pt-4 pb-2 text-[11px] font-bold uppercase tracking-wide text-slate-500">
+                  {item.section}
+                </div>
+              ) : null}
+              <NavLink
+                to={item.href}
+                end={end}
+                className={({ isActive }) =>
+                  [
+                    "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition",
+                    isActive
+                      ? "bg-cyan-400 text-slate-950"
+                      : "text-slate-300 hover:bg-white/10 hover:text-white",
+                  ].join(" ")
+                }
+              >
+                <Icon className="h-5 w-5" />
+                <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                {item.badge ? (
+                  <span className="rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-cyan-100">
+                    {item.badge}
+                  </span>
+                ) : null}
+              </NavLink>
+            </div>
           )
         })}
       </nav>

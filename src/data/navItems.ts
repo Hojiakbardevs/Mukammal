@@ -1,14 +1,23 @@
 import {
+  AlertTriangle,
   Award,
   BarChart3,
   BookOpen,
   Calendar,
   ClipboardCheck,
-  FileBarChart,
-  GraduationCap,
+  FileCheck2,
+  FileText,
+  History,
   LayoutDashboard,
-  Settings,
+  ListTree,
+  LockKeyhole,
+  MessageSquare,
+  Presentation,
+  ShieldCheck,
   Sparkles,
+  Stamp,
+  User,
+  UserCheck,
   Users,
   type LucideIcon,
 } from "lucide-react"
@@ -19,98 +28,43 @@ export type NavItem = {
   label: string
   href: string
   icon: LucideIcon
+  section?: string
+  badge?: string
 }
 
 export const studentNavItems: NavItem[] = [
-  {
-    label: "Dashboard",
-    href: "/app",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Kurslarim",
-    href: "/app/courses",
-    icon: BookOpen,
-  },
-  {
-    label: "Topshiriqlar",
-    href: "/app/tasks",
-    icon: ClipboardCheck,
-  },
-  {
-    label: "Baholar",
-    href: "/app/grades",
-    icon: BarChart3,
-  },
-  {
-    label: "Dars jadvali",
-    href: "/app/schedule",
-    icon: Calendar,
-  },
-  {
-    label: "Sertifikatlar",
-    href: "/app/certificates",
-    icon: Award,
-  },
+  { section: "Asosiy", label: "Bosh sahifa", href: "/app", icon: LayoutDashboard },
+  { section: "Asosiy", label: "Mening kurslarim", href: "/app/courses", icon: BookOpen },
+  { section: "Dars", label: "Joriy dars", href: "/app/lesson", icon: FileText },
+  { section: "Dars", label: "Kurs tafsiloti", href: "/app/course", icon: Presentation },
+  { section: "Akademik", label: "Topshiriqlar", href: "/app/tasks", icon: ClipboardCheck, badge: "3" },
+  { section: "Akademik", label: "Mening baholarim", href: "/app/grades", icon: Stamp },
+  { section: "Akademik", label: "Dars jadvali", href: "/app/schedule", icon: Calendar },
+  { section: "Muvaffaqiyat", label: "Sertifikatlar", href: "/app/certificates", icon: Award, badge: "2" },
+  { section: "Muvaffaqiyat", label: "Mening profilim", href: "/app/profile", icon: User },
 ]
 
 export const teacherNavItems: NavItem[] = [
-  {
-    label: "Dashboard",
-    href: "/teacher",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Kurslar",
-    href: "/teacher/courses",
-    icon: BookOpen,
-  },
-  {
-    label: "Baholash",
-    href: "/teacher/grading",
-    icon: ClipboardCheck,
-  },
-  {
-    label: "Talabalar",
-    href: "/teacher/students",
-    icon: Users,
-  },
+  { section: "Asosiy", label: "Bosh sahifa", href: "/teacher", icon: LayoutDashboard },
+  { section: "O‘quv boshqaruvi", label: "Mening kurslarim", href: "/teacher/courses", icon: BookOpen },
+  { section: "O‘quv boshqaruvi", label: "Kurs va modullar", href: "/teacher/course-detail", icon: ListTree },
+  { section: "O‘quv boshqaruvi", label: "Jadval", href: "/teacher/schedule", icon: Calendar },
+  { section: "O‘quv boshqaruvi", label: "Davomat", href: "/teacher/attendance", icon: UserCheck, badge: "2" },
+  { section: "Baholash", label: "Tekshirish navbati", href: "/teacher/grading", icon: FileCheck2, badge: "18" },
+  { section: "Baholash", label: "SI baholash nazorati", href: "/teacher/ai-grading", icon: Sparkles, badge: "SI" },
+  { section: "Baholash", label: "Yakuniy baholar", href: "/teacher/final", icon: Stamp },
+  { section: "Tinglovchi", label: "Risk paneli", href: "/teacher/risk", icon: AlertTriangle, badge: "7" },
+  { section: "Tinglovchi", label: "Q&A moderatsiya", href: "/teacher/qa", icon: MessageSquare, badge: "4" },
 ]
 
 export const adminNavItems: NavItem[] = [
-  {
-    label: "Dashboard",
-    href: "/admin",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Foydalanuvchilar",
-    href: "/admin/users",
-    icon: Users,
-  },
-  {
-    label: "Kurslar",
-    href: "/admin/courses",
-    icon: BookOpen,
-  },
-  {
-    label: "O'quv oqimlari",
-    href: "/admin/learning-streams",
-    icon: GraduationCap,
-  },
-  {
-    label: "Gamifikatsiya",
-    href: "/admin/gamification",
-    icon: Sparkles,
-  },
-  {
-    label: "Hisobotlar",
-    href: "/admin/reports",
-    icon: FileBarChart,
-  },
-  {
-    label: "Sozlamalar",
-    href: "/admin/settings",
-    icon: Settings,
-  },
+  { section: "Governance", label: "Tahlil markazi", href: "/admin", icon: BarChart3 },
+  { section: "Governance", label: "Kurslar va o‘quv oqimlari", href: "/admin/courses", icon: Presentation },
+  { section: "Foydalanuvchi va ruxsat", label: "Foydalanuvchilar", href: "/admin/users", icon: Users },
+  { section: "Foydalanuvchi va ruxsat", label: "Rollar va ruxsatlar", href: "/admin/roles", icon: LockKeyhole },
+  { section: "Kontent va siyosat", label: "Sertifikat shablonlari", href: "/admin/certificates", icon: Award },
+  { section: "Kontent va siyosat", label: "So‘rovnomalar", href: "/admin/surveys", icon: ClipboardCheck },
+  { section: "Kontent va siyosat", label: "SI boshqaruvi", href: "/admin/ai-governance", icon: ShieldCheck },
+  { section: "Audit va ishonchlilik", label: "Audit jurnali", href: "/admin/audit", icon: History },
+  { section: "Audit va ishonchlilik", label: "Moderatsiya", href: "/admin/moderation", icon: AlertTriangle, badge: "3" },
 ]

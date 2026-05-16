@@ -278,7 +278,7 @@ export default function Register() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="O'zMU, TDTU, TATU, ilmiy muassasa..."
+                            placeholder="O'zMU, TDTU, TATU yoki ilmiy muassasa"
                             {...field}
                             className={inputCls}
                           />
@@ -297,7 +297,7 @@ export default function Register() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Professor, dotsent, katta o'qituvchi..."
+                            placeholder="Professor, dotsent yoki katta o'qituvchi"
                             {...field}
                             className={inputCls}
                           />
@@ -318,7 +318,7 @@ export default function Register() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="PhD, DSc, fan nomzodi, dotsent..."
+                            placeholder="PhD, DSc, fan nomzodi yoki dotsent"
                             {...field}
                             className={inputCls}
                           />
@@ -377,7 +377,7 @@ export default function Register() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Yuborilmoqda...
+                      Yuborilmoqda
                     </>
                   ) : (
                     "Ariza yuborish"

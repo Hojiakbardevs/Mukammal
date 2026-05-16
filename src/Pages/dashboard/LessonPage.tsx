@@ -15,7 +15,7 @@ export function LessonPage() {
       <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
         <section className="aspect-video rounded-lg bg-slate-950 p-6 text-white shadow-sm">
           <div className="flex h-full items-center justify-center rounded-lg border border-white/10 bg-white/5 text-sm text-slate-300">
-            Video player placeholder
+            Video dars oynasi
           </div>
         </section>
         <Panel title="Dars materiallari">
