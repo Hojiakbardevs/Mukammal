@@ -1,13 +1,14 @@
 import {
   Mail,
   MapPin,
-  MessageCircle,
   Phone,
-  Share2,
-  Globe2,
+  Send,
+  Globe,
 } from "lucide-react"
 
 import Logos from "@/assets/airi_oq.png"
+import InstagramIcon from "@/assets/instagram.svg"
+import LinkedInIcon from "@/assets/linkedn.svg"
 
 const footerLinks = [
   { href: "#about", label: "Loyiha haqida" },
@@ -17,15 +18,27 @@ const footerLinks = [
 ]
 
 const contacts = [
-  { icon: Phone, label: "+998 71 200-00-00" },
-  { icon: Mail, label: "info@ai-academy.uz" },
-  { icon: MapPin, label: "Toshkent sh., IT Park binosi" },
+  { icon: Phone, label: "+998 99 871 23 37" },
+  { icon: Mail, label: "training@airi.uz" },
+  {
+    icon: MapPin,
+    label: "100125, O‘zbekiston Respublikasi, Toshkent shahri, Bo‘z-2 mavzesi, 17A-uy",
+  },
 ]
 
 const socials = [
-  { icon: Share2, label: "share" },
-  { icon: Globe2, label: "public" },
-  { icon: MessageCircle, label: "forum" },
+  { icon: Globe, label: "airi.uz", href: "https://airi.uz" },
+  {
+    image: InstagramIcon,
+    label: "Instagram",
+    href: "https://www.instagram.com/airi.uz/?hl=en",
+  },
+  { icon: Send, label: "Telegram", href: "https://t.me/airiuz" },
+  {
+    image: LinkedInIcon,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/airiuz/",
+  },
 ]
 
 export function Footer() {
@@ -44,9 +57,10 @@ export function Footer() {
                 className="h-12 w-auto object-contain"
               />
             </a>
-            <p className="mt-5 max-w-sm text-base leading-7 text-[#c4cde0]">
-              O'zbekistonda sun'iy intellekt sohasini rivojlantirish va yuqori
-              malakali mutaxassislar tayyorlash markazi.
+            <p className="mt-5 max-w-sm text-base leading-7 text-[#c4cde0] ">
+              O‘zbekistonda sun’iy intellekt sohasini rivojlantirish, ilmiy
+              tadqiqotlar olib borish va yuqori malakali mutaxassislar
+              tayyorlashga ixtisoslashgan ilmiy-tadqiqot instituti.
             </p>
           </div>
 
@@ -91,11 +105,22 @@ export function Footer() {
               {socials.map((social) => (
                 <a
                   key={social.label}
-                  href="#"
+                  href={social.href}
                   aria-label={social.label}
+                  target="_blank"
+                  rel="noreferrer"
                   className="flex h-11 w-11 items-center justify-center rounded-lg border border-blue-200/12 bg-[#0f1b33]/88 text-[#c4cde0] transition hover:border-[#f0c84b]/35 hover:text-[#f0c84b]"
                 >
-                  <social.icon className="h-5 w-5" />
+                  {"image" in social ? (
+                    <img
+                      src={social.image}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-8 w-8 object-contain"
+                    />
+                  ) : (
+                    <social.icon className="h-5 w-5" />
+                  )}
                 </a>
               ))}
             </div>
@@ -103,7 +128,8 @@ export function Footer() {
         </div>
 
         <p className="pt-7 text-sm text-[#8b94aa]">
-          © 2024 Institute for Advanced AI Education. All Research Reserved.
+          © 2026 Deepminds group laboratoriyasida ishlab chiqilgan Senior
+          developer Abdulhakimov Hojiakbar .
         </p>
       </div>
     </footer>
