@@ -39,7 +39,15 @@ export function Navbar() {
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <Link to="/" onClick={handleLogoClick}>
-          <img src={Logos} alt="AirI Logo" className="h-12 w-auto" />
+          <img
+            src={Logos}
+            alt="AirI Logo"
+            width={2780}
+            height={473}
+            decoding="async"
+            fetchPriority="high"
+            className="h-12 w-auto"
+          />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">

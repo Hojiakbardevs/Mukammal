@@ -15,7 +15,7 @@ function TimelineCard({
 
   return (
     <article
-      className={`rounded-lg border bg-[#0f1b33]/88 p-6 shadow-[0_22px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl ${
+      className={`rounded-lg border bg-[#0f1b33]/88 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl sm:p-6 ${
         isAccent ? "border-[#f0c84b]/30" : "border-blue-200/12"
       } ${align === "right" ? "text-right" : "text-left"}`}
     >
@@ -29,11 +29,11 @@ function TimelineCard({
         {step.duration}
       </div>
 
-      <h3 className="text-xl leading-7 font-semibold text-[#f5f7ff]">
+      <h3 className="text-lg leading-7 font-semibold text-[#f5f7ff] sm:text-xl">
         {step.title}
       </h3>
 
-      <p className="mt-3 text-base leading-7 font-medium text-[#c4cde0]">
+      <p className="mt-3 text-sm leading-6 font-medium text-[#c4cde0] sm:text-base sm:leading-7">
         {step.description}
       </p>
     </article>
@@ -44,14 +44,14 @@ function StepNode({ index }: { index: number }) {
   const isAccent = index === 1
 
   return (
-    <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-full bg-[#071126]">
+    <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-[#071126] sm:h-16 sm:w-16">
       <div
         className={`absolute inset-0 rounded-full blur-md ${
           isAccent ? "bg-[#f0c84b]/22" : "bg-blue-300/18"
         }`}
       />
       <div
-        className={`relative flex h-12 w-12 items-center justify-center rounded-full border text-sm font-black ${
+        className={`relative flex h-10 w-10 items-center justify-center rounded-full border text-xs font-black sm:h-12 sm:w-12 sm:text-sm ${
           isAccent
             ? "border-[#f0c84b]/75 bg-[#2d2c24] text-[#f0c84b]"
             : "border-blue-200/35 bg-[#172a4f] text-[#dbeafe]"
@@ -86,7 +86,7 @@ export function Timeline() {
   return (
     <section
       id="timeline"
-      className="relative overflow-hidden bg-[#071126] px-6 py-20 text-white sm:py-24"
+      className="relative overflow-hidden bg-[#071126] px-4 py-14 text-white sm:px-6 sm:py-16 lg:px-8 lg:py-20 xl:py-24"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(37,99,235,0.22),transparent_42%),linear-gradient(180deg,#071126_0%,#08111f_48%,#0a0f1e_100%)]" />
       <div className="absolute inset-x-0 top-0 h-px bg-blue-200/8" />
@@ -97,16 +97,16 @@ export function Timeline() {
           <p className="font-heading text-xs tracking-[0.22em] text-[#8dbbff] uppercase">
             O'quv yo'l xaritasi
           </p>
-          <h2 className="mt-3 font-heading text-[clamp(2rem,3vw,2.65rem)] leading-tight text-white">
+          <h2 className="mt-3 font-heading text-[clamp(1.75rem,6vw,2.35rem)] leading-tight text-white lg:text-[clamp(2rem,3vw,2.65rem)]">
             Dastur bosqichlari
           </h2>
-          <p className="mt-4 text-base leading-7 text-[#c4cde0]">
+          <p className="mt-4 text-sm leading-6 text-[#c4cde0] sm:text-base sm:leading-7">
             Avval barcha tinglovchilar umumiy AI asoslarini o'zlashtiradi, keyin
             o'z ehtiyojiga mos ixtisoslashuv yo'nalishida davom etadi.
           </p>
         </div>
 
-        <div className="relative mx-auto mt-14 hidden max-w-5xl space-y-8 sm:block">
+        <div className="relative mx-auto mt-12 hidden max-w-5xl space-y-7 lg:block xl:mt-14 xl:space-y-8">
           <div className="absolute top-10 bottom-10 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-blue-200/20 to-transparent" />
 
           {timeline.map((step, index) => {
@@ -115,7 +115,7 @@ export function Timeline() {
             return (
               <div
                 key={step.title}
-                className="grid grid-cols-[minmax(0,1fr)_5rem_minmax(0,1fr)] items-center gap-x-8"
+                className="grid grid-cols-[minmax(0,1fr)_4.5rem_minmax(0,1fr)] items-center gap-x-5 xl:grid-cols-[minmax(0,1fr)_5rem_minmax(0,1fr)] xl:gap-x-8"
               >
                 <div className={isLeft ? "" : "text-right"}>
                   {isLeft ? (
@@ -141,13 +141,13 @@ export function Timeline() {
           })}
         </div>
 
-        <div className="relative mx-auto mt-12 space-y-7 sm:hidden">
-          <div className="absolute top-8 bottom-8 left-8 w-px bg-gradient-to-b from-transparent via-blue-200/20 to-transparent" />
+        <div className="relative mx-auto mt-10 max-w-2xl space-y-6 lg:hidden">
+          <div className="absolute top-7 bottom-7 left-7 w-px bg-gradient-to-b from-transparent via-blue-200/20 to-transparent sm:left-8" />
 
           {timeline.map((step, index) => (
             <div
               key={step.title}
-              className="relative grid grid-cols-[4rem_1fr] gap-4"
+              className="relative grid grid-cols-[3.5rem_1fr] gap-3 sm:grid-cols-[4rem_1fr] sm:gap-4"
             >
               <StepNode index={index} />
               <div>

@@ -1,9 +1,10 @@
+import { Link } from "react-router-dom"
 import {
+  Globe,
   Mail,
   MapPin,
   Phone,
   Send,
-  Globe,
 } from "lucide-react"
 
 import Logos from "@/assets/airi_oq.png"
@@ -50,13 +51,21 @@ export function Footer() {
       <div className="relative mx-auto max-w-7xl">
         <div className="grid gap-10 border-b border-blue-200/10 pb-10 md:grid-cols-[1.4fr_0.8fr_1fr_0.8fr]">
           <div>
-            <a href="#" className="inline-flex items-center">
+            <Link
+              to="/"
+              aria-label="Bosh sahifa"
+              className="inline-flex items-center"
+            >
               <img
                 src={Logos}
                 alt="AI Academy"
+                width={2780}
+                height={473}
+                loading="lazy"
+                decoding="async"
                 className="h-12 w-auto object-contain"
               />
-            </a>
+            </Link>
             <p className="mt-5 max-w-sm text-base leading-7 text-[#c4cde0] ">
               O‘zbekistonda sun’iy intellekt sohasini rivojlantirish, ilmiy
               tadqiqotlar olib borish va yuqori malakali mutaxassislar
@@ -115,6 +124,10 @@ export function Footer() {
                     <img
                       src={social.image}
                       alt=""
+                      width={32}
+                      height={32}
+                      loading="lazy"
+                      decoding="async"
                       aria-hidden="true"
                       className="h-8 w-8 object-contain"
                     />

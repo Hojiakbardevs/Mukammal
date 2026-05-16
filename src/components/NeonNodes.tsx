@@ -5,6 +5,13 @@ type NeonNodesProps = {
   style?: React.CSSProperties
 }
 
+type NavigatorWithConnection = Navigator & {
+  connection?: {
+    effectiveType?: string
+    saveData?: boolean
+  }
+}
+
 class Node {
   x: number
   y: number
@@ -39,7 +46,7 @@ const NeonNodes = ({ className, style }: NeonNodesProps) => {
 
     // Slow network detection
     const isSlowNetwork = () => {
-      const connection = (navigator as any).connection
+      const connection = (navigator as NavigatorWithConnection).connection
       if (!connection) return false
       return (
         connection.effectiveType === "slow-2g" ||

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
+import { lazy, Suspense, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { motion, type Variants } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 
 import CountdownBadge from "@/components/CountDown"
-import NeuralNoise from "../NeuralNoise"
+
+const NeuralNoise = lazy(() => import("../NeuralNoise"))
 
 // ─── Typing effect hook ───────────────────────────────────────────────────────
 
@@ -15,6 +16,14 @@ const TYPING_TEXTS = [
 ]
 
 const MotionLink = motion(Link)
+
+type WindowWithIdleCallback = Window & {
+  requestIdleCallback?: (
+    callback: IdleRequestCallback,
+    options?: IdleRequestOptions
+  ) => number
+  cancelIdleCallback?: (handle: number) => void
+}
 
 function useTypingEffect(
   texts: string[],
@@ -50,8 +59,10 @@ function useTypingEffect(
           deletingSpeed
         )
       } else {
-        setTextIndex((i) => (i + 1) % texts.length)
-        setPhase("typing")
+        timer = setTimeout(() => {
+          setTextIndex((i) => (i + 1) % texts.length)
+          setPhase("typing")
+        }, 0)
       }
     }
 
@@ -93,6 +104,21 @@ const fadeUp: Variants = {
 
 const Hero = () => {
   const typedText = useTypingEffect(TYPING_TEXTS)
+  const [showNoise, setShowNoise] = useState(false)
+
+  useEffect(() => {
+    const idleWindow = window as WindowWithIdleCallback
+    if (idleWindow.requestIdleCallback) {
+      const handle = idleWindow.requestIdleCallback(
+        () => setShowNoise(true),
+        { timeout: 1500 }
+      )
+      return () => idleWindow.cancelIdleCallback?.(handle)
+    }
+
+    const timeout = window.setTimeout(() => setShowNoise(true), 700)
+    return () => window.clearTimeout(timeout)
+  }, [])
 
   return (
     <section
@@ -100,7 +126,11 @@ const Hero = () => {
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-28 pb-20"
     >
       {/* WebGL background */}
-      <NeuralNoise />
+      {showNoise ? (
+        <Suspense fallback={null}>
+          <NeuralNoise />
+        </Suspense>
+      ) : null}
 
       {/* Readability overlay */}
       <div className="pointer-events-none absolute inset-0 z-1 bg-linear-to-br from-black via-blue-950 to-black opacity-70" />

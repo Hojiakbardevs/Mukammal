@@ -134,7 +134,13 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply scroll-smooth font-sans snap-y snap-mandatory;
+    @apply scroll-smooth font-sans;
+  }
+}
+
+@media (min-width: 1280px) and (min-height: 820px) {
+  html {
+    scroll-snap-type: y mandatory;
   }
 }
 

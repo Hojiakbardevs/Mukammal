@@ -50,7 +50,15 @@ export default function CourseDetail() {
               Orqaga
             </Link>
             <div className="h-6 w-px bg-slate-200" />
-            <img src={Logos} alt="AirI" className="h-12 w-auto" />
+            <img
+              src={Logos}
+              alt="AirI"
+              width={2779}
+              height={472}
+              decoding="async"
+              fetchPriority="high"
+              className="h-12 w-auto"
+            />
           </div>
           <Link
             to="/register"
