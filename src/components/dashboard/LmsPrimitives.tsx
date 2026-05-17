@@ -142,17 +142,21 @@ type StatProps = {
   value: string | number
   unit?: string
   sub: string
+  icon?: string
   trend?: {
     dir: "up" | "down" | "flat"
     label: string
   }
 }
 
-export function Stat({ tone = "blue", label, value, unit, sub, trend }: StatProps) {
+export function Stat({ tone = "blue", label, value, unit, sub, icon, trend }: StatProps) {
   return (
     <div className={`stat ${tone === "blue" ? "" : tone}`.trim()}>
       <div className="stat-accent" />
-      <div className="stat-label">{label}</div>
+      <div className="stat-label" style={{ display: "flex", alignItems: "center", gap: 5 }}>
+        {icon ? <Icon name={icon} style={{ fontSize: 13, opacity: 0.65 }} /> : null}
+        {label}
+      </div>
       <div className="stat-val num">
         {value}
         {unit ? <span className="unit">{unit}</span> : null}

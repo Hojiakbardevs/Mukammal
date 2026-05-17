@@ -1,89 +1,106 @@
-import { Fragment } from "react"
+import { useState } from "react"
 
-import { Card, CardHead, Icon, Pill, type PillTone } from "@/components/dashboard/LmsPrimitives"
+import { Btn, Card, Icon, Pill, Seg, Toolbar } from "@/components/dashboard/LmsPrimitives"
 import { MY_SCHEDULE } from "@/data/studentData"
 
-const days = ["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma"]
-const slots = ["09:00", "11:00", "14:00", "16:00"]
+const DAYS = ["Dush", "Sesh", "Chor", "Pay", "Juma", "Shan"]
+const TODAY_IDX = 3
 
-function kindLabel(kind: string) {
-  if (kind === "lab") return "Lab"
-  if (kind === "live") return "Live"
-  if (kind === "exam") return "Imtihon"
-  return "Ma'ruza"
-}
+const SLOTS = [
+  { t: "08:30", e: "10:00" },
+  { t: "10:15", e: "11:45" },
+  { t: "12:30", e: "14:00" },
+  { t: "14:15", e: "15:45" },
+  { t: "16:00", e: "17:30" },
+]
 
-function kindTone(kind: string): PillTone {
-  if (kind === "lab") return "purple"
-  if (kind === "live") return "blue"
-  if (kind === "exam") return "red"
-  return "green"
+const KIND_STYLE: Record<string, { bg: string; brd: string; txt: string; label: string }> = {
+  lecture: { bg: "#eef4ff", brd: "#c2d6ff", txt: "#0a3a8c", label: "Lecture" },
+  lab:     { bg: "#f5f3ff", brd: "#ddd6fe", txt: "#4c1d95", label: "Lab" },
+  live:    { bg: "#ecfeff", brd: "#a5f3fc", txt: "#0e7490", label: "Online · Live" },
+  exam:    { bg: "#fef2f2", brd: "#fecaca", txt: "#7f1d1d", label: "Exam" },
 }
 
 export function StudentSchedule() {
+  const [view, setView] = useState("week")
+
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>Dars jadvali</h1>
-          <p>Haftalik reja, online/offline belgilari va bugungi darslar ko'rsatilgan.</p>
-        </div>
-      </div>
+      <Toolbar>
+        <Seg
+          value={view}
+          onChange={setView}
+          options={[
+            { value: "week",  label: "Hafta", icon: "calendar-week" },
+            { value: "month", label: "Oy",    icon: "calendar" },
+          ]}
+        />
+        <Btn size="sm" leftIcon="chevron-left" />
+        <span style={{ fontWeight: 700, fontSize: 14 }}>12-May – 18-May, 2026</span>
+        <Btn size="sm" leftIcon="chevron-right" />
+        <Btn size="sm" leftIcon="restore">Bugun</Btn>
+        <div className="spacer" />
+        <Btn size="sm" leftIcon="calendar-event">iCal eksport</Btn>
+      </Toolbar>
 
-      <div className="grid c-7-5">
-        <Card>
-          <CardHead title="Haftalik jadval" sub="Toshkent vaqti" />
-          <div className="card-pad" style={{ overflowX: "auto" }}>
-            <div style={{ minWidth: 720, display: "grid", gridTemplateColumns: "90px repeat(5, 1fr)", border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden" }}>
-              <div style={{ background: "var(--bg4)", padding: 10, fontWeight: 800 }}>Vaqt</div>
-              {days.map((day, index) => (
-                <div key={day} style={{ background: index === 0 ? "var(--accent-light)" : "var(--bg4)", padding: 10, fontWeight: 800, color: index === 0 ? "var(--accent-ink)" : "var(--text1)" }}>
-                  {day}
-                </div>
-              ))}
-              {slots.map((slot, slotIndex) => (
-                <Fragment key={slot}>
-                  <div key={`${slot}-time`} style={{ borderTop: "1px solid var(--border)", padding: 10, color: "var(--text3)", fontWeight: 700 }}>{slot}</div>
-                  {days.map((day, dayIndex) => {
-                    const session = MY_SCHEDULE.find((item) => item.day === dayIndex && item.slot === slotIndex)
-                    return (
-                      <div key={`${day}-${slot}`} style={{ minHeight: 92, borderTop: "1px solid var(--border)", borderLeft: "1px solid var(--border)", padding: 8, background: dayIndex === 0 ? "#fbfdff" : "#fff" }}>
-                        {session ? (
-                          <div className="alert" style={{ padding: 10 }}>
-                            <Icon name={session.kind === "live" ? "video" : session.kind === "lab" ? "flask" : session.kind === "exam" ? "clipboard-check" : "chalkboard"} />
-                            <div className="body">
-                              <h4>{session.course}</h4>
-                              <p>{session.room} · {session.trainer}</p>
-                              <Pill tone={kindTone(session.kind)}>{kindLabel(session.kind)}</Pill>
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    )
-                  })}
-                </Fragment>
-              ))}
+      <Card style={{ marginTop: 14 }}>
+        {/* Header row */}
+        <div style={{ display: "grid", gridTemplateColumns: "82px repeat(6, 1fr)", borderBottom: "1px solid var(--border)" }}>
+          <div style={{ padding: "12px 10px", fontSize: 11, color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.05 }}>
+            Vaqt
+          </div>
+          {DAYS.map((d, i) => (
+            <div key={i} style={{ padding: "12px 10px", borderLeft: "1px solid var(--hairline)", textAlign: "center" }}>
+              <div style={{ fontSize: 10.5, color: "var(--text3)", letterSpacing: 0.05, textTransform: "uppercase", fontWeight: 700 }}>{d}</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: i === TODAY_IDX ? "var(--accent)" : "#0f172a" }}>{12 + i}</div>
             </div>
-          </div>
-        </Card>
+          ))}
+        </div>
 
-        <Card>
-          <CardHead title="Bugungi sessiyalar" />
-          <div className="card-pad" style={{ display: "grid", gap: 10 }}>
-            {MY_SCHEDULE.filter((item) => item.day === 0).map((session) => (
-              <div key={`${session.course}-${session.slot}`} className="alert blue">
-                <Icon name={session.room === "Online" ? "video" : "map-pin"} />
-                <div className="body">
-                  <h4>{session.course}</h4>
-                  <p>{slots[session.slot]} · {session.room} · {session.trainer}</p>
+        {/* Slot rows */}
+        {SLOTS.map((sl, si) => (
+          <div key={si} style={{
+            display: "grid", gridTemplateColumns: "82px repeat(6, 1fr)",
+            borderBottom: si < SLOTS.length - 1 ? "1px solid var(--hairline)" : "none",
+            minHeight: 72,
+          }}>
+            <div className="num" style={{ padding: "10px 10px", fontSize: 11.5, fontWeight: 600, color: "var(--text2)" }}>
+              {sl.t}
+              <div style={{ color: "var(--text3)" }}>{sl.e}</div>
+            </div>
+            {DAYS.map((_, di) => {
+              const item = MY_SCHEDULE.find((it) => it.day === di && it.slot === si)
+              if (!item) return <div key={di} style={{ borderLeft: "1px solid var(--hairline)" }} />
+              const st = KIND_STYLE[item.kind] ?? { bg: "#f1f3f8", brd: "#e5e8ef", txt: "#475569", label: item.kind }
+              const isOnline = item.room === "Online"
+              return (
+                <div key={di} style={{ borderLeft: "1px solid var(--hairline)", padding: 6 }}>
+                  <div style={{
+                    background: st.bg, border: `1px solid ${st.brd}`, color: st.txt,
+                    borderRadius: 8, padding: "8px 10px", height: "100%",
+                    display: "flex", flexDirection: "column", gap: 4,
+                  }}>
+                    <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: 0.05, textTransform: "uppercase", opacity: 0.85 }}>
+                      {st.label}
+                    </div>
+                    <div style={{ fontWeight: 700, fontSize: 12.5, lineHeight: 1.2 }}>{item.course}</div>
+                    <div style={{ fontSize: 11, opacity: 0.85, marginTop: "auto", display: "flex", alignItems: "center", gap: 4 }}>
+                      {isOnline ? (
+                        <><Icon name="video" /> Online</>
+                      ) : (
+                        <><Icon name="map-pin" /> {item.room}</>
+                      )}
+                    </div>
+                    <Pill tone={isOnline ? "purple" : "blue"}>
+                      {isOnline ? "Online" : "Offline"}
+                    </Pill>
+                  </div>
                 </div>
-                <Pill tone={session.room === "Online" ? "purple" : "blue"}>{session.room === "Online" ? "Online" : "Offline"}</Pill>
-              </div>
-            ))}
-            <div className="note">Bugungi kun ko'k fon bilan ajratilgan. Online darslar uchun havola sessiya boshlanishidan 15 daqiqa oldin ochiladi.</div>
+              )
+            })}
           </div>
-        </Card>
-      </div>
+        ))}
+      </Card>
     </>
   )
 }

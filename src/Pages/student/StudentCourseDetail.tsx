@@ -1,139 +1,209 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 
-import { Avatar, Bar, Card, CardHead, Donut, Icon, Pill } from "@/components/dashboard/LmsPrimitives"
-import { COURSES } from "@/data/lmsData"
-import { LESSON, MY_COURSES } from "@/data/studentData"
+import { Avatar, Bar, Btn, Card, CardHead, Donut, Icon, Pill, Tabs } from "@/components/dashboard/LmsPrimitives"
+import { LESSON, ME, MY_COURSES } from "@/data/studentData"
 
 export function StudentCourseDetail() {
-  const course = MY_COURSES.find((item) => item.id === "nlp") ?? MY_COURSES[1]
-  const publicCourse = COURSES.find((item) => item.id === "nlp")
-  const requirements = [
-    { label: "Darslarning kamida 90% qismini tugatish", done: course.progress >= 90 },
-    { label: "Barcha quizlardan 70% dan yuqori ball olish", done: true },
-    { label: "Yakuniy sentiment analyzer loyihasini topshirish", done: false },
-    { label: "Kurs feedback so'rovnomasini to'ldirish", done: false },
-  ]
+  const [tab, setTab] = useState("modules")
+  const c = MY_COURSES.find((x) => x.id === "nlp") ?? MY_COURSES[1]
+
+  const gradeByCourseName = 92
+  const streak = ME.streak
 
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>{course.title}</h1>
-          <p>{course.track} yo'nalishi · {publicCourse?.learningStream} · sertifikat yo'lidagi asosiy kurs.</p>
-        </div>
-        <div className="page-actions">
-          <Link className="btn btn-primary" to="/app/lessons/transformers-attention">
-            <Icon name="player-play" /> Joriy dars
-          </Link>
+      {/* ── HERO ── */}
+      <div style={{
+        position: "relative", marginBottom: 18, borderRadius: 16, overflow: "hidden",
+        backgroundImage: "repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 8px, transparent 8px 16px), linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)",
+        color: "#fff", padding: 26,
+      }}>
+        <div style={{
+          position: "absolute", inset: 0, opacity: 0.14,
+          backgroundImage: "radial-gradient(circle at 84% 24%, #fff 0 2px, transparent 3px)",
+          backgroundSize: "120px 120px",
+        }} />
+        <div style={{ position: "relative" }}>
+          <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+            <Pill tone="blue" icon="cpu">{c.track}</Pill>
+            <Pill tone="gray">{ME.learningStream}</Pill>
+          </div>
+          <h2 style={{ fontWeight: 700, fontSize: 28, letterSpacing: -0.6, marginBottom: 4 }}>
+            {c.title}
+          </h2>
+          <div style={{ fontSize: 13.5, opacity: 0.88, marginBottom: 18 }}>
+            Trener: {c.teacher} · 20-Yan – 15-May 2026 · {ME.totalStudents} o'quvchi
+          </div>
+          <div style={{ display: "flex", gap: 30, alignItems: "center", flexWrap: "wrap" }}>
+            <Donut
+              size={88} stroke={11}
+              value={c.progress} max={100}
+              tone="#fde68a" trackTone="rgba(255,255,255,0.18)"
+              center={
+                <div style={{ color: "#fff", textAlign: "center" }}>
+                  <div className="num" style={{ fontSize: 20, fontWeight: 800 }}>{c.progress}%</div>
+                  <div style={{ fontSize: 9, opacity: 0.7 }}>MENING</div>
+                </div>
+              }
+            />
+            <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+              {[
+                ["Tugatilgan", `${c.lessonsDone}/${c.lessonsTotal}`],
+                ["Joriy baho", `${gradeByCourseName}`],
+                ["Guruh reytingi", `#${ME.weeklyRank} / ${ME.totalStudents}`],
+                ["Streak", `${streak} kun`],
+              ].map(([label, val]) => (
+                <div key={label}>
+                  <div style={{ fontSize: 10.5, opacity: 0.7, textTransform: "uppercase", letterSpacing: 0.05, fontWeight: 700 }}>{label}</div>
+                  <div className="num" style={{ fontSize: 18, fontWeight: 700, marginTop: 2 }}>{val}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginLeft: "auto" }}>
+              <Link className="btn btn-primary" to="/app/lessons/transformers-attention">
+                <Icon name="player-play" /> Davom etish
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="grid c-8-4">
-        <Card>
-          <div className="card-pad-lg" style={{ display: "grid", gap: 18 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 18 }}>
-              <div>
-                <Pill tone="blue">{course.track}</Pill>
-                <h2 style={{ fontSize: 24, fontWeight: 800, marginTop: 8 }}>{course.title}</h2>
-                <p style={{ color: "var(--text2)", marginTop: 5 }}>
-                  Transformerlar, embeddinglar, tokenizatsiya va amaliy NLP pipeline qurish bo'yicha ketma-ket modul.
-                </p>
-              </div>
-              <Donut
-                value={course.progress}
-                tone="#0d9488"
-                center={
-                  <div>
-                    <div className="num" style={{ fontSize: 21, fontWeight: 800 }}>{course.progress}%</div>
-                    <div style={{ fontSize: 10.5, color: "var(--text3)" }}>progress</div>
-                  </div>
-                }
-              />
-            </div>
+      {/* ── TABS ── */}
+      <Tabs value={tab} onChange={setTab} items={[
+        { value: "modules",   label: "Modullar",      icon: "list-tree" },
+        { value: "materials", label: "Materiallar",   icon: "folder",    count: 41 },
+        { value: "qa",        label: "Q&A",           icon: "message",   count: 88 },
+        { value: "people",    label: "O'quvchilar",   icon: "users",     count: ME.totalStudents },
+        { value: "about",     label: "Kurs haqida",   icon: "info-circle" },
+      ]} />
 
-            <div className="grid c-3">
-              <div className="alert">
-                <Icon name="books" />
-                <div className="body">
-                  <h4>{LESSON.modules.length} modul</h4>
-                  <p>{course.lessonsDone} ta dars tugatilgan</p>
-                </div>
-              </div>
-              <div className="alert blue">
-                <Icon name="calendar-time" />
-                <div className="body">
-                  <h4>{course.nextLesson?.module}</h4>
-                  <p>{course.nextLesson?.title}</p>
-                </div>
-              </div>
-              <div className="alert amber">
-                <Icon name="clock" />
-                <div className="body">
-                  <h4>{course.deadline?.title}</h4>
-                  <p>{course.deadline?.days} kun qoldi</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-
+      {/* ── MODULES TAB ── */}
+      {tab === "modules" && (
         <Card>
-          <CardHead title="Trener" />
-          <div className="card-pad" style={{ display: "grid", gap: 12 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <Avatar name={course.teacher} tone="b1" size="lg" />
-              <div>
-                <div style={{ fontWeight: 800 }}>{course.teacher}</div>
-                <div style={{ color: "var(--text3)" }}>Lead Trener · NLP va ML</div>
-              </div>
-            </div>
-            <div className="note">Maslahat vaqti: Chorshanba 18:00 · savollar Q&A orqali prioritetlanadi.</div>
-          </div>
-        </Card>
-      </div>
-
-      <div className="grid c-7-5" style={{ marginTop: 14 }}>
-        <Card>
-          <CardHead title="Modullar va darslar" count={LESSON.modules.length} />
-          <div className="card-pad" style={{ display: "grid", gap: 12 }}>
-            {LESSON.modules.map((module) => (
-              <div key={module.id} style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 12px", background: "var(--bg4)" }}>
-                  <b>{module.title}</b>
-                  <Pill tone={module.state === "done" ? "green" : module.state === "current" ? "blue" : "gray"}>
-                    {module.state === "done" ? "Tugagan" : module.state === "current" ? "Joriy" : "Yopiq"}
-                  </Pill>
-                </div>
-                <div style={{ padding: 10, display: "grid", gap: 6 }}>
-                  {module.lessons.map((lesson) => (
-                    <div key={lesson.title} className={`tree-row ${lesson.state === "current" ? "active" : ""}`}>
-                      <Icon name={lesson.kind === "quiz" ? "list-check" : lesson.kind === "assignment" ? "file-text" : lesson.kind === "doc" ? "file" : "player-play"} />
-                      <span className="grow">{lesson.title}</span>
-                      <span style={{ color: "var(--text3)", fontSize: 12 }}>{lesson.duration}</span>
+          <CardHead title="Modullar va darslar" sub={`· ${c.lessonsDone}/${c.lessonsTotal} tugatildi`} />
+          <div style={{ padding: 14 }}>
+            {LESSON.modules.map((m, mi) => (
+              <div key={m.id} style={{ border: "1px solid var(--border)", borderRadius: 12, padding: 14, marginBottom: 10 }}>
+                {/* Module header */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: m.state === "locked" ? 0 : 10 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span className="thumb" style={{
+                      background: m.state === "done" ? "var(--green-bg)" : m.state === "current" ? "var(--accent-light)" : "var(--bg3)",
+                      color: m.state === "done" ? "var(--green)" : m.state === "current" ? "var(--accent)" : "var(--text3)",
+                      width: 30, height: 30,
+                    }}>
+                      <Icon name={m.state === "done" ? "check" : m.state === "current" ? "player-play" : "lock"} />
+                    </span>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 14 }}>Modul {mi + 1}: {m.title}</div>
+                      <div style={{ fontSize: 11.5, color: "var(--text3)", marginTop: 1 }}>{m.lessons.length} dars</div>
                     </div>
-                  ))}
+                  </div>
+                  {m.state === "current" && <Pill tone="blue" dot>Joriy</Pill>}
+                  {m.state === "done"    && <Pill tone="green" icon="check">Tugatildi</Pill>}
+                  {m.state === "locked"  && <Pill tone="gray" icon="lock">Avval avvalgisini tugating</Pill>}
                 </div>
-              </div>
-            ))}
-          </div>
-        </Card>
 
-        <Card>
-          <CardHead title="Kurs talablari" />
-          <div className="card-pad" style={{ display: "grid", gap: 12 }}>
-            {requirements.map((requirement) => (
-              <div key={requirement.label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span className={`check ${requirement.done ? "on" : ""}`} />
-                <span style={{ flex: 1 }}>{requirement.label}</span>
-                <Pill tone={requirement.done ? "green" : "amber"}>{requirement.done ? "Bajarilgan" : "Kutilmoqda"}</Pill>
+                {/* Lessons */}
+                {m.state !== "locked" && (
+                  <div style={{ marginLeft: 38 }}>
+                    {m.lessons.map((l, li) => {
+                      const kindIcon = l.kind === "video" ? "player-play" : l.kind === "pdf" ? "file-text" : l.kind === "quiz" ? "list-check" : l.kind === "assignment" ? "file-upload" : "file"
+                      const kindClass = l.kind === "video" ? "vid" : l.kind === "pdf" ? "pdf" : l.kind === "quiz" ? "quiz" : "doc"
+                      return (
+                        <div key={li} style={{
+                          display: "flex", alignItems: "center", gap: 10, padding: "8px 8px",
+                          borderRadius: 8, opacity: l.state === "locked" ? 0.55 : 1,
+                          background: l.state === "current" ? "var(--accent-light)" : "transparent",
+                          cursor: l.state === "locked" ? "default" : "pointer",
+                        }}>
+                          <span className={`thumb ${kindClass}`} style={{ width: 26, height: 26 }}>
+                            <Icon name={kindIcon} />
+                          </span>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontWeight: l.state === "current" ? 700 : 500, fontSize: 12.5 }}>{l.title}</div>
+                          </div>
+                          <span style={{ fontSize: 11, color: "var(--text3)" }}>{l.duration}</span>
+                          {l.state === "done"    && <Icon name="check" style={{ color: "var(--green)", fontSize: 16 }} />}
+                          {l.state === "current" && <Icon name="player-play" style={{ color: "var(--accent)", fontSize: 16 }} />}
+                          {l.state === "locked"  && <Icon name="lock" style={{ color: "var(--text3)", fontSize: 14 }} />}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
             ))}
-            <div className="row-div" />
-            <Bar value={course.progress} tone="green" />
-            <p style={{ color: "var(--text2)", fontSize: 12 }}>Sertifikatga tayyorlik progressga, baholarga va yakuniy loyiha topshirilishiga bog'liq.</p>
           </div>
         </Card>
-      </div>
+      )}
+
+      {tab === "materials" && (
+        <Card>
+          <CardHead title="Kurs materiallari" count={41} actions={<Btn size="sm" leftIcon="download">Barchasini yuklab olish</Btn>} />
+          <div style={{ padding: 18 }}>
+            <div className="alert blue">
+              <Icon name="folder" />
+              <div className="body">
+                <h4>Materiallar mavjud</h4>
+                <p>Barcha slaydlar, PDF va kod namunalari bu yerda. Dars sahifasida ham ko'rishingiz mumkin.</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {tab === "qa" && (
+        <Card>
+          <CardHead title="Q&A muhokamasi" count={88} actions={<Btn size="sm" variant="primary" leftIcon="message-plus">Savol berish</Btn>} />
+          <div style={{ padding: 18 }}>
+            <div className="alert blue">
+              <Icon name="message" />
+              <div className="body">
+                <h4>Faol muhokama</h4>
+                <p>88 ta savol va javob. Dars sahifasida Q&A bo'limidan foydalaning.</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {tab === "people" && (
+        <Card>
+          <CardHead title="O'quvchilar" count={ME.totalStudents} />
+          <div style={{ padding: 18 }}>
+            <div className="alert blue">
+              <Icon name="users" />
+              <div className="body">
+                <h4>{ME.totalStudents} o'quvchi</h4>
+                <p>Guruhingizning barcha a'zolari — o'quv oqimi bo'yicha hamkasblaringiz.</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {tab === "about" && (
+        <Card>
+          <CardHead title="Kurs haqida" />
+          <div style={{ padding: 18 }}>
+            <div style={{ display: "grid", gap: 12 }}>
+              <div className="kv-list">
+                <div className="kv"><span className="k">Trener</span><span className="v">{c.teacher}</span></div>
+                <div className="kv"><span className="k">Yo'nalish</span><span className="v">{c.track}</span></div>
+                <div className="kv"><span className="k">Jami darslar</span><span className="v num">{c.lessonsTotal}</span></div>
+                <div className="kv"><span className="k">Davomiyligi</span><span className="v">20-Yan – 15-May 2026</span></div>
+                <div className="kv"><span className="k">O'quvchilar</span><span className="v num">{ME.totalStudents}</span></div>
+                <div className="kv"><span className="k">O'qitish formati</span><span className="v">Offline + Online (Hybrid)</span></div>
+              </div>
+              <div className="note">
+                Bu kurs NLP sohasida amaliy ko'nikma beradi: tokenizatsiya, embeddinglar, transformer arxitekturasi va real loyiha.
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
     </>
   )
 }
