@@ -307,7 +307,11 @@ export function AdminAnalytics() {
                   <div className="analytics-funnel-track">
                     <span style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${stage.color}88, ${stage.color})` }} />
                   </div>
-                  {drop !== null ? <div className="analytics-drop">-{drop}% drop</div> : null}
+                  {drop !== null ? (
+                    <div className="analytics-drop">
+                      ↓ {(FUNNEL[index].value - next!.value).toLocaleString()} ta talaba keyingi bosqichga o'tmadi ({drop}%)
+                    </div>
+                  ) : null}
                 </div>
               )
             })}
@@ -427,24 +431,24 @@ export function AdminAnalytics() {
               const score = Math.round((teacher.timely + teacher.feedback + teacher.support + (100 - Math.max(0, teacher.load - 60))) / 4)
 
               return (
-                <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2.5 border-b border-[var(--hairline)] py-2.5 last:border-b-0" key={teacher.name}>
+                <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2.5 border-b border-(--hairline) py-2.5 last:border-b-0" key={teacher.name}>
                   <TeacherBadge name={teacher.name} tone={teacher.tone} />
                   <div className="min-w-0">
-                    <div className="mb-1 truncate text-[12.5px] font-bold text-[var(--text1)]">{teacher.name}</div>
-                    <div className="grid grid-cols-[74px_minmax(0,1fr)_34px] items-center gap-2 text-[11px] font-semibold text-[var(--text3)]">
+                    <div className="mb-1 truncate text-[12.5px] font-bold text-(--text1)">{teacher.name}</div>
+                    <div className="grid grid-cols-[74px_minmax(0,1fr)_34px] items-center gap-2 text-[11px] font-semibold text-(--text3)">
                       <span>Yuklama</span>
                       <Bar value={teacher.load} tone={loadTone(teacher.load)} />
-                      <b className="mono num text-right text-[var(--text2)]">{teacher.load}%</b>
+                      <b className="mono num text-right text-(--text2)">{teacher.load}%</b>
                     </div>
-                    <div className="mt-1 grid grid-cols-[74px_minmax(0,1fr)_34px] items-center gap-2 text-[11px] font-semibold text-[var(--text3)]">
+                    <div className="mt-1 grid grid-cols-[74px_minmax(0,1fr)_34px] items-center gap-2 text-[11px] font-semibold text-(--text3)">
                       <span>O'z vaqtida</span>
                       <Bar value={teacher.timely} tone={kpiTone(teacher.timely)} />
-                      <b className="mono num text-right text-[var(--text2)]">{teacher.timely}%</b>
+                      <b className="mono num text-right text-(--text2)">{teacher.timely}%</b>
                     </div>
                   </div>
                   <div className="grid justify-items-end gap-1">
                     <Pill tone={kpiTone(score)}>{score}</Pill>
-                    <span className="whitespace-nowrap text-[10.5px] font-semibold text-[var(--text3)]">{teacher.openTasks} open</span>
+                    <span className="whitespace-nowrap text-[10.5px] font-semibold text-(--text3)">{teacher.openTasks} open</span>
                   </div>
                 </div>
               )

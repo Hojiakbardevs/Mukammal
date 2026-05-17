@@ -1,4 +1,4 @@
-import { Bar, Btn, Card, CardHead, Donut, Icon, Pill } from "@/components/dashboard/LmsPrimitives"
+import { Bar, Btn, Card, CardHead, Donut, Icon} from "@/components/dashboard/LmsPrimitives"
 import { BADGES, ME, MY_CERTS } from "@/data/studentData"
 
 /* ── Certificate canvas ── */

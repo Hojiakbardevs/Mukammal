@@ -226,13 +226,14 @@ export function StudentDashboard() {
                 return (
                   <div key={i} style={{
                     padding: 10, borderRadius: 10, minHeight: 110,
-                    border: isToday ? "1px solid var(--accent-mid)" : "1px solid var(--border)",
-                    background: isToday ? "var(--accent-light)" : "#fff",
+                    border: "1px solid var(--border)",
+                    borderTop: isToday ? "3px solid var(--lms-accent)" : "1px solid var(--border)",
+                    background: isToday ? "var(--lms-accent-light)" : "#fff",
                   }}>
                     <div style={{
                       fontSize: 10.5, fontWeight: 700, letterSpacing: 0.05,
                       textTransform: "uppercase", marginBottom: 6,
-                      color: isToday ? "var(--accent-ink)" : "var(--text3)",
+                      color: isToday ? "var(--lms-accent-ink)" : "var(--text3)",
                     }}>
                       {d} · {12 + i}
                     </div>
@@ -314,12 +315,13 @@ export function StudentDashboard() {
             <div style={{ padding: 16, display: "grid", gap: 10 }}>
               {BADGES.slice(0, 4).map((b, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 11 }}>
-                  <span className="thumb" style={{
-                    background: b.tone === "amber" ? "var(--amber-bg)" : b.tone === "blue" ? "var(--accent-light)" : b.tone === "purple" ? "var(--purple-bg)" : b.tone === "teal" ? "var(--teal-bg, #ecfeff)" : "var(--green-bg)",
-                    color: b.tone === "amber" ? "var(--amber)" : b.tone === "blue" ? "var(--accent)" : b.tone === "purple" ? "var(--purple)" : b.tone === "teal" ? "var(--teal, #0e7490)" : "var(--green)",
-                    width: 36, height: 36,
+                  <span style={{
+                    background: b.tone === "amber" ? "var(--amber-bg)" : b.tone === "blue" ? "var(--lms-accent-light)" : b.tone === "purple" ? "var(--purple-bg)" : b.tone === "teal" ? "var(--teal-bg, #ecfeff)" : "var(--green-bg)",
+                    color: b.tone === "amber" ? "var(--amber)" : b.tone === "blue" ? "var(--lms-accent)" : b.tone === "purple" ? "var(--purple)" : b.tone === "teal" ? "var(--teal, #0e7490)" : "var(--green)",
+                    width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+                    display: "inline-flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    <Icon name={b.icon} style={{ fontSize: 18 }} />
+                    <Icon name={b.icon} style={{ fontSize: 18, color: "inherit" }} />
                   </span>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 700, fontSize: 12.5 }}>{b.title}</div>
