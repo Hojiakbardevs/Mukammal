@@ -62,7 +62,7 @@ export default function CourseDetail() {
             />
           </div>
           <Link
-            to="/register"
+            to="/login"
             className="inline-flex h-11 items-center rounded-2xl px-6 font-heading text-[11px] font-bold tracking-widest text-white uppercase transition hover:opacity-90 active:scale-95"
             style={{ background: course.accent }}
           >
@@ -568,7 +568,7 @@ export default function CourseDetail() {
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link
-                to="/register"
+                to="/login"
                 className="inline-flex h-12 items-center rounded-xl px-8 text-sm font-bold text-white shadow-md transition hover:opacity-90 hover:shadow-lg active:scale-95"
                 style={{ background: course.accent }}
               >
