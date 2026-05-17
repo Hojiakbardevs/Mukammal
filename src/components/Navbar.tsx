@@ -66,6 +66,12 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link
+            to="/register"
+            className="inline-flex h-10 items-center justify-center rounded-xl border border-sky-400/40 bg-sky-400/8 px-6 font-heading text-[12px] font-bold tracking-widest text-sky-300 transition-all duration-200 hover:scale-105 hover:border-sky-400/70 hover:bg-sky-400/15 hover:text-sky-200 active:scale-95"
+          >
+            RO'YXATDAN O'TISH
+          </Link>
+          <Link
             to="/login"
             className="inline-flex h-10 items-center justify-center rounded-xl bg-linear-to-r from-sky-500 to-cyan-400 px-6 font-heading text-[12px] font-bold tracking-widest text-white shadow-[0_0_20px_rgba(56,189,248,0.35)] transition-all duration-200 hover:scale-105 hover:from-sky-400 hover:to-cyan-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.55)] active:scale-95"
           >
@@ -101,8 +107,15 @@ export function Navbar() {
               </a>
             ))}
             <Link
+              to="/register"
+              className="mt-3 flex items-center justify-center rounded-xl border border-sky-400/40 bg-sky-400/8 px-4 py-3 font-heading text-[12px] font-bold tracking-widest text-sky-300 transition-all hover:border-sky-400/70 hover:bg-sky-400/15 hover:text-sky-200"
+              onClick={() => setIsOpen(false)}
+            >
+              RO'YXATDAN O'TISH
+            </Link>
+            <Link
               to="/login"
-              className="mt-3 flex items-center justify-center rounded-xl bg-linear-to-r from-sky-500 to-cyan-400 px-4 py-3 font-heading text-[12px] font-bold tracking-widest text-white shadow-[0_0_18px_rgba(56,189,248,0.30)] transition-all hover:from-sky-400 hover:to-cyan-300"
+              className="flex items-center justify-center rounded-xl bg-linear-to-r from-sky-500 to-cyan-400 px-4 py-3 font-heading text-[12px] font-bold tracking-widest text-white shadow-[0_0_18px_rgba(56,189,248,0.30)] transition-all hover:from-sky-400 hover:to-cyan-300"
               onClick={() => setIsOpen(false)}
             >
               PLATFORMAGA KIRISH
