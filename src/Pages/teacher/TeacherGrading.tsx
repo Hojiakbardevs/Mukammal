@@ -1,124 +1,201 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-
-import { Avatar, Btn, Card, CardHead, Icon, Pill, Toolbar } from "@/components/dashboard/LmsPrimitives"
+import {
+  Avatar, Btn, Card, Check, Chip, Icon, Pill, Seg, Tabs, Toolbar,
+} from "@/components/dashboard/LmsPrimitives"
 import { SUBMISSIONS } from "@/data/lmsData"
 
-const rubric = [
-  { label: "Kod tozaligi", points: 10, desc: "Notebook yoki repo tartibli, qayta ishga tushadi." },
-  { label: "Model tanlovi", points: 10, desc: "Muammo uchun mos model va baseline ko'rsatilgan." },
-  { label: "Baholash", points: 10, desc: "Metric, validation va xatolik tahlili bor." },
-  { label: "Xulosa", points: 10, desc: "Natija, cheklov va keyingi qadamlar aniq." },
-]
+const SUB_TYPE_ICON: Record<string, string> = {
+  assignment: "file-text",
+  project:    "package",
+  quiz:       "list-check",
+  lab:        "flask",
+}
 
 export function TeacherGrading() {
-  const queue = SUBMISSIONS.filter((submission) => submission.state !== "auto-graded")
-  const [selectedId, setSelectedId] = useState(queue[0]?.id ?? "")
-  const selected = queue.find((submission) => submission.id === selectedId) ?? queue[0]
+  const [tab, setTab] = useState("needs")
+  const [sel, setSel] = useState<Record<number, boolean>>({})
+
+  const visible = SUBMISSIONS.filter((s) => {
+    if (tab === "needs")  return s.state === "needs-grade"
+    if (tab === "ai")     return s.state === "ai-flag"
+    if (tab === "appeal") return s.state === "appeal"
+    if (tab === "auto")   return s.state === "auto-graded"
+    return true
+  })
+
+  const selCount = Object.values(sel).filter(Boolean).length
+  const allSelected = visible.length > 0 && selCount === visible.length
 
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>Tekshirish navbati</h1>
-          <p>Topshiriqlar navbati, rubric panel, ball kiritish va feedback editor.</p>
+      <div className="alert blue" style={{ marginBottom: 18 }}>
+        <Icon name="sparkles" />
+        <div className="body">
+          <h4>AI yordami yoqilgan</h4>
+          <p>
+            AI rubric-based taklif beradi, lekin yakuniy baho doim sizda. Har bir AI tahlilning
+            versiyasi va promptlari audit jurnalida saqlanadi.
+          </p>
         </div>
-        <div className="page-actions">
-          <Link className="btn" to="/teacher/ai-grading">
-            <Icon name="sparkles" /> SI nazorati
-          </Link>
-        </div>
+        <Btn size="sm" leftIcon="settings">AI sozlamalari</Btn>
       </div>
 
-      <div className="grid c-7-5">
-        <Card>
-          <CardHead title="Topshiriqlar navbati" count={queue.length} />
-          <Toolbar>
-            <span className="chip active"><Icon name="clock" /> Kutilmoqda</span>
-            <span className="chip"><Icon name="flag" /> SI signal</span>
-            <span className="chip"><Icon name="gavel" /> Appeal</span>
-            <div className="spacer" />
-            <Btn size="sm" leftIcon="download">CSV eksport</Btn>
-          </Toolbar>
-          <div className="table-wrap" style={{ border: 0, borderRadius: 0 }}>
-            <table className="t">
-              <thead>
-                <tr>
-                  <th>Tinglovchi</th>
-                  <th>Topshiriq</th>
-                  <th>Yuborildi</th>
-                  <th className="center">SI taklif</th>
-                  <th>Holat</th>
-                </tr>
-              </thead>
-              <tbody>
-                {queue.map((submission) => (
-                  <tr key={submission.id} className={submission.id === selectedId ? "selected" : ""} onClick={() => setSelectedId(submission.id)} style={{ cursor: "pointer" }}>
-                    <td>
-                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <Avatar name={submission.student.name} tone={submission.student.tone} size="sm" />
-                        <div>
-                          <b>{submission.student.name}</b>
-                          <div style={{ color: "var(--text3)", fontSize: 11 }}>{submission.student.group}</div>
+      <Tabs
+        value={tab}
+        onChange={setTab}
+        items={[
+          { value: "needs",  label: "Tekshirilishi kerak", icon: "file-check",   count: SUBMISSIONS.filter((s) => s.state === "needs-grade").length },
+          { value: "ai",     label: "AI shubhalari",       icon: "flag",          count: SUBMISSIONS.filter((s) => s.state === "ai-flag").length },
+          { value: "appeal", label: "Apellatsiyalar",       icon: "gavel",         count: SUBMISSIONS.filter((s) => s.state === "appeal").length },
+          { value: "auto",   label: "Avto-baholangan",     icon: "robot",         count: SUBMISSIONS.filter((s) => s.state === "auto-graded").length },
+          { value: "all",    label: "Hammasi",                                    count: SUBMISSIONS.length },
+        ]}
+      />
+
+      <Card>
+        <Toolbar>
+          <Chip icon="filter">Kurs: 4</Chip>
+          <Chip icon="file-text">Turi: Hammasi</Chip>
+          <Chip icon="clock">Kechikkan</Chip>
+          <Chip icon="sparkles" active>AI taklifi mavjud</Chip>
+          <div className="spacer" />
+          <span style={{ fontSize: 12, color: "#8a93a6" }}>Saralash:</span>
+          <Seg
+            value="oldest"
+            onChange={() => {}}
+            options={[
+              { value: "oldest", label: "Eng eski" },
+              { value: "newest", label: "Yangi" },
+              { value: "risk",   label: "Risk" },
+            ]}
+          />
+        </Toolbar>
+
+        {selCount > 0 && (
+          <div className="bulkbar">
+            <Icon name="checkbox" /> <b>{selCount}</b> ta tanlandi
+            <div className="actions" style={{ display: "flex", gap: 6 }}>
+              <Btn size="sm" variant="success" leftIcon="check">AI taklifini qabul qilish</Btn>
+              <Btn size="sm" leftIcon="user">Biriktirish</Btn>
+              <Btn size="sm" leftIcon="mail">Feedback yuborish</Btn>
+              <Btn size="sm" variant="danger" leftIcon="x" onClick={() => setSel({})}>
+                Tanlovni tozalash
+              </Btn>
+            </div>
+          </div>
+        )}
+
+        <div className="table-wrap" style={{ border: 0, borderRadius: 0 }}>
+          <table className="t">
+            <thead>
+              <tr>
+                <th style={{ width: 32 }}>
+                  <Check
+                    value={allSelected}
+                    onChange={(v) =>
+                      setSel(v ? Object.fromEntries(visible.map((_, i) => [i, true])) : {})
+                    }
+                  />
+                </th>
+                <th>Talaba</th>
+                <th>Topshiriq</th>
+                <th>Yuborildi</th>
+                <th className="center">Rubric</th>
+                <th className="center">AI taklifi</th>
+                <th>Holat</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {visible.map((sub, i) => (
+                <tr key={sub.id} className={sel[i] ? "selected" : ""}>
+                  <td>
+                    <Check
+                      value={!!sel[i]}
+                      onChange={(v) => setSel((p) => ({ ...p, [i]: v }))}
+                    />
+                  </td>
+                  <td>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <Avatar name={sub.student.name} tone={sub.student.tone} size="sm" />
+                      <div>
+                        <div style={{ fontWeight: 600 }}>{sub.student.name}</div>
+                        <div style={{ fontSize: 11, color: "#8a93a6" }}>{sub.student.group}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span
+                        className={`thumb ${sub.type === "quiz" ? "quiz" : "doc"}`}
+                        style={{ width: 28, height: 28 }}
+                      >
+                        <Icon name={SUB_TYPE_ICON[sub.type] ?? "file-text"} />
+                      </span>
+                      <div>
+                        <div style={{ fontWeight: 600 }}>{sub.title}</div>
+                        <div style={{ fontSize: 11, color: "#8a93a6" }}>
+                          {sub.course.split(" ").slice(0, 2).join(" ")} · {sub.files.length} fayl
                         </div>
                       </div>
-                    </td>
-                    <td>
-                      <b>{submission.title}</b>
-                      <div style={{ color: "var(--text3)", fontSize: 11 }}>{submission.course} · {submission.files.length} fayl</div>
-                    </td>
-                    <td>{submission.submittedAgo}</td>
-                    <td className="center">{submission.suggestedScore ? <span className="ai-ribbon"><Icon name="sparkles" /> {submission.suggestedScore}</span> : "Avto"}</td>
-                    <td>
-                      <Pill tone={submission.state === "ai-flag" ? "red" : submission.state === "appeal" ? "purple" : "amber"}>
-                        {submission.state === "ai-flag" ? "SI signal" : submission.state === "appeal" ? "Apellyatsiya" : "Tekshirish"}
-                      </Pill>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-
-        <Card>
-          <CardHead title="Rubric panel" sub={selected?.title} />
-          <div className="card-pad" style={{ display: "grid", gap: 12 }}>
-            {selected ? (
-              <>
-                <div className="alert blue">
-                  <Icon name="file-text" />
-                  <div className="body">
-                    <h4>{selected.student.name}</h4>
-                    <p>{selected.course} · {selected.points} · {selected.files.join(", ")}</p>
-                  </div>
-                </div>
-                {rubric.map((item) => (
-                  <div key={item.label} style={{ display: "grid", gap: 4 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <b>{item.label}</b>
-                      <span className="mono">{item.points} ball</span>
                     </div>
-                    <p style={{ color: "var(--text2)", fontSize: 12 }}>{item.desc}</p>
-                  </div>
-                ))}
-                <div className="field">
-                  <label className="label" htmlFor="score">Ball kiritish</label>
-                  <input id="score" className="input" defaultValue={selected.suggestedScore ?? 0} type="number" min={0} max={100} />
-                </div>
-                <div className="field">
-                  <label className="label" htmlFor="feedback">Feedback matni</label>
-                  <textarea id="feedback" className="textarea" rows={5} defaultValue="Ish yaxshi tuzilgan. Validation bo'limida metric tanlovi va xatolik tahlilini aniqroq yozing." />
-                </div>
-                <div className="cta-row">
-                  <Btn variant="success" leftIcon="check">Tasdiqlash</Btn>
-                  <Btn variant="amber" leftIcon="refresh">Qayta ishlash so'rash</Btn>
-                </div>
-              </>
-            ) : null}
+                  </td>
+                  <td>
+                    <div style={{ fontSize: 12 }}>{sub.submittedAgo} oldin</div>
+                    {sub.late && (
+                      <div style={{ marginTop: 2 }}>
+                        <Pill tone="red">kechikkan</Pill>
+                      </div>
+                    )}
+                  </td>
+                  <td className="center">
+                    <span className="mono num" style={{ fontWeight: 700 }}>{sub.rubric}</span>
+                    <span style={{ color: "#8a93a6", fontSize: 11 }}>/6 kriteriya</span>
+                  </td>
+                  <td className="center">
+                    {sub.suggestedScore != null ? (
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                        <span className="ai-ribbon">
+                          <Icon name="sparkles" /> {sub.suggestedScore}/40
+                        </span>
+                        {sub.state === "ai-flag" && (
+                          <Pill tone="red"><Icon name="flag" /></Pill>
+                        )}
+                      </div>
+                    ) : (
+                      <span style={{ color: "#b0b7c5" }}>—</span>
+                    )}
+                  </td>
+                  <td>
+                    {sub.state === "needs-grade"  && <Pill tone="amber" dot>Kutilmoqda</Pill>}
+                    {sub.state === "ai-flag"      && <Pill tone="red"   icon="flag">AI shubha</Pill>}
+                    {sub.state === "appeal"       && <Pill tone="purple" icon="gavel">Appeal</Pill>}
+                    {sub.state === "auto-graded"  && <Pill tone="green" icon="robot">{sub.points}</Pill>}
+                  </td>
+                  <td className="right">
+                    <div style={{ display: "flex", gap: 4, justifyContent: "flex-end" }}>
+                      <Btn size="xs" variant="ghost" leftIcon="message" />
+                      <Link className="btn btn-xs btn-primary" to="/teacher/ai-grading">
+                        <Icon name="arrow-right" /> Baholash
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="card-foot">
+          <span>
+            {visible.length} / {SUBMISSIONS.length} ko'rsatildi · so'nggi yangilanish: hozir
+          </span>
+          <div className="cta-row">
+            <Btn size="sm" leftIcon="download">CSV eksport</Btn>
           </div>
-        </Card>
-      </div>
+        </div>
+      </Card>
     </>
   )
 }

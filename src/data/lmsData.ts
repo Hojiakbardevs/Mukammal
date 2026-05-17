@@ -6,7 +6,8 @@ export type Course = {
   id: string
   title: string
   learningStream: string
-  format: "aralash" | "jonli" | "mustaqil"
+  cohort: string
+  format: "blended" | "cohort" | "self-paced"
   teacher: string
   studentsTotal: number
   studentsActive: number
@@ -29,6 +30,7 @@ export type StudentRecord = {
   gpa: number
   late: number
   trend: "up" | "down" | "flat"
+  mode: "online" | "offline"
 }
 
 export type Submission = {
@@ -106,7 +108,8 @@ export const COURSES: Course[] = [
     id: "ai-fund",
     title: "Sun'iy intellekt asoslari",
     learningStream: "AI-26-1B o'quv oqimi",
-    format: "aralash",
+    cohort: "Spring '26 — Cohort B",
+    format: "blended",
     teacher: "Aziza Tursunova",
     studentsTotal: 124,
     studentsActive: 118,
@@ -122,7 +125,8 @@ export const COURSES: Course[] = [
     id: "ml-prod",
     title: "Production muhitida ML",
     learningStream: "ML-26-2A o'quv oqimi",
-    format: "jonli",
+    cohort: "Spring '26 — Cohort A",
+    format: "cohort",
     teacher: "Akmal Hudoyberdiyev",
     studentsTotal: 86,
     studentsActive: 81,
@@ -136,9 +140,10 @@ export const COURSES: Course[] = [
   },
   {
     id: "nlp",
-    title: "Tabiiy tilni qayta ishlash",
+    title: "Tabiiy tilni qayta ishlash (NLP)",
     learningStream: "NLP-26 o'quv oqimi",
-    format: "jonli",
+    cohort: "Spring '26 — Cohort B",
+    format: "cohort",
     teacher: "Aziza Tursunova",
     studentsTotal: 71,
     studentsActive: 68,
@@ -154,7 +159,8 @@ export const COURSES: Course[] = [
     id: "cv",
     title: "Computer Vision asoslari",
     learningStream: "Mustaqil ta'lim · 2026",
-    format: "mustaqil",
+    cohort: "Self-paced · 2026",
+    format: "self-paced",
     teacher: "Lola Saidova",
     studentsTotal: 142,
     studentsActive: 110,
@@ -169,14 +175,14 @@ export const COURSES: Course[] = [
 ]
 
 export const STUDENTS: StudentRecord[] = [
-  { name: "Diyora Karimova", group: "AI-26-1B", tone: "b6", risk: 86, progress: 34, attendance: 62, gpa: 71, late: 3, trend: "down" },
-  { name: "Sherzod Nazarov", group: "AI-26-1A", tone: "b2", risk: 71, progress: 41, attendance: 70, gpa: 64, late: 2, trend: "down" },
-  { name: "Madina Yusupova", group: "AI-26-1B", tone: "b5", risk: 64, progress: 52, attendance: 78, gpa: 77, late: 1, trend: "flat" },
-  { name: "Otabek Rasulov", group: "ML-26-2A", tone: "b3", risk: 22, progress: 88, attendance: 96, gpa: 92, late: 0, trend: "up" },
-  { name: "Nilufar Komilova", group: "ML-26-2A", tone: "b7", risk: 14, progress: 91, attendance: 98, gpa: 94, late: 0, trend: "up" },
-  { name: "Jasur Tojiev", group: "AI-26-1A", tone: "b4", risk: 58, progress: 49, attendance: 82, gpa: 70, late: 1, trend: "flat" },
-  { name: "Aziza Mahmudova", group: "NLP-26", tone: "b8", risk: 8, progress: 96, attendance: 100, gpa: 96, late: 0, trend: "up" },
-  { name: "Bobur Yuldashev", group: "NLP-26", tone: "b1", risk: 41, progress: 64, attendance: 88, gpa: 78, late: 1, trend: "flat" },
+  { name: "Diyora Karimova",  group: "AI-26-1B", tone: "b6", risk: 86, progress: 34, attendance: 62,  gpa: 71, late: 3, trend: "down", mode: "offline" },
+  { name: "Sherzod Nazarov",  group: "AI-26-1A", tone: "b2", risk: 71, progress: 41, attendance: 70,  gpa: 64, late: 2, trend: "down", mode: "offline" },
+  { name: "Madina Yusupova",  group: "AI-26-1B", tone: "b5", risk: 64, progress: 52, attendance: 78,  gpa: 77, late: 1, trend: "flat", mode: "offline" },
+  { name: "Otabek Rasulov",   group: "ML-26-2A", tone: "b3", risk: 22, progress: 88, attendance: 96,  gpa: 92, late: 0, trend: "up",   mode: "offline" },
+  { name: "Nilufar Komilova", group: "ML-26-2A", tone: "b7", risk: 14, progress: 91, attendance: 98,  gpa: 94, late: 0, trend: "up",   mode: "offline" },
+  { name: "Jasur Tojiev",     group: "AI-26-1A", tone: "b4", risk: 58, progress: 49, attendance: 82,  gpa: 70, late: 1, trend: "flat", mode: "offline" },
+  { name: "Aziza Mahmudova",  group: "NLP-26",   tone: "b8", risk: 8,  progress: 96, attendance: 100, gpa: 96, late: 0, trend: "up",   mode: "online"  },
+  { name: "Bobur Yuldashev",  group: "NLP-26",   tone: "b1", risk: 41, progress: 64, attendance: 88,  gpa: 78, late: 1, trend: "flat", mode: "online"  },
 ]
 
 export const SUBMISSIONS: Submission[] = [
@@ -288,14 +294,25 @@ export const SUBMISSIONS: Submission[] = [
 ]
 
 export const SCHEDULE: ScheduleItem[] = [
-  { day: 0, slot: 0, course: "Sun'iy intellekt asoslari", group: "AI-26-1B", room: "B-204", trainer: "Aziza T.", kind: "lecture" },
-  { day: 0, slot: 2, course: "Tabiiy tilni qayta ishlash", group: "NLP-26", room: "Online", trainer: "Aziza T.", kind: "live" },
-  { day: 1, slot: 1, course: "Production muhitida ML", group: "ML-26-2A", room: "A-101", trainer: "Aziza T.", kind: "lab" },
-  { day: 2, slot: 0, course: "Sun'iy intellekt asoslari", group: "AI-26-1A", room: "B-204", trainer: "Aziza T.", kind: "lecture" },
-  { day: 2, slot: 3, course: "Ochiq maslahat vaqti", group: "Barcha o'quv oqimlari", room: "Online", trainer: "Aziza T.", kind: "hours" },
-  { day: 3, slot: 1, course: "Tabiiy tilni qayta ishlash", group: "NLP-26", room: "B-302", trainer: "Aziza T.", kind: "lecture" },
-  { day: 4, slot: 2, course: "Production muhitida ML", group: "ML-26-2A", room: "A-101", trainer: "Aziza T.", kind: "exam" },
+  { day: 0, slot: 0, course: "Sun'iy intellekt asoslari", group: "AI-26-1B", room: "B-204",  trainer: "Aziza T.", kind: "lecture" },
+  { day: 0, slot: 2, course: "Tabiiy tilni qayta ishlash (NLP)", group: "NLP-26",   room: "Online", trainer: "Aziza T.", kind: "live"    },
+  { day: 1, slot: 1, course: "Production muhitida ML",    group: "ML-26-2A", room: "A-101",  trainer: "Aziza T.", kind: "lab"     },
+  { day: 2, slot: 0, course: "Sun'iy intellekt asoslari", group: "AI-26-1A", room: "B-204",  trainer: "Aziza T.", kind: "lecture" },
+  { day: 2, slot: 3, course: "Ochiq maslahat vaqti",      group: "Barcha",   room: "Online", trainer: "Aziza T.", kind: "hours"   },
+  { day: 3, slot: 1, course: "Tabiiy tilni qayta ishlash (NLP)", group: "NLP-26",   room: "B-302",  trainer: "Aziza T.", kind: "lecture" },
+  { day: 4, slot: 2, course: "Production muhitida ML",    group: "ML-26-2A", room: "A-101",  trainer: "Aziza T.", kind: "exam"    },
+  { day: 5, slot: 0, course: "Sun'iy intellekt asoslari", group: "AI-26-1B", room: "B-204",  trainer: "Aziza T.", kind: "lab"     },
 ]
+
+export const SCHEDULE_SLOTS = [
+  { t: "08:30", e: "10:00" },
+  { t: "10:15", e: "11:45" },
+  { t: "12:30", e: "14:00" },
+  { t: "14:15", e: "15:45" },
+  { t: "16:00", e: "17:30" },
+]
+
+export const SCHEDULE_DAYS = ["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"]
 
 export const LEARNING_STREAMS = [
   { id: "ai-26-1a", name: "AI-26-1A", course: "Sun'iy intellekt asoslari", startDate: "12-Yan", endDate: "30-May", students: 62, completion: 68, atRisk: 4 },

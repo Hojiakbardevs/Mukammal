@@ -1,289 +1,345 @@
-import { useState } from "react"
 import { Link } from "react-router-dom"
+import {
+  Avatar, Bar, Btn, Card, CardHead, Icon, Pill, Spark, Stat,
+} from "@/components/dashboard/LmsPrimitives"
+import { COURSES, QA, STUDENTS, SUBMISSIONS } from "@/data/lmsData"
 
-import { Avatar, Bar, Btn, Card, CardHead, Donut, Drawer, Icon, Pill, Spark, Stat } from "@/components/dashboard/LmsPrimitives"
-import { COURSES, QA, STUDENTS, SUBMISSIONS, SCHEDULE, type StudentRecord } from "@/data/lmsData"
-
-const SLOTS = ["09:00", "11:00", "14:00", "16:00"]
+const TODAY_SESSIONS = [
+  { t: "14:00", end: "15:30", title: "Sun'iy intellekt asoslari · Ma'ruza", room: "B-204", group: "AI-26-1B", soon: true },
+  { t: "16:00", end: "17:30", title: "Tabiiy tilni qayta ishlash · Live session", room: "Online · Zoom", group: "NLP-26", soon: false },
+  { t: "18:00", end: "19:00", title: "Ochiq maslahat vaqti", room: "Online", group: "Barcha oqimlar", soon: false },
+]
 
 export function TeacherDashboard() {
-  const [studentDrawer, setStudentDrawer] = useState<StudentRecord | null>(null)
+  const atRisk = STUDENTS.filter((s) => s.risk >= 50).sort((a, b) => b.risk - a.risk)
+  const todayPending = SUBMISSIONS.filter((s) => s.state === "needs-grade" || s.state === "ai-flag")
+  const pendingQa = QA.filter((q) => q.state === "needs-reply")
 
-  const risky = STUDENTS.filter((s) => s.risk >= 55).sort((a, b) => b.risk - a.risk)
-  const pendingQa = QA.filter((item) => item.state === "needs-reply")
-  const queue = SUBMISSIONS.filter((s) => s.state !== "auto-graded")
-  const today = SCHEDULE.filter((item) => item.day === 0)
-
-  const avgCompletion = Math.round(COURSES.reduce((s, c) => s + c.progress, 0) / COURSES.length)
-  const totalActive = COURSES.reduce((s, c) => s + c.studentsActive, 0)
+  const avgProgress = Math.round(COURSES.reduce((acc, c) => acc + c.progress, 0) / COURSES.length)
 
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>Trener boshqaruv paneli</h1>
-          <p>Bugungi fokus: tekshirish navbati, darslar, risk signallari va Q&A.</p>
-        </div>
-        <div className="page-actions">
-          <Link className="btn" to="/teacher/grading">
-            <Icon name="file-check" /> Tekshirish
-          </Link>
-          <Link className="btn btn-primary" to="/teacher/schedule">
-            <Icon name="calendar-time" /> Jadval
-          </Link>
-        </div>
-      </div>
-
-      {/* ── Ogohlantiruv banneri ── */}
-      <div className="alert amber" style={{ marginBottom: 14 }}>
-        <Icon name="alert-triangle" />
+      {/* ── Insight banner ── */}
+      <div className="alert blue" style={{ marginBottom: 18 }}>
+        <Icon name="bolt" />
         <div className="body">
-          <h4>Bugungi fokus ogohlantirishi</h4>
-          <p>Lab 4 bo'yicha <b>{queue.length}</b> ta ish tekshirish kutmoqda, <b>{risky.length}</b> nafar tinglovchiga erta yordam signali bor.</p>
+          <h4>Bugungi diqqat markazi</h4>
+          <p>
+            <b>{todayPending.length} ta topshiriq</b> tekshirilishni kutmoqda ·{" "}
+            <b>{atRisk.length} ta talaba</b> risk ostida ·
+            ML-26-2A guruhda <b>Mid-term loyiha</b> bugun soat 23:59 da yakunlanadi.
+          </p>
         </div>
         <Link className="btn btn-sm btn-primary" to="/teacher/grading">
-          <Icon name="arrow-right" /> Boshlash
+          <Icon name="arrow-right" /> Navbatga o'tish
         </Link>
       </div>
 
       {/* ── KPI ── */}
-      <div className="stat-grid cols-5" style={{ marginBottom: 14 }}>
-        <Stat tone="blue"   label="Tekshirish navbati" value={queue.length}    sub="4 ta yuqori prioritet" />
-        <Stat tone="amber"  label="Q&A kutilmoqda"     value={pendingQa.length} sub="2 tasi bugun kelgan" />
-        <Stat tone="red"    label="Risk signal"         value={risky.length}   sub="Yordam kerak" />
-        <Stat tone="green"  label="Faol tinglovchi"    value={totalActive}     sub="Barcha kurslar" />
-        <Stat tone="purple" label="O'rt. progress"     value={avgCompletion}  unit="%" sub="Kurs kesimida" />
+      <div className="stat-grid cols-4" style={{ marginBottom: 18 }}>
+        <Stat tone="blue"   label="Tekshirish navbati"      value={todayPending.length} sub="3 ta AI-flagged"      trend={{ dir: "up", label: "+5 bugun" }} />
+        <Stat tone="green"  label="Bugun darslar"           value={3}                   sub="· 14:00, 16:00, 18:00" />
+        <Stat tone="amber"  label="Risk ostidagi talabalar" value={atRisk.length}        sub="3 ta yangi signal"     trend={{ dir: "up", label: "+2 hafta" }} />
+        <Stat tone="purple" label="O'rtacha guruh progress" value={avgProgress}          unit="%" sub="4 ta kurs bo'yicha" trend={{ dir: "up", label: "+4%" }} />
       </div>
 
-      {/* ── Asosiy panellar ── */}
-      <div className="grid c-7-5">
-        {/* Kurs progress */}
-        <Card>
-          <CardHead title="Kurs progress va oqimlar" actions={<Pill tone="blue">{COURSES.length} ta kurs</Pill>} />
-          <div className="card-pad" style={{ display: "grid", gap: 14 }}>
-            {COURSES.map((course) => (
-              <div key={course.id}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                  <div>
-                    <div style={{ fontWeight: 700 }}>{course.title}</div>
-                    <div style={{ fontSize: 12, color: "var(--text2)" }}>{course.learningStream} · {course.studentsActive} faol</div>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div className="num" style={{ fontWeight: 800 }}>{course.progress}%</div>
-                    <Pill tone={course.progress >= 70 ? "green" : "blue"} dot>{course.nextSession}</Pill>
-                  </div>
-                </div>
-                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                  <Bar value={course.progress} tone={course.progress >= 70 ? "green" : "blue"} />
-                  <Spark data={course.trend} tone={course.progress >= 70 ? "green" : "blue"} height={28} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+      {/* ── Main 2-column grid ── */}
+      <div className="grid c-8-4">
+        {/* LEFT */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
-        {/* Bugungi jadval */}
-        <Card>
-          <CardHead title="Bugungi jadval" sub="Dushanba · 16-May" />
-          <div className="card-pad" style={{ display: "grid", gap: 10 }}>
-            {today.length === 0 ? (
-              <div className="empty">
-                <Icon name="calendar-x" />
-                <p>Bugun dars yo'q</p>
-              </div>
-            ) : (
-              today.map((session) => (
-                <div key={`${session.course}-${session.slot}`} className="alert blue">
-                  <Icon name={session.kind === "live" ? "video" : session.kind === "lab" ? "flask" : "chalkboard"} />
-                  <div className="body">
-                    <h4>{session.course.split(" ")[0]}</h4>
-                    <p>{SLOTS[session.slot]} · {session.group} · {session.room}</p>
-                  </div>
-                  <Pill tone={session.kind === "exam" ? "red" : session.kind === "live" ? "purple" : "blue"}>
-                    {session.kind}
-                  </Pill>
-                </div>
-              ))
-            )}
-            <div className="alert green">
-              <Icon name="checkup-list" />
-              <div className="body">
-                <h4>Ochiq maslahat vaqti</h4>
-                <p>Chorshanba · Online · Barcha oqimlar</p>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* ── Risk + Tekshirish + Q&A ── */}
-      <div className="grid c-3" style={{ marginTop: 14 }}>
-        {/* Riskdagi tinglovchilar */}
-        <Card>
-          <CardHead
-            title="Risk ostida"
-            count={risky.length}
-            actions={<Link className="btn btn-sm btn-ghost" to="/teacher/risk">Barchasi</Link>}
-          />
-          <div className="card-pad" style={{ display: "grid", gap: 10 }}>
-            {risky.slice(0, 4).map((student) => (
-              <div
-                key={student.name}
-                style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}
-                onClick={() => setStudentDrawer(student)}
-              >
-                <Avatar name={student.name} tone={student.tone} size="sm" />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700 }}>{student.name}</div>
-                  <div style={{ color: "var(--text3)", fontSize: 11 }}>
-                    {student.group} · {student.progress}% progress · {student.attendance}% davomat
-                  </div>
-                </div>
-                <Pill tone={student.risk >= 75 ? "red" : "amber"}>{student.risk}</Pill>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        {/* Tekshirish navbati */}
-        <Card>
-          <CardHead
-            title="Tekshirish navbati"
-            count={queue.length}
-            actions={<Link className="btn btn-sm btn-primary" to="/teacher/grading">Ochish</Link>}
-          />
-          <div className="card-pad" style={{ display: "grid", gap: 10 }}>
-            {queue.slice(0, 4).map((sub) => (
-              <div key={sub.id} className="alert">
-                <span className="thumb">
-                  <Icon name={sub.type === "project" ? "presentation" : sub.type === "quiz" ? "help-circle" : "file-text"} />
-                </span>
-                <div className="body">
-                  <h4>{sub.title}</h4>
-                  <p>{sub.student.name} · {sub.submittedAgo} oldin</p>
-                </div>
-                <Pill tone={sub.state === "ai-flag" ? "red" : sub.state === "appeal" ? "purple" : "amber"}>
-                  {sub.state === "ai-flag" ? "SI" : sub.state === "appeal" ? "Appeal" : "Kutilmoqda"}
-                </Pill>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        {/* Q&A + SI signal */}
-        <div style={{ display: "grid", gap: 12, alignContent: "start" }}>
+          {/* Today's schedule */}
           <Card>
             <CardHead
-              title="Q&A javob kutmoqda"
-              count={pendingQa.length}
-              actions={<Link className="btn btn-sm btn-ghost" to="/teacher/qa">Barchasi</Link>}
+              title="Bugungi jadval"
+              sub="· 16-May, Payshanba"
+              actions={
+                <Link className="btn btn-sm" to="/teacher/schedule">
+                  <Icon name="calendar" /> To'liq jadval
+                </Link>
+              }
             />
-            <div className="card-pad" style={{ display: "grid", gap: 8 }}>
-              {pendingQa.slice(0, 3).map((item) => (
-                <div key={item.id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <Avatar name={item.student.name} tone={item.student.tone} size="sm" />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: 13 }}>{item.topic.slice(0, 36)}…</div>
-                    <div style={{ fontSize: 11, color: "var(--text3)" }}>{item.course.split(" ")[0]} · {item.age}</div>
+            <div style={{ padding: "14px 18px 18px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "70px 1fr", gap: 14 }}>
+                {TODAY_SESSIONS.map((s, i) => (
+                  <div key={i} style={{ display: "contents" }}>
+                    <div className="mono num" style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>
+                      {s.t}
+                      <div style={{ fontSize: 10.5, fontWeight: 500, color: "#8a93a6" }}>{s.end}</div>
+                    </div>
+                    <div
+                      style={{
+                        padding: "12px 14px",
+                        borderRadius: 10,
+                        border: `1px solid ${s.soon ? "var(--accent-mid, #c2d6ff)" : "var(--border)"}`,
+                        background: s.soon ? "var(--accent-light, #eef4ff)" : "#fff",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 14,
+                      }}
+                    >
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 700, fontSize: 13 }}>{s.title}</div>
+                        <div style={{ fontSize: 11.5, color: "#475569", marginTop: 2 }}>
+                          <Icon name="map-pin" /> {s.room} &nbsp;·&nbsp; <Icon name="users" /> {s.group}
+                        </div>
+                      </div>
+                      {s.soon
+                        ? <Pill tone="blue" icon="alarm-clock">2 soatdan keyin</Pill>
+                        : <Pill tone="gray">Bo'sh</Pill>}
+                      <Btn
+                        size="sm"
+                        variant={s.soon ? "primary" : "default"}
+                        leftIcon={s.soon ? "video" : "list"}
+                      >
+                        {s.soon ? "Boshlash" : "Tafsilot"}
+                      </Btn>
+                    </div>
                   </div>
-                  {item.flagged && <Icon name="flag" style={{ color: "#ef4444" }} />}
+                ))}
+              </div>
+            </div>
+          </Card>
+
+          {/* Grading queue shortlist */}
+          <Card>
+            <CardHead
+              title="Tekshirilishi kerak"
+              count={todayPending.length}
+              actions={
+                <>
+                  <Pill tone="purple" icon="sparkles">AI taklif tayyor: 3</Pill>
+                  <Link className="btn btn-sm" to="/teacher/grading">
+                    <Icon name="arrow-right" /> Hammasini ko'rish
+                  </Link>
+                </>
+              }
+            />
+            <div className="table-wrap" style={{ borderRadius: 0, border: 0 }}>
+              <table className="t">
+                <thead>
+                  <tr>
+                    <th>Talaba</th>
+                    <th>Topshiriq</th>
+                    <th>Yuborildi</th>
+                    <th className="center">AI taklifi</th>
+                    <th>Holat</th>
+                    <th className="right"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {todayPending.slice(0, 5).map((sub, i) => (
+                    <tr key={sub.id || i}>
+                      <td>
+                        <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                          <Avatar name={sub.student.name} tone={sub.student.tone} size="sm" />
+                          <div>
+                            <div style={{ fontWeight: 600, fontSize: 12.5 }}>{sub.student.name}</div>
+                            <div style={{ fontSize: 11, color: "#8a93a6" }}>{sub.student.group}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ fontWeight: 600 }}>{sub.title}</div>
+                        <div style={{ fontSize: 11, color: "#8a93a6" }}>{sub.course}</div>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: 12 }}>{sub.submittedAgo} oldin</span>
+                        {sub.late && (
+                          <div style={{ marginTop: 2 }}>
+                            <Pill tone="red">kechikkan</Pill>
+                          </div>
+                        )}
+                      </td>
+                      <td className="center">
+                        {sub.suggestedScore != null ? (
+                          <span className="mono num" style={{ fontWeight: 700 }}>
+                            {sub.suggestedScore}
+                            <span style={{ color: "#8a93a6" }}>/40</span>
+                          </span>
+                        ) : (
+                          <span style={{ color: "#b0b7c5" }}>—</span>
+                        )}
+                      </td>
+                      <td>
+                        {sub.state === "needs-grade" && <Pill tone="amber" dot>Baholash kerak</Pill>}
+                        {sub.state === "ai-flag" && <Pill tone="red" icon="flag">AI shubha</Pill>}
+                        {sub.state === "appeal" && <Pill tone="purple" icon="gavel">Appeal</Pill>}
+                      </td>
+                      <td className="right">
+                        <Link className="btn btn-xs" to="/teacher/ai-grading">
+                          <Icon name="eye" /> Ochish
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+
+          {/* Course progress strip */}
+          <Card>
+            <CardHead
+              title="Kurslarim — guruh dinamikasi"
+              actions={
+                <Link className="btn btn-sm" to="/teacher/courses">
+                  <Icon name="list" /> Boshqarish
+                </Link>
+              }
+            />
+            <div style={{ padding: "10px 18px 18px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              {COURSES.slice(0, 4).map((c) => (
+                <div
+                  key={c.id}
+                  style={{
+                    border: "1px solid var(--border)",
+                    borderRadius: 10,
+                    padding: 12,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <Avatar name={c.title} tone={c.color} size="lg" />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 700, fontSize: 13 }}>{c.title}</div>
+                      <div style={{ fontSize: 11, color: "#8a93a6" }}>
+                        {c.cohort} · {c.studentsActive}/{c.studentsTotal} faol
+                      </div>
+                    </div>
+                    <Spark data={c.trend} tone="blue" height={28} />
+                  </div>
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 4 }}>
+                      <span style={{ color: "#8a93a6" }}>O'rtacha progress</span>
+                      <span className="mono num" style={{ fontWeight: 700 }}>{c.progress}%</span>
+                    </div>
+                    <Bar value={c.progress} tone={c.progress > 70 ? "green" : c.progress > 40 ? "blue" : "amber"} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        {/* RIGHT */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+
+          {/* Risk panel */}
+          <Card>
+            <CardHead
+              title="Risk paneli — yordamga muhtoj"
+              actions={
+                <Link className="btn btn-sm" to="/teacher/risk">
+                  <Icon name="arrow-right" /> Ochish
+                </Link>
+              }
+            />
+            <div style={{ padding: 16 }}>
+              <div className="note" style={{ marginBottom: 12 }}>
+                Bu list <b>jazo emas, yordam radari</b>. Davomat, topshiriq va engagement
+                signal'lariga asoslangan.
+              </div>
+              {atRisk.slice(0, 4).map((s, i) => (
+                <div
+                  key={s.name}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 11,
+                    padding: "10px 0",
+                    borderBottom: i < 3 ? "1px solid var(--hairline, #f1f3f8)" : "none",
+                  }}
+                >
+                  <Avatar name={s.name} tone={s.tone} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 700, fontSize: 12.5 }}>{s.name}</div>
+                    <div style={{ display: "flex", gap: 6, fontSize: 11, color: "#8a93a6", marginTop: 1 }}>
+                      <span>{s.group}</span>
+                      <span>·</span>
+                      <span>davomat {s.attendance}%</span>
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div
+                      className="mono num"
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 800,
+                        color: s.risk > 75 ? "var(--red, #dc2626)" : s.risk > 55 ? "var(--amber, #d97706)" : "var(--text2)",
+                      }}
+                    >
+                      {s.risk}
+                    </div>
+                    <div style={{ fontSize: 10, color: "#8a93a6", letterSpacing: 0.05 }}>RISK</div>
+                  </div>
                 </div>
               ))}
             </div>
           </Card>
 
+          {/* Q&A */}
           <Card>
-            <div className="ai-ribbon">
-              <Icon name="sparkles" />
-              SI tavsiyasi
+            <CardHead
+              title="Q&A moderatsiya"
+              count={pendingQa.length}
+              actions={
+                <Link className="btn btn-sm" to="/teacher/qa">
+                  <Icon name="arrow-right" /> Hammasini ko'rish
+                </Link>
+              }
+            />
+            <div style={{ padding: 12 }}>
+              {QA.slice(0, 3).map((q, i) => (
+                <div
+                  key={q.id}
+                  style={{
+                    padding: 12,
+                    borderRadius: 10,
+                    border: `1px solid ${q.flagged ? "var(--red-mid, #fecaca)" : "var(--hairline, #f1f3f8)"}`,
+                    marginBottom: i < 2 ? 8 : 0,
+                    background: q.flagged ? "var(--red-bg, #fef2f2)" : "#fff",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 6 }}>
+                    <Avatar name={q.student.name} tone={q.student.tone} size="sm" />
+                    <div style={{ flex: 1, fontSize: 11.5 }}>
+                      <b>{q.student.name}</b>&nbsp;
+                      <span style={{ color: "#8a93a6" }}>· {q.course.split(" ")[0]} · {q.age}</span>
+                    </div>
+                    {q.flagged && <Pill tone="red" icon="flag">Spam shubhasi</Pill>}
+                  </div>
+                  <div style={{ fontWeight: 600, fontSize: 12.5, marginBottom: 3 }}>{q.topic}</div>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "#475569",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {q.body}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="card-pad">
-              <div className="note">
-                Lab 4 uchun SI 3 ta ishga plagiat signali bergan. Tekshiruv navbatini ko'rib chiqing va manual qaror qiling.
-              </div>
-              <Link className="btn btn-sm btn-primary" to="/teacher/ai-grading" style={{ marginTop: 10, display: "inline-flex" }}>
-                <Icon name="brain" /> SI nazorati
-              </Link>
+          </Card>
+
+          {/* Quick actions */}
+          <Card className="card-pad">
+            <h3 style={{ fontSize: 13, fontWeight: 700, marginBottom: 12 }}>Tezkor amallar</h3>
+            <div style={{ display: "grid", gap: 8 }}>
+              <Btn leftIcon="speakerphone">Kurs guruhiga e'lon</Btn>
+              <Btn leftIcon="upload">Material yuklash</Btn>
+              <Btn leftIcon="file-plus">Yangi vazifa</Btn>
+              <Btn leftIcon="calendar-plus">Live session belgilash</Btn>
             </div>
           </Card>
         </div>
       </div>
-
-      {/* ── Tinglovchi drawer ── */}
-      <Drawer
-        open={studentDrawer !== null}
-        onClose={() => setStudentDrawer(null)}
-        title="Tinglovchi kartochkasi"
-        footer={
-          <>
-            <Btn variant="primary" leftIcon="message">Yordam xabari</Btn>
-            <Btn variant="ghost" leftIcon="calendar-plus">Mentor call</Btn>
-          </>
-        }
-      >
-        {studentDrawer && (
-          <div style={{ display: "grid", gap: 18 }}>
-            <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
-              <Avatar name={studentDrawer.name} tone={studentDrawer.tone} size="lg" />
-              <div>
-                <div style={{ fontWeight: 800, fontSize: 16 }}>{studentDrawer.name}</div>
-                <div style={{ color: "var(--text2)" }}>{studentDrawer.group}</div>
-                <div style={{ marginTop: 6 }}>
-                  <Pill tone={studentDrawer.risk >= 75 ? "red" : "amber"}>
-                    Risk: {studentDrawer.risk}
-                  </Pill>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              <div style={{ textAlign: "center", padding: "14px 0" }}>
-                <Donut
-                  value={studentDrawer.progress}
-                  tone="#3b82f6"
-                  size={80}
-                  stroke={10}
-                  center={
-                    <div>
-                      <div className="num" style={{ fontSize: 16, fontWeight: 800 }}>{studentDrawer.progress}%</div>
-                      <div style={{ fontSize: 10, color: "var(--text3)" }}>progress</div>
-                    </div>
-                  }
-                />
-              </div>
-              <div style={{ textAlign: "center", padding: "14px 0" }}>
-                <Donut
-                  value={studentDrawer.attendance}
-                  tone={studentDrawer.attendance >= 80 ? "#22c55e" : "#f59e0b"}
-                  size={80}
-                  stroke={10}
-                  center={
-                    <div>
-                      <div className="num" style={{ fontSize: 16, fontWeight: 800 }}>{studentDrawer.attendance}%</div>
-                      <div style={{ fontSize: 10, color: "var(--text3)" }}>davomat</div>
-                    </div>
-                  }
-                />
-              </div>
-            </div>
-
-            <dl className="kv-list">
-              <div><dt>O'rtacha ball</dt><dd className="num">{studentDrawer.gpa}%</dd></div>
-              <div><dt>Kechikkan topshiriq</dt><dd className="num">{studentDrawer.late} ta</dd></div>
-              <div><dt>Trend</dt><dd>
-                <Pill tone={studentDrawer.trend === "up" ? "green" : studentDrawer.trend === "down" ? "red" : "gray"}>
-                  {studentDrawer.trend === "up" ? "Yaxshilanmoqda" : studentDrawer.trend === "down" ? "Yomonlashmoqda" : "Barqaror"}
-                </Pill>
-              </dd></div>
-            </dl>
-
-            <div className="note">
-              <Icon name="brain" />
-              SI tavsiyasi: Davomat va progress indikatorlari asosida erta yordam rejasi tavsiya qilinadi.
-            </div>
-          </div>
-        )}
-      </Drawer>
     </>
   )
 }
