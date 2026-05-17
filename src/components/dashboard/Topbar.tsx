@@ -7,9 +7,10 @@ import { pageMetaByKey, type LmsRole } from "@/data/navItems"
 type TopbarProps = {
   pageKey: string
   role: LmsRole
+  onMenuOpen: () => void
 }
 
-export function Topbar({ pageKey, role }: TopbarProps) {
+export function Topbar({ pageKey, role, onMenuOpen }: TopbarProps) {
   const [time, setTime] = useState("")
   const meta = pageMetaByKey[pageKey] ?? { crumb: "AIRI LMS", title: "Bosh sahifa" }
 
@@ -41,6 +42,9 @@ export function Topbar({ pageKey, role }: TopbarProps) {
 
   return (
     <header className="topbar">
+      <button className="tb-hamburger" onClick={onMenuOpen} aria-label="Menyu ochish">
+        <Icon name="menu-2" />
+      </button>
       <div className="tb-left">
         <span className="tb-crumb">{meta.crumb}</span>
         <h1 className="tb-title">{meta.title}</h1>

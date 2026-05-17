@@ -12,6 +12,7 @@ import {
   Seg,
   Stat,
 } from "@/components/dashboard/LmsPrimitives"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { COURSES, STUDENTS, SUBMISSIONS, SURVEYS } from "@/data/lmsData"
 
 const MONTHS = ["Yan", "Fev", "Mar", "Apr", "May", "Iyn", "Iyl", "Avg", "Sen", "Okt", "Noy", "Dek"]
@@ -163,11 +164,11 @@ function completionColor(value: number) {
 }
 
 function heatStyle(value: number) {
-  if (value >= 88) return { background: "#15803d", color: "#fff" }
-  if (value >= 78) return { background: "#86efac", color: "#14532d" }
-  if (value >= 66) return { background: "#fde68a", color: "#78350f" }
-  if (value >= 52) return { background: "#fed7aa", color: "#7c2d12" }
-  return { background: "#fecaca", color: "#7f1d1d" }
+  if (value >= 88) return { background: "#1d4ed8", color: "#eff6ff" }
+  if (value >= 78) return { background: "#3b82f6", color: "#fff" }
+  if (value >= 66) return { background: "#93c5fd", color: "#1e3a8a" }
+  if (value >= 52) return { background: "#bfdbfe", color: "#1e40af" }
+  return { background: "#dbeafe", color: "#1e40af" }
 }
 
 export function AdminAnalytics() {
@@ -386,12 +387,20 @@ export function AdminAnalytics() {
                     const dip = course.progress < 45 && week > 6 ? 10 : 0
                     const value = Math.max(38, Math.min(96, Math.round(course.attendance + Math.sin((rowIndex + 1) * (week + 1) * 0.72) * 8 - dip)))
                     return (
-                      <span
-                        key={week}
-                        className="analytics-heat-dot"
-                        style={heatStyle(value)}
-                        title={`${course.title} · W${week + 1} · ${value}%`}
-                      />
+                      <Tooltip key={week}>
+                        <TooltipTrigger asChild>
+                          <span
+                            className="analytics-heat-dot cursor-default"
+                            style={heatStyle(value)}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          <span className="font-semibold">{course.title.split(" ").slice(0, 2).join(" ")}</span>
+                          <span className="mx-1 text-(--text3)">·</span>
+                          W{week + 1}
+                          <span className="ml-1.5 font-bold">{value}%</span>
+                        </TooltipContent>
+                      </Tooltip>
                     )
                   })}
                   <span className="mono num">{course.attendance}%</span>
