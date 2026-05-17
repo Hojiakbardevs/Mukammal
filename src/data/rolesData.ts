@@ -30,7 +30,7 @@ export const ROLE_DEFS: RoleDef[] = [
     label: "Admin",
     icon: "settings",
     color: "#0f172a",
-    description: "Operatsion boshqaruv: kurs, kohort, foydalanuvchi va schedule. AI politikani o'zgartira olmaydi.",
+    description: "Operatsion boshqaruv: kurs, o'quv oqimi, foydalanuvchi va schedule. AI politikani o'zgartira olmaydi.",
     userCount: 6,
   },
   {

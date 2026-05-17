@@ -1,9 +1,8 @@
 import { NavLink } from "react-router-dom"
-
 import { Icon } from "@/components/dashboard/LmsPrimitives"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { adminNav, studentNav, teacherNav, type LmsNavEntry, type LmsRole } from "@/data/navItems"
+import TrainingLogo from "@/assets/training.png"
 
 const roleUsers = {
   student: { name: "Aziza Mahmudova", title: "NLP-26 · Level 4", init: "AM" },
@@ -41,7 +40,9 @@ export function Sidebar({ role, collapsed, onToggle, mobileOpen, onMobileClose }
 
       <aside className={cn("sb", collapsed && "sb-collapsed", mobileOpen && "sb-mobile-open")}>
         <div className="sb-brand">
-          <div className={cn("sb-logo", collapsed && "sb-logo-sm")}>AI</div>
+          <div className={cn("sb-logo", collapsed && "sb-logo-sm")}>
+            <img src={TrainingLogo} alt="AIRI Training" />
+          </div>
           {!collapsed && (
             <div className="sb-brand-text">
               <span className="sb-brand-name">AIRI Training</span>
@@ -118,6 +119,8 @@ function SidebarItem({ item, collapsed }: SidebarItemProps) {
       className={({ isActive }) => cn("sb-item", isActive && "active")}
       to={item.href}
       end
+      title={collapsed ? item.label : undefined}
+      aria-label={collapsed ? item.label : undefined}
     >
       <Icon name={item.icon} />
       {!collapsed && <span className="sb-item-label">{item.label}</span>}
@@ -127,20 +130,6 @@ function SidebarItem({ item, collapsed }: SidebarItemProps) {
       {collapsed && item.badge ? <span className="sb-badge-dot" /> : null}
     </NavLink>
   )
-
-  if (collapsed) {
-    return (
-      <Tooltip>
-        <TooltipTrigger asChild>{link}</TooltipTrigger>
-        <TooltipContent side="right">
-          {item.label}
-          {item.badge && (
-            <span className="ml-1.5 opacity-60">{item.badge.text}</span>
-          )}
-        </TooltipContent>
-      </Tooltip>
-    )
-  }
 
   return link
 }

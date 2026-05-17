@@ -1,206 +1,224 @@
 import { useState } from "react"
 
-import { Bar, Btn, Card, CardHead, Donut, Icon, Pill, Stat, Tabs, type PillTone } from "@/components/dashboard/LmsPrimitives"
-import { SURVEYS } from "@/data/lmsData"
+import { Bar, Btn, Card, CardHead, Chip, Icon, Pill, Seg, Stat, Toolbar, type PillTone } from "@/components/dashboard/LmsPrimitives"
+import { SURVEY_QUESTION_TYPES, SURVEYS, type Survey, type SurveyComment, type SurveyQuestionType, type SurveyStatus } from "@/data/lmsData"
 
-function statusTone(status: string): PillTone {
+type SurveyTab = "builder" | "results" | "audience" | "settings"
+type SurveyFilter = SurveyStatus | "all"
+
+const FILTERS: Array<{ value: SurveyFilter; label: string; icon: string }> = [
+  { value: "active", label: "Aktiv", icon: "circle-dot" },
+  { value: "draft", label: "Draft", icon: "edit" },
+  { value: "closed", label: "Yopilgan", icon: "check" },
+]
+
+function statusTone(status: SurveyStatus): PillTone {
   if (status === "active") return "green"
   if (status === "draft") return "amber"
   return "gray"
 }
 
-function statusLabel(status: string) {
-  if (status === "active") return "Faol"
-  if (status === "draft") return "Qoralama"
-  return "Yopiq"
+function statusIcon(status: SurveyStatus) {
+  if (status === "active") return "circle-dot"
+  if (status === "draft") return "edit"
+  return "check"
 }
 
-function npsColor(nps: number): PillTone {
-  return nps >= 60 ? "green" : nps > 0 ? "amber" : "gray"
+function questionIcon(type: SurveyQuestionType) {
+  if (type === "rating") return "star"
+  if (type === "nps") return "scale"
+  if (type === "mcq") return "circle-dot"
+  if (type === "checkbox") return "checkbox"
+  if (type === "yn") return "thumb-up"
+  if (type === "long") return "align-left"
+  if (type === "scale") return "adjustments"
+  return "message"
 }
 
-const BUILDER_FIELDS = [
-  { label: "NPS savoli", type: "rating", icon: "star", required: true },
-  { label: "Trener feedback", type: "choice", icon: "list", required: true },
-  { label: "Platforma qulayligi", type: "choice", icon: "device-laptop", required: false },
-  { label: "Ochiq izoh", type: "text", icon: "message", required: false },
-]
+function sentimentTone(sentiment: SurveyComment["sentiment"]): PillTone {
+  if (sentiment === "positive") return "green"
+  if (sentiment === "neutral") return "amber"
+  return "red"
+}
+
+function sentimentLabel(sentiment: SurveyComment["sentiment"]) {
+  if (sentiment === "positive") return "ijobiy"
+  if (sentiment === "neutral") return "neytral"
+  return "salbiy"
+}
+
+function completion(survey: Survey) {
+  return Math.round((survey.responses / Math.max(survey.total, 1)) * 100)
+}
 
 export function AdminSurveys() {
-  const [tab, setTab] = useState("list")
-  const [listTab, setListTab] = useState("active")
+  const [active, setActive] = useState<Survey>(SURVEYS[0])
+  const [tab, setTab] = useState<SurveyTab>("builder")
+  const [filter, setFilter] = useState<SurveyFilter>("active")
 
-  const activeSurvey = SURVEYS.find((s) => s.status === "active")
-  const surveysInTab = SURVEYS.filter((s) => s.status === listTab)
-  const totalResponses = SURVEYS.reduce((s, sv) => s + sv.responses, 0)
+  const visibleSurveys = SURVEYS.filter((survey) => filter === "all" || survey.status === filter)
 
   return (
-    <>
-      <div className="page-head">
-        <div>
-          <h1>So'rovnomalar</h1>
-          <p>NPS monitoring, so'rovnoma konstruktori va javoblar tahlili.</p>
+    <div className="admin-surveys-layout">
+      <Card>
+        <CardHead
+          title="So'rovnomalar"
+          count={SURVEYS.length}
+          actions={
+            <Btn size="icon" variant="primary" ariaLabel="Yangi so'rovnoma">
+              <Icon name="plus" />
+            </Btn>
+          }
+        />
+        <Toolbar>
+          {FILTERS.map((item) => (
+            <Chip key={item.value} icon={item.icon} active={filter === item.value} onClick={() => setFilter(item.value)}>
+              {item.label}
+            </Chip>
+          ))}
+        </Toolbar>
+        <div style={{ padding: 8, maxHeight: 700, overflowY: "auto" }}>
+          {visibleSurveys.map((survey) => (
+            <div
+              key={survey.id}
+              className={`tree-row ${active.id === survey.id ? "active" : ""}`}
+              style={{ padding: 12, alignItems: "flex-start" }}
+              onClick={() => setActive(survey)}
+            >
+              <Icon name={statusIcon(survey.status)} />
+              <div className="grow" style={{ minWidth: 0, whiteSpace: "normal" }}>
+                <div style={{ fontWeight: 700, fontSize: 12.5, lineHeight: 1.25 }}>{survey.title}</div>
+                <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 3, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <span>
+                    <Icon name="users" /> {survey.target}
+                  </span>
+                  <span>
+                    <Icon name="forms" /> {survey.questionCount}
+                  </span>
+                </div>
+                <div style={{ marginTop: 6 }}>
+                  <Bar value={completion(survey)} tone="blue" />
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontSize: 11, color: "var(--text3)", marginTop: 4 }}>
+                  <span>
+                    <span className="num">{survey.responses}</span>/<span className="num">{survey.total}</span> javob
+                  </span>
+                  <span>{survey.lastActivity}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="page-actions">
-          <Btn leftIcon="plus">Yangi so'rovnoma</Btn>
-          <Btn variant="primary" leftIcon="send">Publish</Btn>
-        </div>
-      </div>
+      </Card>
 
-      <div className="stat-grid cols-4" style={{ marginBottom: 14 }}>
-        <Stat tone="blue"   label="Jami so'rovnoma" value={SURVEYS.length}     sub="Barcha holatlar" />
-        <Stat tone="green"  label="Faol"             value={SURVEYS.filter((s) => s.status === "active").length} sub="Hozirda ochiq" />
-        <Stat tone="amber"  label="Jami javob"       value={totalResponses}     sub="Hamma so'rovnomalar" />
-        <Stat tone="purple" label="O'rt. NPS"        value={activeSurvey?.nps ?? 0} sub={activeSurvey?.title ?? "—"} />
-      </div>
-
-      <Tabs
-        value={tab}
-        onChange={setTab}
-        items={[
-          { value: "list",     label: "Ro'yxat",      icon: "clipboard-list" },
-          { value: "builder",  label: "Konstruktor",  icon: "forms" },
-          { value: "analytics", label: "Tahlil",      icon: "chart-bar" },
-        ]}
-      />
-
-      {tab === "list" && (
-        <div style={{ marginTop: 10 }}>
-          <Tabs
-            value={listTab}
-            onChange={setListTab}
-            items={[
-              { value: "active", label: "Faol",     icon: "player-play", count: SURVEYS.filter((s) => s.status === "active").length },
-              { value: "draft",  label: "Qoralama", icon: "edit",        count: SURVEYS.filter((s) => s.status === "draft").length },
-              { value: "closed", label: "Yopiq",    icon: "lock",        count: SURVEYS.filter((s) => s.status === "closed").length },
+      <Card>
+        <CardHead
+          title={active.title}
+          actions={
+            <>
+              <Pill tone={statusTone(active.status)} dot>{active.status}</Pill>
+              <Btn size="sm" leftIcon="link">Public link</Btn>
+              <Btn size="sm" leftIcon="send" variant="primary">Yuborish</Btn>
+            </>
+          }
+        />
+        <Toolbar>
+          <Seg
+            value={tab}
+            onChange={(value) => setTab(value as SurveyTab)}
+            options={[
+              { value: "builder", label: "Savollar", icon: "forms" },
+              { value: "results", label: "Natijalar", icon: "chart-pie" },
+              { value: "audience", label: "Auditoriya", icon: "users" },
+              { value: "settings", label: "Sozlamalar", icon: "settings" },
             ]}
           />
-          <div style={{ marginTop: 10, display: "grid", gap: 12 }}>
-            {surveysInTab.length === 0 ? (
-              <div className="empty">
-                <Icon name="clipboard-x" />
-                <p>Bu bo'limda so'rovnoma yo'q</p>
-              </div>
-            ) : (
-              surveysInTab.map((survey) => (
-                <Card key={survey.id}>
-                  <div className="card-pad">
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-                      <span className="thumb">
-                        <Icon name="clipboard-list" />
-                      </span>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                          <span style={{ fontWeight: 700, fontSize: 15 }}>{survey.title}</span>
-                          <Pill tone={statusTone(survey.status)}>{statusLabel(survey.status)}</Pill>
-                          {survey.nps > 0 && <Pill tone={npsColor(survey.nps)}>NPS {survey.nps}</Pill>}
-                        </div>
-                        <div style={{ color: "var(--text2)", fontSize: 13, marginBottom: 10 }}>
-                          {survey.responses} javob · completion {survey.completion}%
-                        </div>
-                        <Bar value={survey.completion} tone={survey.completion >= 70 ? "green" : "amber"} thin />
-                      </div>
-                      <div style={{ display: "flex", gap: 6 }}>
-                        <Btn size="sm" variant="ghost" leftIcon="eye">Ko'rish</Btn>
-                        <Btn size="sm" variant="ghost" leftIcon="pencil">Tahrirlash</Btn>
-                        {survey.status === "draft" && (
-                          <Btn size="sm" variant="primary" leftIcon="send">Publish</Btn>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              ))
-            )}
-          </div>
-        </div>
-      )}
+          <div className="spacer" />
+        </Toolbar>
 
-      {tab === "builder" && (
-        <div className="grid c-7-5" style={{ marginTop: 10 }}>
-          <Card>
-            <CardHead title="So'rovnoma konstruktori" actions={<Pill tone="amber">Qoralama</Pill>} />
-            <div className="card-pad" style={{ display: "grid", gap: 10 }}>
-              {BUILDER_FIELDS.map((field, index) => (
-                <div key={field.label} style={{ border: "1px solid var(--border)", borderRadius: 10, padding: 14, display: "flex", gap: 12, alignItems: "center" }}>
-                  <span style={{ width: 28, height: 28, borderRadius: 6, background: "var(--bg2)", display: "grid", placeItems: "center", color: "var(--text3)", fontWeight: 700, fontSize: 13 }}>
-                    {index + 1}
+        {tab === "builder" && (
+          <div className="admin-survey-builder">
+            <div>
+              {active.questions.map((question, index) => (
+                <div key={`${question.type}-${question.label}`} className="admin-survey-question">
+                  <span className="thumb" style={{ width: 32, height: 32 }}>
+                    <Icon name={questionIcon(question.type)} />
                   </span>
-                  <span className="thumb">
-                    <Icon name={field.icon} />
-                  </span>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700 }}>{field.label}</div>
-                    <div style={{ fontSize: 12, color: "var(--text3)" }}>
-                      {field.type === "rating" ? "1–10 ball" : field.type === "choice" ? "Ko'p tanlov" : "Ochiq matn"} ·
-                      {field.required ? " Majburiy" : " Ixtiyoriy"}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5, flexWrap: "wrap" }}>
+                      <div style={{ fontWeight: 600, fontSize: 13 }}>{question.label}</div>
+                      {question.required ? <Pill tone="red">required</Pill> : null}
+                      <Pill tone="gray">{question.type}</Pill>
                     </div>
+                    {question.answer ? <div style={{ fontSize: 11.5, color: "var(--text3)" }}>{question.answer}</div> : null}
+                    {question.options ? (
+                      <div style={{ display: "grid", gap: 4, marginTop: 6 }}>
+                        {question.options.map((option) => (
+                          <div key={option} style={{ fontSize: 11.5, color: "var(--text2)", display: "flex", alignItems: "center", gap: 6 }}>
+                            <Icon name={question.type === "checkbox" ? "square" : "circle"} style={{ color: "#cbd5e1" }} />
+                            {option}
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
-                  <div style={{ display: "flex", gap: 4 }}>
-                    <Btn size="xs" variant="ghost" leftIcon="pencil">Tahrirlash</Btn>
-                    <Btn size="xs" variant="ghost" leftIcon="grip-vertical">Ko'chirish</Btn>
+                  <div className="row-act" style={{ opacity: 1 }}>
+                    <Btn size="icon" variant="ghost" ariaLabel={`${index + 1}-savolni ko'chirish`}>
+                      <Icon name="grip-vertical" />
+                    </Btn>
+                    <Btn size="icon" variant="ghost" ariaLabel={`${index + 1}-savolni tahrirlash`}>
+                      <Icon name="edit" />
+                    </Btn>
+                    <Btn size="icon" variant="ghost" ariaLabel={`${index + 1}-savolni o'chirish`}>
+                      <Icon name="trash" />
+                    </Btn>
                   </div>
                 </div>
               ))}
-              <Btn variant="ghost" leftIcon="plus" size="sm">Savol qo'shish</Btn>
+              <Btn leftIcon="plus" style={{ width: "100%", justifyContent: "center" }}>Savol qo'shish</Btn>
             </div>
-            <div className="card-foot">
-              <Btn variant="ghost">Bekor qilish</Btn>
-              <Btn variant="primary" leftIcon="device-floppy">Saqlash</Btn>
-            </div>
-          </Card>
 
-          <Card>
-            <CardHead title="Sozlamalar" />
-            <div className="card-pad" style={{ display: "grid", gap: 14 }}>
-              <div>
-                <label style={{ fontSize: 12, fontWeight: 700, color: "var(--text2)", display: "block", marginBottom: 6 }}>Nomi</label>
-                <input className="inp" defaultValue="Yangi so'rovnoma · May 2026" style={{ width: "100%" }} readOnly />
+            <div>
+              <div style={{ fontSize: 11, color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.08, marginBottom: 8 }}>
+                Savol turlari
               </div>
-              <div>
-                <label style={{ fontSize: 12, fontWeight: 700, color: "var(--text2)", display: "block", marginBottom: 6 }}>Maqsadli oqim</label>
-                <input className="inp" defaultValue="Barcha faol oqimlar" style={{ width: "100%" }} readOnly />
-              </div>
-              <div className="note">
-                <Icon name="info-circle" />
-                So'rovnoma publish qilingandan so'ng tinglovchilarga avtomatik xabar yuboriladi.
+              <div style={{ display: "grid", gap: 6 }}>
+                {SURVEY_QUESTION_TYPES.map((item) => (
+                  <div key={item.value} className="chip" style={{ justifyContent: "flex-start", borderStyle: "solid" }}>
+                    <Icon name={item.icon} /> {item.label}
+                  </div>
+                ))}
               </div>
             </div>
-          </Card>
-        </div>
-      )}
+          </div>
+        )}
 
-      {tab === "analytics" && (
-        <div style={{ marginTop: 10, display: "grid", gap: 14 }}>
-          <div className="grid c-3">
-            {SURVEYS.map((survey) => (
-              <Card key={survey.id}>
-                <CardHead title={survey.title} actions={<Pill tone={statusTone(survey.status)}>{statusLabel(survey.status)}</Pill>} />
-                <div className="card-pad" style={{ display: "grid", placeItems: "center", gap: 12 }}>
-                  {survey.nps > 0 ? (
-                    <>
-                      <Donut
-                        value={survey.nps}
-                        tone={survey.nps >= 60 ? "#22c55e" : "#f59e0b"}
-                        center={
-                          <div>
-                            <div className="num" style={{ fontSize: 20, fontWeight: 800 }}>{survey.nps}</div>
-                            <div style={{ fontSize: 10, color: "var(--text3)" }}>NPS</div>
+        {tab === "results" && (
+          <div style={{ padding: 18 }}>
+            <div className="stat-grid cols-4" style={{ marginBottom: 18 }}>
+              <Stat tone="blue" label="Javoblar" value={`${active.responses}/${active.total}`} sub={`${completion(active)}% to'ldirildi`} />
+              <Stat tone="green" label="NPS" value={active.nps ? `+${active.nps}` : 0} sub="trainer + kurs" trend={active.nps ? { dir: "up", label: "+4" } : undefined} />
+              <Stat tone="amber" label="O'rtacha baho" value={active.rating || 0} unit="/5" sub={`${active.responses} ovoz`} />
+              <Stat tone="purple" label="Sentiment" value={active.sentiment || 0} unit="% +" sub={`${Math.max(0, 100 - active.sentiment)}% neytral`} />
+            </div>
+            <div className="grid c-2">
+              <Card>
+                <CardHead title="Savol 1 - Kurs sifatini baholang" />
+                <div style={{ padding: 18 }}>
+                  {active.resultRows.length > 0 ? (
+                    active.resultRows.map((row) => {
+                      const percent = Math.round((row.value / Math.max(active.responses, 1)) * 100)
+
+                      return (
+                        <div key={row.label} style={{ marginBottom: 10 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", gap: 8, fontSize: 12, marginBottom: 4 }}>
+                            <span>{row.label}</span>
+                            <span className="num"><b>{row.value}</b> · {percent}%</span>
                           </div>
-                        }
-                      />
-                      <div style={{ width: "100%", display: "grid", gap: 6 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ fontSize: 12, color: "var(--text2)" }}>Javoblar</span>
-                          <span className="num" style={{ fontWeight: 700 }}>{survey.responses}</span>
+                          <Bar value={percent} tone="blue" />
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ fontSize: 12, color: "var(--text2)" }}>Completion</span>
-                          <span className="num" style={{ fontWeight: 700 }}>{survey.completion}%</span>
-                        </div>
-                        <Bar value={survey.completion} tone={survey.completion >= 70 ? "green" : "amber"} thin />
-                      </div>
-                    </>
+                      )
+                    })
                   ) : (
                     <div className="empty">
                       <Icon name="clipboard-x" />
@@ -209,10 +227,55 @@ export function AdminSurveys() {
                   )}
                 </div>
               </Card>
-            ))}
+              <Card>
+                <CardHead title="So'nggi izohlar" sub="· matnli savol" />
+                <div style={{ padding: 18, display: "grid", gap: 10 }}>
+                  {active.comments.length > 0 ? (
+                    active.comments.map((comment) => (
+                      <div key={`${comment.author}-${comment.text}`} style={{ display: "flex", gap: 10, padding: 10, background: "var(--bg4)", borderRadius: 8 }}>
+                        <Pill tone={sentimentTone(comment.sentiment)}>{sentimentLabel(comment.sentiment)}</Pill>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: 12, color: "var(--text2)" }}>{comment.text}</div>
+                          <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 2 }}>- {comment.author}</div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="empty">
+                      <Icon name="message-off" />
+                      <p>Izohlar hali kelmagan</p>
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </div>
           </div>
-        </div>
-      )}
-    </>
+        )}
+
+        {tab === "audience" && (
+          <div style={{ padding: 18 }}>
+            <div className="kv-list">
+              <div className="kv"><span className="k">Auditoriya</span><span className="v">{active.audience.target}</span></div>
+              <div className="kv"><span className="k">Anonim</span><span className="v"><Pill tone={active.audience.anonymous ? "green" : "gray"}>{active.audience.anonymous ? "Ha" : "Yo'q"}</Pill></span></div>
+              <div className="kv"><span className="k">Ochiq sana</span><span className="v">{active.audience.opensAt}</span></div>
+              <div className="kv"><span className="k">Yopilish sanasi</span><span className="v">{active.audience.closesAt}</span></div>
+              <div className="kv"><span className="k">Eslatish</span><span className="v">{active.audience.reminder}</span></div>
+            </div>
+          </div>
+        )}
+
+        {tab === "settings" && (
+          <div style={{ padding: 18 }}>
+            <div className="alert blue">
+              <Icon name="lock" />
+              <div className="body">
+                <h4>PII himoyasi</h4>
+                <p>Bu so'rovnomada anonim rejim yoqilgan. Faqat aggregat natijalar trainer va admin uchun ko'rinadi; ism va identifikatorlar yashirin.</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </Card>
+    </div>
   )
 }

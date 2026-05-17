@@ -1,156 +1,230 @@
 import { useMemo, useState } from "react"
 
-import { Avatar, Btn, Card, CardHead, Chip, Icon, Pill, Stat, Toolbar, type PillTone } from "@/components/dashboard/LmsPrimitives"
-import { AUDIT_LOGS } from "@/data/lmsData"
+import { Avatar, Btn, Card, Chip, Drawer, Icon, Pill, Stat, Tabs, Toolbar, type PillTone } from "@/components/dashboard/LmsPrimitives"
+import { AUDIT_LOGS, type AuditLog } from "@/data/lmsData"
 
-function severityTone(severity: string): PillTone {
+type AuditTab = "all" | "high" | "Admin" | "Trener" | "si" | "Security"
+
+const AUDIT_TABS: Array<{ value: AuditTab; label: string; icon?: string }> = [
+  { value: "all", label: "Hammasi" },
+  { value: "high", label: "Yuqori daraja", icon: "alert-octagon" },
+  { value: "Admin", label: "Admin amallari", icon: "shield-half" },
+  { value: "Trener", label: "Trener amallari", icon: "chalkboard" },
+  { value: "si", label: "SI service", icon: "sparkles" },
+  { value: "Security", label: "Security", icon: "lock" },
+]
+
+function roleTone(role: string): PillTone {
+  if (role === "Super Admin") return "purple"
+  if (role === "Trener") return "blue"
+  if (role === "SI xizmati") return "purple"
+  if (role === "Security") return "red"
+  if (role === "Reviewer") return "teal"
+  return "gray"
+}
+
+function severityTone(severity: AuditLog["severity"]): PillTone {
   if (severity === "high") return "red"
   if (severity === "medium") return "amber"
   if (severity === "low") return "blue"
   return "gray"
 }
 
-function severityLabel(severity: string) {
+function severityLabel(severity: AuditLog["severity"]) {
   if (severity === "high") return "Yuqori"
   if (severity === "medium") return "O'rta"
   if (severity === "low") return "Past"
   return "Ma'lumot"
 }
 
-const SEVERITY_FILTERS = [
-  { value: "all",    label: "Barchasi", icon: "filter" },
-  { value: "high",   label: "Yuqori",   icon: "alert-octagon" },
-  { value: "medium", label: "O'rta",    icon: "alert-triangle" },
-  { value: "low",    label: "Past",     icon: "info-circle" },
-  { value: "info",   label: "Info",     icon: "circle-dot" },
-]
+function actionIcon(action: string) {
+  if (action.includes("permission")) return "key"
+  if (action.includes("grade")) return "file-check"
+  if (action.includes("appeal")) return "scale"
+  if (action.includes("policy")) return "shield"
+  if (action.includes("certificate")) return "award"
+  if (action.includes("attendance")) return "calendar-check"
+  if (action.includes("auth")) return "lock"
+  if (action.includes("role")) return "users"
+  return "activity"
+}
 
-const ACTION_ICONS: Record<string, string> = {
-  "permission.grant": "key",
-  "grade.publish": "file-check",
-  "si.grade_suggest": "brain",
-  "appeal.review": "scale",
-  "policy.update": "shield",
-  "certificate.issue": "award",
-  "attendance.bulk": "calendar-check",
-  "auth.suspicious": "lock-exclamation",
-  "role.update": "users",
+function matchesTab(log: AuditLog, tab: AuditTab) {
+  if (tab === "all") return true
+  if (tab === "high") return log.severity === "high"
+  if (tab === "si") return log.role === "SI xizmati"
+  return log.role.includes(tab)
+}
+
+function payloadText(log: AuditLog) {
+  return JSON.stringify(
+    {
+      action: log.action,
+      before: log.payload.before ?? null,
+      after: log.payload.after ?? null,
+      reason: log.payload.reason,
+      approved_by: log.payload.approvedBy,
+      ai_involved: log.payload.aiInvolved,
+    },
+    null,
+    2,
+  )
 }
 
 export function AdminAudit() {
-  const [severity, setSeverity] = useState("all")
+  const [open, setOpen] = useState<AuditLog | null>(null)
+  const [tab, setTab] = useState<AuditTab>("all")
   const [query, setQuery] = useState("")
 
-  const logs = useMemo(() => {
+  const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return AUDIT_LOGS.filter((log) => {
-      const matchSev = severity === "all" || log.severity === severity
-      const matchQuery = !q || log.actor.toLowerCase().includes(q) || log.action.toLowerCase().includes(q) || log.target.toLowerCase().includes(q)
-      return matchSev && matchQuery
-    })
-  }, [severity, query])
 
-  const highCount = AUDIT_LOGS.filter((l) => l.severity === "high").length
-  const medCount = AUDIT_LOGS.filter((l) => l.severity === "medium").length
+    return AUDIT_LOGS.filter((log) => {
+      const inTab = matchesTab(log, tab)
+      const inQuery = !q || [log.actor, log.role, log.action, log.target, log.ip].some((value) => value.toLowerCase().includes(q))
+      return inTab && inQuery
+    })
+  }, [query, tab])
+
+  const highCount = AUDIT_LOGS.filter((log) => log.severity === "high").length
+  const siCount = AUDIT_LOGS.filter((log) => log.role === "SI xizmati" || log.payload.aiInvolved).length
 
   return (
     <>
-      <div className="page-head">
-        <div>
-          <h1>Audit jurnali</h1>
-          <p>Barcha tizim harakatlari, actor, amal, IP manzil va severity darajasi bilan qayd etiladi.</p>
-        </div>
-        <div className="page-actions">
-          <Btn leftIcon="download">CSV eksport</Btn>
-          <Btn variant="primary" leftIcon="shield-lock">SIEM eksport</Btn>
-        </div>
+      <div className="stat-grid cols-4" style={{ marginBottom: 18 }}>
+        <Stat tone="blue" label="Bugungi voqealar" value="1,284" sub="3,492 oxirgi 7 kun" />
+        <Stat tone="red" label="Yuqori darajali" value={highCount} sub="3 ta security alert" />
+        <Stat tone="amber" label="AI operatsiyalari" value={siCount} sub="o'rtacha confidence 0.84" />
+        <Stat tone="green" label="Davom etilganlik" value="100" unit="%" sub="oxirgi 90 kun saqlangan" />
       </div>
 
-      <div className="stat-grid cols-4" style={{ marginBottom: 14 }}>
-        <Stat tone="blue"   label="Jami log"       value={AUDIT_LOGS.length}  sub="So'nggi 24 soat" />
-        <Stat tone="red"    label="Yuqori xavf"    value={highCount}           sub="Darhol ko'rib chiqish" />
-        <Stat tone="amber"  label="O'rta xavf"     value={medCount}            sub="Kuzatuv ostida" />
-        <Stat tone="green"  label="Audit zanjiri"  value="SHA-256"             sub="Yaxlitlik tasdiqlangan" />
-      </div>
+      <Tabs
+        value={tab}
+        onChange={(value) => setTab(value as AuditTab)}
+        items={AUDIT_TABS.map((item) => ({
+          ...item,
+          count:
+            item.value === "all"
+              ? AUDIT_LOGS.length
+              : item.value === "high"
+                ? highCount
+                : AUDIT_LOGS.filter((log) => matchesTab(log, item.value)).length,
+        }))}
+      />
 
       <Card>
         <Toolbar>
-          <div style={{ position: "relative", flex: "0 0 280px" }}>
-            <Icon name="search" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "var(--text3)" }} />
+          <div className="tb-search-wrap audit-search">
+            <Icon name="search" />
             <input
-              className="inp"
-              style={{ paddingLeft: 34, width: "100%" }}
-              placeholder="Actor, amal yoki obyekt..."
+              className="tb-search"
+              style={{ width: "100%" }}
+              placeholder="Aktor, harakat yoki obyekt bo'yicha..."
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(event) => setQuery(event.target.value)}
             />
           </div>
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            {SEVERITY_FILTERS.map((f) => (
-              <Chip key={f.value} active={severity === f.value} icon={f.icon} onClick={() => setSeverity(f.value)}>
-                {f.label}
-              </Chip>
-            ))}
-          </div>
+          <Chip icon="calendar">16-May (bugun)</Chip>
+          <Chip icon="user">Aktor: hammasi</Chip>
+          <Chip icon="cube">Obyekt turi</Chip>
+          <Chip icon="map-pin">IP / hudud</Chip>
           <div className="spacer" />
-          <Btn size="sm" leftIcon="refresh">Yangilash</Btn>
+          <Btn size="sm" leftIcon="download">SIEM eksport</Btn>
+          <Btn size="sm" leftIcon="refresh">Live</Btn>
         </Toolbar>
-
-        <CardHead title="Audit log jadvali" count={logs.length} />
-
-        <div style={{ overflowX: "auto" }}>
+        <div className="table-wrap" style={{ border: 0, borderRadius: 0 }}>
           <table className="t">
             <thead>
               <tr>
                 <th>Vaqt</th>
-                <th>Actor</th>
+                <th>Aktor</th>
                 <th>Rol</th>
-                <th>Amal</th>
+                <th>Harakat</th>
                 <th>Obyekt</th>
                 <th>IP</th>
-                <th>Severity</th>
+                <th>Sev</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {logs.map((log, idx) => (
-                <tr key={`${log.ts}-${idx}`}>
-                  <td className="mono" style={{ fontSize: 12, color: "var(--text2)", whiteSpace: "nowrap" }}>{log.ts}</td>
+              {filtered.map((log, index) => (
+                <tr key={log.id} onClick={() => setOpen(log)} style={{ cursor: "pointer" }}>
+                  <td className="mono" style={{ fontSize: 11.5 }}>{log.ts}</td>
                   <td>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <Avatar name={log.actor === "system" ? "SY" : log.actor} tone="b1" size="sm" />
-                      <div>
-                        <div style={{ fontWeight: 700 }}>{log.actor}</div>
-                      </div>
-                    </div>
+                    {log.actor === "system" ? (
+                      <span className="audit-actor">
+                        <span className="thumb" style={{ width: 24, height: 24, background: "#0f1d3a", color: "#cfe1ff" }}>
+                          <Icon name="settings" />
+                        </span>
+                        <b>system</b>
+                      </span>
+                    ) : (
+                      <span className="audit-actor">
+                        <Avatar name={log.actor.replace(".", "").split(" ").reverse().join(" ")} tone={`b${(index % 8) + 1}`} size="sm" />
+                        <span style={{ fontWeight: 600 }}>{log.actor}</span>
+                      </span>
+                    )}
                   </td>
-                  <td style={{ color: "var(--text2)", fontSize: 13 }}>{log.role}</td>
+                  <td><Pill tone={roleTone(log.role)}>{log.role}</Pill></td>
                   <td>
-                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <Icon name={ACTION_ICONS[log.action] ?? "dots"} style={{ color: "var(--text3)" }} />
-                      <span className="mono" style={{ fontSize: 12 }}>{log.action}</span>
-                    </div>
+                    <span className="mono audit-action">
+                      <Icon name={actionIcon(log.action)} />
+                      {log.action}
+                    </span>
                   </td>
-                  <td style={{ fontSize: 13, color: "var(--text2)", maxWidth: 220 }}>{log.target}</td>
-                  <td className="mono" style={{ fontSize: 12, color: "var(--text3)" }}>{log.ip}</td>
-                  <td>
-                    <Pill tone={severityTone(log.severity)} dot>{severityLabel(log.severity)}</Pill>
-                  </td>
+                  <td className="audit-target">{log.target}</td>
+                  <td className="mono" style={{ fontSize: 11.5, color: "var(--text3)" }}>{log.ip}</td>
+                  <td><Pill tone={severityTone(log.severity)} icon={log.severity === "high" ? "alert-octagon" : undefined} dot={log.severity !== "high"}>{severityLabel(log.severity)}</Pill></td>
+                  <td><Icon name="chevron-right" style={{ color: "var(--text3)" }} /></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
         <div className="card-foot">
-          <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <Icon name="lock" /> Retention: 365 kun · WORM rejim · SHA-256 zanjir
-          </span>
-          <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <Icon name="circle-dot" style={{ color: "#22c55e" }} />
-            <span style={{ color: "var(--text3)", fontSize: 12 }}>Real-vaqt ulanish faol</span>
-          </span>
+          <span><Icon name="lock" /> Saqlash davri: 365 kun · WORM (immutable) · SHA-256 zanjir</span>
+          <span><Icon name="check" /> Real-time SIEM ulanmasi: <b>connected</b></span>
         </div>
       </Card>
+
+      <Drawer
+        open={!!open}
+        onClose={() => setOpen(null)}
+        title="Audit event tafsiloti"
+        footer={
+          <>
+            <Btn leftIcon="ticket">Incident ochish</Btn>
+            <div style={{ flex: 1 }} />
+            <Btn variant="primary" leftIcon="check" onClick={() => setOpen(null)}>Yopish</Btn>
+          </>
+        }
+      >
+        {open ? (
+          <>
+            <div className="kv-list">
+              <div className="kv"><span className="k">Event ID</span><span className="v mono">{open.id}</span></div>
+              <div className="kv"><span className="k">Sana / vaqt</span><span className="v mono">{open.ts}</span></div>
+              <div className="kv"><span className="k">Aktor</span><span className="v">{open.actor}</span></div>
+              <div className="kv"><span className="k">Rol</span><span className="v"><Pill tone={roleTone(open.role)}>{open.role}</Pill></span></div>
+              <div className="kv"><span className="k">Harakat</span><span className="v mono">{open.action}</span></div>
+              <div className="kv"><span className="k">Obyekt</span><span className="v">{open.target}</span></div>
+              <div className="kv"><span className="k">IP / qurilma</span><span className="v mono">{open.ip} · {open.device}</span></div>
+              <div className="kv"><span className="k">Hudud</span><span className="v">{open.region}</span></div>
+              <div className="kv"><span className="k">Sev</span><span className="v"><Pill tone={severityTone(open.severity)}>{severityLabel(open.severity)}</Pill></span></div>
+            </div>
+            <div className="row-div" />
+            <div style={{ fontWeight: 700, marginBottom: 8 }}>Payload (diff)</div>
+            <pre className="audit-payload">{payloadText(open)}</pre>
+            <div className="alert blue" style={{ marginTop: 12 }}>
+              <Icon name="lock" />
+              <div className="body">
+                <h4>Immutable</h4>
+                <p>Bu yozuv WORM jurnalga yozilgan va SHA-256 zanjir bilan oldingi yozuvga bog'langan. O'zgartirib bo'lmaydi.</p>
+              </div>
+            </div>
+          </>
+        ) : null}
+      </Drawer>
     </>
   )
 }
