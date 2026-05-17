@@ -6,8 +6,8 @@ import TrainingLogo from "@/assets/training.png"
 
 const roleUsers = {
   student: { name: "Aziza Mahmudova", title: "NLP-26 · Level 4", init: "AM" },
-  teacher: { name: "Aziza Tursunova", title: "Lead Trener · AI/ML", init: "AT" },
-  admin: { name: "Rustam Abdullaev", title: "Super Admin · AIRI", init: "RA" },
+  teacher: { name: "Shukrullo Sadullayev", title: "Lead Trener · AI/ML", init: "SS" },
+  admin: { name: "Anvarxo'dja Kadirov", title: "Super Admin · Direktor", init: "AK" },
 } satisfies Record<LmsRole, { name: string; title: string; init: string }>
 
 function navForRole(role: LmsRole) {
