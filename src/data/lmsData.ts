@@ -60,11 +60,13 @@ export type ScheduleItem = {
 export type UserRecord = {
   name: string
   email: string
-  role: "Tinglovchi" | "Trener" | "Super Admin" | "Reviewer"
+  role: "Student" | "Teacher" | "Admin" | "Super Admin" | "Reviewer"
   status: "active" | "at-risk" | "blocked" | "completed" | "inactive"
   learningStream: string
   last: string
   tone: Tone
+  twoFa: boolean
+  mode: "offline" | "online"
 }
 
 export type AuditLog = {
@@ -293,18 +295,19 @@ export const LEARNING_STREAMS = [
 ]
 
 export const USERS: UserRecord[] = [
-  { name: "Aziza Tursunova", email: "aziza.t@airi.uz", role: "Trener", status: "active", learningStream: "AI/ML yo'nalishi", last: "2 daq", tone: "b1" },
-  { name: "Rustam Abdullaev", email: "rustam.a@airi.uz", role: "Super Admin", status: "active", learningStream: "Platforma", last: "hozir", tone: "b3" },
-  { name: "Diyora Karimova", email: "diyora.k@stud.uz", role: "Tinglovchi", status: "at-risk", learningStream: "AI-26-1B", last: "3 kun", tone: "b6" },
-  { name: "Sherzod Nazarov", email: "sherzod.n@stud.uz", role: "Tinglovchi", status: "active", learningStream: "AI-26-1A", last: "1 soat", tone: "b2" },
-  { name: "Otabek Rasulov", email: "otabek.r@stud.uz", role: "Tinglovchi", status: "active", learningStream: "ML-26-2A", last: "5 daq", tone: "b3" },
-  { name: "Madina Yusupova", email: "madina.y@stud.uz", role: "Tinglovchi", status: "active", learningStream: "AI-26-1B", last: "20 daq", tone: "b5" },
-  { name: "Akmal Hudoyberdiyev", email: "akmal.h@airi.uz", role: "Trener", status: "active", learningStream: "MLOps", last: "1 soat", tone: "b4" },
-  { name: "Lola Saidova", email: "lola.s@airi.uz", role: "Reviewer", status: "active", learningStream: "Sifat nazorati", last: "2 soat", tone: "b8" },
-  { name: "Aziza Mahmudova", email: "aziza.m@stud.uz", role: "Tinglovchi", status: "completed", learningStream: "NLP-26", last: "yo'q", tone: "b8" },
-  { name: "Bobur Yuldashev", email: "bobur.y@stud.uz", role: "Tinglovchi", status: "active", learningStream: "NLP-26", last: "3 soat", tone: "b1" },
-  { name: "Olim Karimov", email: "olim.k@stud.uz", role: "Tinglovchi", status: "inactive", learningStream: "AI-26-1A", last: "21 kun", tone: "b2" },
-  { name: "Nilufar Komilova", email: "nilufar.k@stud.uz", role: "Tinglovchi", status: "active", learningStream: "ML-26-2A", last: "10 daq", tone: "b7" },
+  { name: "Aziza Tursunova",    email: "aziza.t@airi.uz",    role: "Teacher",     status: "active",    learningStream: "ML/AI",    last: "2 daq",  tone: "b1", twoFa: false, mode: "offline" },
+  { name: "Rustam Abdullaev",   email: "rustam.a@airi.uz",   role: "Super Admin", status: "active",    learningStream: "—",        last: "hozir",  tone: "b3", twoFa: true,  mode: "offline" },
+  { name: "Kamola Ergasheva",   email: "kamola.e@airi.uz",   role: "Admin",       status: "active",    learningStream: "—",        last: "30 daq", tone: "b7", twoFa: true,  mode: "offline" },
+  { name: "Diyora Karimova",    email: "diyora.k@stud.uz",   role: "Student",     status: "at-risk",   learningStream: "AI-26-1B", last: "3 kun",  tone: "b6", twoFa: true,  mode: "online"  },
+  { name: "Sherzod Nazarov",    email: "sherzod.n@stud.uz",  role: "Student",     status: "active",    learningStream: "AI-26-1A", last: "1 soat", tone: "b2", twoFa: false, mode: "offline" },
+  { name: "Otabek Rasulov",     email: "otabek.r@stud.uz",   role: "Student",     status: "active",    learningStream: "ML-26-2A", last: "5 daq",  tone: "b3", twoFa: true,  mode: "offline" },
+  { name: "Madina Yusupova",    email: "madina.y@stud.uz",   role: "Student",     status: "active",    learningStream: "AI-26-1B", last: "20 daq", tone: "b5", twoFa: true,  mode: "online"  },
+  { name: "Akmal Hudoyberdiyev",email: "akmal.h@airi.uz",    role: "Teacher",     status: "active",    learningStream: "DA",       last: "1 soat", tone: "b4", twoFa: false, mode: "offline" },
+  { name: "Lola Saidova",       email: "lola.s@airi.uz",     role: "Reviewer",    status: "active",    learningStream: "—",        last: "2 soat", tone: "b8", twoFa: true,  mode: "offline" },
+  { name: "Aziza Mahmudova",    email: "aziza.m@stud.uz",    role: "Student",     status: "completed", learningStream: "NLP-26",   last: "yo'q",   tone: "b8", twoFa: true,  mode: "online"  },
+  { name: "Bobur Yuldashev",    email: "bobur.y@stud.uz",    role: "Student",     status: "active",    learningStream: "NLP-26",   last: "3 soat", tone: "b1", twoFa: false, mode: "offline" },
+  { name: "Olim Karimov",       email: "olim.k@stud.uz",     role: "Student",     status: "inactive",  learningStream: "AI-26-1A", last: "21 kun", tone: "b2", twoFa: true,  mode: "online"  },
+  { name: "Nilufar Komilova",   email: "nilufar.k@stud.uz",  role: "Student",     status: "active",    learningStream: "ML-26-2A", last: "10 daq", tone: "b7", twoFa: true,  mode: "offline" },
 ]
 
 export const AUDIT_LOGS: AuditLog[] = [
@@ -396,10 +399,26 @@ export const FINAL_GRADES = STUDENTS.map((student, index) => ({
   approval: index < 2 ? "Ko'rib chiqilmoqda" : "Tasdiqlangan",
 }))
 
-export const CERTIFICATE_TEMPLATES = [
-  { id: "tpl-ai", title: "Sun'iy intellekt asoslari", issuer: "AIRI Training", rule: "Progress 90%+, yakuniy ball 70%+", issued: 184, color: "#1f6feb" },
-  { id: "tpl-nlp", title: "NLP amaliyoti", issuer: "AIRI Training", rule: "Barcha modullar va term loyiha", issued: 71, color: "#0d9488" },
-  { id: "tpl-mlops", title: "MLOps amaliy loyihasi", issuer: "AIRI Training", rule: "Deployment loyihasi tasdiqlangan", issued: 43, color: "#7c3aed" },
+export type CertStyle = "blue" | "gold" | "teal" | "navy" | "mono"
+export type CertStatus = "active" | "draft" | "archived"
+
+export type CertificateTemplate = {
+  id: string
+  name: string
+  style: CertStyle
+  signers: number
+  fields: number
+  issued: number
+  status: CertStatus
+  updated: string
+}
+
+export const CERTIFICATE_TEMPLATES: CertificateTemplate[] = [
+  { id: "c1", name: "AIRI · AI Fundamentals (Standart)", style: "blue", signers: 2, fields: 7, issued: 248, status: "active",   updated: "12-May" },
+  { id: "c2", name: "AIRI · NLP Track (Premium)",        style: "gold", signers: 3, fields: 9, issued: 64,  status: "active",   updated: "08-May" },
+  { id: "c3", name: "AIRI · Self-paced (Compact)",       style: "teal", signers: 1, fields: 5, issued: 92,  status: "active",   updated: "02-May" },
+  { id: "c4", name: "AIRI · ML in Production",           style: "navy", signers: 2, fields: 8, issued: 0,   status: "draft",    updated: "16-May" },
+  { id: "c5", name: "AIRI · Pilot 2024 (eski)",          style: "mono", signers: 2, fields: 6, issued: 412, status: "archived", updated: "Dek-25" },
 ]
 
 export const SURVEYS = [

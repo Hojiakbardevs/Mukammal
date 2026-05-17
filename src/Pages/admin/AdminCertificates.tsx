@@ -1,31 +1,84 @@
 import { useState } from "react"
 
-import { Bar, Btn, Card, CardHead, Icon, Pill, Stat, Tabs } from "@/components/dashboard/LmsPrimitives"
-import { CERTIFICATE_TEMPLATES, USERS } from "@/data/lmsData"
+import {
+  Avatar,
+  Btn,
+  Card,
+  Chip,
+  Icon,
+  Modal,
+  Pill,
+  Seg,
+  Toolbar,
+} from "@/components/dashboard/LmsPrimitives"
+import { CERTIFICATE_TEMPLATES } from "@/data/lmsData"
+import type { CertificateTemplate, CertStyle } from "@/data/lmsData"
 
-const issued = USERS.filter((user) => user.status === "completed").map((user, index) => ({
-  id: `cert-${index + 1}`,
-  name: user.name,
-  email: user.email,
-  tone: user.tone,
-  template: CERTIFICATE_TEMPLATES[index % CERTIFICATE_TEMPLATES.length].title,
-  templateColor: CERTIFICATE_TEMPLATES[index % CERTIFICATE_TEMPLATES.length].color,
-  issuedAt: "16-May 2026",
-  verification: `VRF-26-${1040 + index}`,
-}))
+type Palette = { a: string; b: string; ink: string }
 
-const ELIGIBILITY_RULES = [
-  "Progress 90%+",
-  "Yakuniy ball 70%+",
-  "Final loyiha tasdiqlangan",
-  "Feedback so'rovnomasi to'ldirilgan",
+function getPalette(style: CertStyle): Palette {
+  switch (style) {
+    case "gold": return { a: "#a16207", b: "#ca8a04", ink: "#78350f" }
+    case "teal": return { a: "#0d9488", b: "#14b8a6", ink: "#134e4a" }
+    case "mono": return { a: "#1f2937", b: "#374151", ink: "#0f172a" }
+    case "navy": return { a: "#0f1d3a", b: "#1e3a8a", ink: "#0c1733" }
+    default:     return { a: "#1d4ed8", b: "#3b82f6", ink: "#0a3a8c" }
+  }
+}
+
+function CertCanvas({ style, name }: { style: CertStyle; name: string }) {
+  const p = getPalette(style)
+  return (
+    <div style={{
+      aspectRatio: "1.41 / 1",
+      width: "100%",
+      borderRadius: 10,
+      position: "relative",
+      background: "#fff",
+      overflow: "hidden",
+      border: "1px solid var(--border)",
+    }}>
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 0% 0%, ${p.b}18, transparent 50%), radial-gradient(circle at 100% 100%, ${p.a}22, transparent 60%)` }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 8, background: `linear-gradient(90deg, ${p.a}, ${p.b})` }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 4, background: p.b }} />
+      <div style={{ position: "absolute", inset: 16, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: p.ink, textAlign: "center" }}>
+        <div style={{ fontSize: 9, letterSpacing: 1.6, textTransform: "uppercase", fontWeight: 700, opacity: 0.6 }}>AIRI Training</div>
+        <div style={{ fontWeight: 700, fontSize: 18, marginTop: 4 }}>Sertifikat</div>
+        <div style={{ width: 36, height: 1.5, background: p.a, margin: "8px 0" }} />
+        <div style={{ fontSize: 10, opacity: 0.7 }}>quyidagi shaxsga beriladi</div>
+        <div style={{ fontWeight: 700, fontSize: 14, marginTop: 4 }}>[TALABA F.I.O.]</div>
+        <div style={{ fontSize: 9, opacity: 0.7, marginTop: 6, padding: "0 14px" }}>{name}</div>
+        <div style={{ display: "flex", gap: 24, marginTop: 14, fontSize: 7.5, opacity: 0.7 }}>
+          <div>
+            <div style={{ height: 12, width: 50, borderBottom: `1px solid ${p.ink}`, marginBottom: 2 }} />
+            Trainer
+          </div>
+          <div>
+            <div style={{ height: 12, width: 50, borderBottom: `1px solid ${p.ink}`, marginBottom: 2 }} />
+            Director
+          </div>
+          <div style={{ width: 28, height: 28, borderRadius: "50%", border: `1.5px dashed ${p.a}`, display: "grid", placeItems: "center", fontSize: 6 }}>
+            QR
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+type Filter = "active" | "draft" | "archived"
+
+const SIGNERS = [
+  { n: "Aziza Tursunova",  r: "Lead Trainer", tone: "b1" },
+  { n: "Rustam Abdullaev", r: "Direktor",      tone: "b3" },
 ]
 
 export function AdminCertificates() {
-  const [tab, setTab] = useState("templates")
-  const [preview, setPreview] = useState(CERTIFICATE_TEMPLATES[0])
+  const [filter, setFilter] = useState<Filter>("active")
+  const [open, setOpen] = useState<CertificateTemplate | null>(null)
+  const [lang, setLang] = useState("uz")
 
-  const totalIssued = CERTIFICATE_TEMPLATES.reduce((s, t) => s + t.issued, 0)
+  const visible = CERTIFICATE_TEMPLATES.filter((t) => t.status === filter)
 
   return (
     <>
@@ -34,181 +87,121 @@ export function AdminCertificates() {
           <h1>Sertifikat shablonlari</h1>
           <p>Shablon yaratish, oldindan ko'rish, moslik qoidalari va berilgan sertifikatlar tarixi.</p>
         </div>
-        <div className="page-actions">
-          <Btn leftIcon="plus">Shablon yaratish</Btn>
-          <Btn variant="primary" leftIcon="stamp">Paketli berish</Btn>
-        </div>
       </div>
 
-      <div className="stat-grid cols-3" style={{ marginBottom: 14 }}>
-        <Stat tone="blue"   label="Shablonlar"    value={CERTIFICATE_TEMPLATES.length} sub="Faol shablonlar" />
-        <Stat tone="green"  label="Jami berilgan" value={totalIssued}                   sub="Barcha oqimlar" />
-        <Stat tone="purple" label="QR tekshiruv"  value={100}  unit="%"                 sub="Open Badges" />
+      <Toolbar>
+        <Chip icon="check" active={filter === "active"}   onClick={() => setFilter("active")}>Aktiv</Chip>
+        <Chip icon="edit"  active={filter === "draft"}    onClick={() => setFilter("draft")}>Draft</Chip>
+        <Chip icon="archive" active={filter === "archived"} onClick={() => setFilter("archived")}>Archiv</Chip>
+        <div style={{ flex: 1 }} />
+        <Btn leftIcon="copy">Shablon nusxalash</Btn>
+        <Btn variant="primary" leftIcon="plus">Yangi shablon</Btn>
+      </Toolbar>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 14, marginTop: 14 }}>
+        {visible.map((c) => (
+          <Card
+            key={c.id}
+            className="card-pad"
+            style={{ display: "flex", flexDirection: "column", gap: 12, cursor: "pointer" }}
+            onClick={() => setOpen(c)}
+          >
+            <CertCanvas style={c.style} name={c.name} />
+            <div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                <div style={{ fontWeight: 700, fontSize: 13, lineHeight: 1.3 }}>{c.name}</div>
+                {c.status === "active"   && <Pill tone="green" dot>active</Pill>}
+                {c.status === "draft"    && <Pill tone="amber" dot>draft</Pill>}
+                {c.status === "archived" && <Pill tone="gray"  dot>archived</Pill>}
+              </div>
+              <div style={{ display: "flex", gap: 10, fontSize: 11, color: "var(--text3)", marginTop: 6 }}>
+                <span><Icon name="signature" /> {c.signers} imzo</span>
+                <span><Icon name="forms" /> {c.fields} maydon</span>
+                <span><Icon name="award" /> {c.issued} berildi</span>
+              </div>
+              <div style={{ fontSize: 10.5, color: "var(--text3)", marginTop: 4 }}>Yangilangan: {c.updated}</div>
+            </div>
+          </Card>
+        ))}
       </div>
 
-      <Tabs
-        value={tab}
-        onChange={setTab}
-        items={[
-          { value: "templates", label: "Shablonlar",  icon: "award",       count: CERTIFICATE_TEMPLATES.length },
-          { value: "issued",    label: "Berilganlar", icon: "certificate", count: issued.length },
-          { value: "rules",     label: "Qoidalar",    icon: "list-check" },
-        ]}
-      />
-
-      {tab === "templates" && (
-        <div className="grid c-7-5" style={{ marginTop: 10 }}>
-          <div style={{ display: "grid", gap: 12 }}>
-            {CERTIFICATE_TEMPLATES.map((template) => (
-              <Card
-                key={template.id}
-                style={{ cursor: "pointer", outline: preview.id === template.id ? `2px solid ${template.color}` : "none" }}
-                className={preview.id === template.id ? "selected" : ""}
-              >
-                <div className="card-pad" style={{ display: "flex", gap: 14, alignItems: "center" }}>
-                  <span className="thumb" style={{ background: template.color + "22", color: template.color }}>
-                    <Icon name="award" />
-                  </span>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700, marginBottom: 2 }}>{template.title}</div>
-                    <div style={{ fontSize: 12, color: "var(--text2)" }}>{template.issuer}</div>
-                    <div style={{ fontSize: 11, color: "var(--text3)", marginTop: 2 }}>{template.rule}</div>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div className="num" style={{ fontWeight: 800, fontSize: 18, color: template.color }}>{template.issued}</div>
-                    <div style={{ fontSize: 11, color: "var(--text3)" }}>berilgan</div>
-                  </div>
+      <Modal
+        open={!!open}
+        onClose={() => setOpen(null)}
+        title={open ? `Sertifikat shabloni · ${open.name}` : ""}
+        width={820}
+        footer={
+          <>
+            <Btn variant="danger" leftIcon="trash">Arxivga</Btn>
+            <div style={{ flex: 1 }} />
+            <Btn onClick={() => setOpen(null)}>Yopish</Btn>
+            <Btn variant="primary" leftIcon="check">Saqlash</Btn>
+          </>
+        }
+      >
+        {open && (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <div>
+              <CertCanvas style={open.style} name={open.name} />
+              <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
+                <Btn size="sm" leftIcon="palette">Rang</Btn>
+                <Btn size="sm" leftIcon="typography">Shrift</Btn>
+                <Btn size="sm" leftIcon="photo">Logo</Btn>
+                <Btn size="sm" leftIcon="qrcode">QR sozlash</Btn>
+              </div>
+            </div>
+            <div style={{ display: "grid", gap: 14, alignContent: "start" }}>
+              <div className="field">
+                <label className="label">Shablon nomi</label>
+                <input className="input" defaultValue={open.name} />
+              </div>
+              <div className="field">
+                <label className="label">Til</label>
+                <Seg
+                  value={lang}
+                  onChange={setLang}
+                  options={[
+                    { value: "uz", label: "O'zbek" },
+                    { value: "en", label: "English" },
+                    { value: "ru", label: "Русский" },
+                  ]}
+                />
+              </div>
+              <div className="field">
+                <label className="label">Imzolar</label>
+                <div style={{ border: "1px solid var(--border)", borderRadius: 8 }}>
+                  {SIGNERS.map((s, i) => (
+                    <div key={s.n} style={{ display: "flex", alignItems: "center", gap: 10, padding: 10, borderBottom: i < SIGNERS.length - 1 ? "1px solid var(--border)" : "none" }}>
+                      <Avatar name={s.n} tone={s.tone} size="sm" />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 600, fontSize: 12.5 }}>{s.n}</div>
+                        <div style={{ fontSize: 11, color: "var(--text3)" }}>{s.r}</div>
+                      </div>
+                      <Btn size="sm" variant="ghost" leftIcon="x" />
+                    </div>
+                  ))}
                 </div>
-                <div className="card-foot">
-                  <Btn size="sm" variant="ghost" leftIcon="eye" onClick={() => setPreview(template)}>Ko'rish</Btn>
-                  <Btn size="sm" variant="ghost" leftIcon="pencil">Tahrirlash</Btn>
-                  <Btn size="sm" variant="primary" leftIcon="stamp">Berish</Btn>
-                </div>
-              </Card>
-            ))}
-          </div>
-
-          {/* Oldindan ko'rinish */}
-          <Card>
-            <CardHead title="Oldindan ko'rinish" />
-            <div className="card-pad">
-              <div style={{
-                border: `2px solid ${preview.color}33`,
-                borderRadius: 14,
-                padding: 24,
-                minHeight: 260,
-                background: `linear-gradient(135deg, var(--bg), ${preview.color}08)`,
-                display: "grid",
-                gap: 16,
-              }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <Icon name="award" style={{ color: preview.color, fontSize: 20 }} />
-                    <span style={{ fontWeight: 700, color: preview.color }}>{preview.issuer}</span>
-                  </div>
-                  <Pill tone="blue">Tasdiqlangan</Pill>
-                </div>
-                <div style={{ textAlign: "center", padding: "12px 0" }}>
-                  <div style={{ fontSize: 11, color: "var(--text3)", textTransform: "uppercase", letterSpacing: 2 }}>
-                    Ushbu sertifikat
-                  </div>
-                  <div style={{ fontSize: 22, fontWeight: 800, margin: "8px 0", color: preview.color }}>
-                    {preview.title}
-                  </div>
-                  <div style={{ color: "var(--text2)", fontSize: 14 }}>
-                    kursini muvaffaqiyatli yakunlaganligi uchun beriladi
-                  </div>
-                </div>
-                <Bar value={100} tone="blue" />
-                <div className="note">
-                  <Icon name="qrcode" />
-                  QR verification, digital signature va Open Badges metadata.
+                <Btn size="sm" leftIcon="plus" style={{ marginTop: 6 }}>Imzo qo'shish</Btn>
+              </div>
+              <div className="field">
+                <label className="label">Berish qoidasi</label>
+                <select className="select">
+                  <option>Course completion ≥ 100% va final score ≥ 60</option>
+                  <option>Final score ≥ 70 va attendance ≥ 75%</option>
+                  <option>Custom rule…</option>
+                </select>
+              </div>
+              <div className="field">
+                <label className="label">Tashqi verifikatsiya</label>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <Pill tone="purple" icon="qrcode">QR + URL</Pill>
+                  <Pill tone="teal" icon="key">Open Badges 3.0</Pill>
                 </div>
               </div>
             </div>
-          </Card>
-        </div>
-      )}
-
-      {tab === "issued" && (
-        <Card style={{ marginTop: 10 }}>
-          <CardHead title="Berilgan sertifikatlar" count={issued.length} />
-          <div style={{ overflowX: "auto" }}>
-            <table className="t">
-              <thead>
-                <tr>
-                  <th>Tinglovchi</th>
-                  <th>Shablon</th>
-                  <th>Berilgan sana</th>
-                  <th>Verification kodi</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {issued.map((row) => (
-                  <tr key={row.id}>
-                    <td>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span className={`av ${row.tone} sm`}>{row.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}</span>
-                        <div>
-                          <div style={{ fontWeight: 700 }}>{row.name}</div>
-                          <div style={{ fontSize: 11, color: "var(--text3)" }}>{row.email}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: row.templateColor, display: "inline-block" }} />
-                        {row.template}
-                      </div>
-                    </td>
-                    <td style={{ color: "var(--text2)", fontSize: 13 }}>{row.issuedAt}</td>
-                    <td className="mono" style={{ fontSize: 12, color: "var(--text3)" }}>{row.verification}</td>
-                    <td>
-                      <Btn size="sm" variant="ghost" leftIcon="download">PDF</Btn>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
           </div>
-        </Card>
-      )}
-
-      {tab === "rules" && (
-        <div className="grid c-2" style={{ marginTop: 10 }}>
-          <Card>
-            <CardHead title="Moslik qoidalari" actions={<Pill tone="green" icon="list-check">Aktiv</Pill>} />
-            <div className="card-pad" style={{ display: "grid", gap: 12 }}>
-              {ELIGIBILITY_RULES.map((rule) => (
-                <div key={rule} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <span className="check on" />
-                  <span style={{ fontWeight: 600 }}>{rule}</span>
-                </div>
-              ))}
-              <div className="note" style={{ marginTop: 8 }}>
-                <Icon name="info-circle" />
-                Barcha shartlar bajarilmasa sertifikat avtomatik berilmaydi.
-              </div>
-            </div>
-          </Card>
-
-          <Card>
-            <CardHead title="Kurs bo'yicha statistika" />
-            <div className="card-pad" style={{ display: "grid", gap: 14 }}>
-              {CERTIFICATE_TEMPLATES.map((t) => (
-                <div key={t.id}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                    <span style={{ fontSize: 13, fontWeight: 600 }}>{t.title}</span>
-                    <span className="num" style={{ fontSize: 13, fontWeight: 800 }}>{t.issued} ta</span>
-                  </div>
-                  <Bar value={Math.round((t.issued / totalIssued) * 100)} tone="blue" />
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
-      )}
+        )}
+      </Modal>
     </>
   )
 }

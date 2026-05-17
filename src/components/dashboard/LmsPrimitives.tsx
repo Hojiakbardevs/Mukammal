@@ -17,10 +17,11 @@ type CardProps = {
   children: ReactNode
   className?: string
   style?: CSSProperties
+  onClick?: () => void
 }
 
-export function Card({ children, className = "", style }: CardProps) {
-  return <section className={`card ${className}`.trim()} style={style}>{children}</section>
+export function Card({ children, className = "", style, onClick }: CardProps) {
+  return <section className={`card ${className}`.trim()} style={style} onClick={onClick}>{children}</section>
 }
 
 type CardHeadProps = {
@@ -86,6 +87,7 @@ type BtnProps = {
   disabled?: boolean
   className?: string
   ariaLabel?: string
+  style?: CSSProperties
 }
 
 export function Btn({
@@ -99,6 +101,7 @@ export function Btn({
   disabled = false,
   className = "",
   ariaLabel,
+  style,
 }: BtnProps) {
   const classes = ["btn"]
   if (variant !== "default") classes.push(`btn-${variant}`)
@@ -106,7 +109,7 @@ export function Btn({
   if (className) classes.push(className)
 
   return (
-    <button type={type} className={classes.join(" ")} onClick={onClick} disabled={disabled} aria-label={ariaLabel}>
+    <button type={type} className={classes.join(" ")} onClick={onClick} disabled={disabled} aria-label={ariaLabel} style={style}>
       {leftIcon ? <Icon name={leftIcon} /> : null}
       {children}
       {rightIcon ? <Icon name={rightIcon} /> : null}
@@ -506,6 +509,25 @@ export function People({ list, max = 4, size = "sm" }: PeopleProps) {
       ))}
       {overflow > 0 ? <span className={`av more ${size === "sm" ? "sm" : ""}`}>+{overflow}</span> : null}
     </div>
+  )
+}
+
+type ToggleProps = {
+  value?: boolean
+  onChange?: () => void
+  disabled?: boolean
+}
+
+export function Toggle({ value = false, onChange, disabled = false }: ToggleProps) {
+  return (
+    <button
+      type="button"
+      className={`toggle ${value ? "on" : ""} ${disabled ? "disabled" : ""}`.trim()}
+      onClick={disabled ? undefined : onChange}
+      aria-checked={value}
+      role="switch"
+      aria-label={value ? "O'chirish" : "Yoqish"}
+    />
   )
 }
 
