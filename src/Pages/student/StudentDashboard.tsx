@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 
-import { Avatar, Bar, Btn, Card, CardHead, Donut, Icon, Pill, Spark, Stat } from "@/components/dashboard/LmsPrimitives"
-import { BADGES, ME, MY_COURSES, MY_GRADES, MY_QA_FEED, MY_SCHEDULE, MY_TASKS, XP_HISTORY } from "@/data/studentData"
+import { Bar, Btn, Card, CardHead, Donut, Icon, Pill, Spark, Stat } from "@/components/dashboard/LmsPrimitives"
+import { BADGES, ME, MY_COURSES, MY_QA_FEED, MY_SCHEDULE, MY_TASKS, XP_HISTORY } from "@/data/studentData"
 
 const COURSE_COLORS: Record<string, { from: string; to: string }> = {
   b1: { from: "#6366f1", to: "#4338ca" },

@@ -27,6 +27,12 @@ const suggestions = {
     "Sertifikat qoidalarini tartibla",
     "NPS past bo'lgan kurslar uchun choralar",
   ],
+  super_admin: [
+    "Platforma auditida yuqori xavfli eventlarni ajrat",
+    "Rollar va ruxsatlar bo'yicha tekshiruv rejasi ber",
+    "SI boshqaruvi siyosatini qisqa xulosa qil",
+    "O'quv oqimlari bo'yicha strategik hisobot tayyorla",
+  ],
 } satisfies Record<LmsRole, string[]>
 
 const roleCopy = {
@@ -47,6 +53,12 @@ const roleCopy = {
     sub: "Siyosat va audit yordamchisi",
     color: "#0c1733",
     hello: "SI siyosati, audit, access va moderatsiya bo'yicha nazoratga mos tavsiya beraman.",
+  },
+  super_admin: {
+    name: "AIRI Command",
+    sub: "Platforma boshqaruvi yordamchisi",
+    color: "#991b1b",
+    hello: "Rollar, audit, SI governance va platforma sozlamalari bo'yicha strategik tavsiya beraman.",
   },
 } satisfies Record<LmsRole, { name: string; sub: string; color: string; hello: string }>
 
