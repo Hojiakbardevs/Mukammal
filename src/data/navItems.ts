@@ -67,7 +67,7 @@ export const pagePathByKey: Record<string, string> = {
 }
 
 export const pageMetaByKey: Record<string, { crumb: string; title: string }> = {
-  "s-dashboard": { crumb: "Tinglovchi / Bosh sahifa", title: "Salom, Aziza!" },
+  "s-dashboard": { crumb: "Tinglovchi / Bosh sahifa", title: "Salom, Hojiakbar!" },
   "s-courses": { crumb: "Tinglovchi / O'quv", title: "Mening kurslarim" },
   "s-course": { crumb: "Tinglovchi / Kurs · NLP", title: "Tabiiy tilni qayta ishlash" },
   "s-lesson": { crumb: "Tinglovchi / Dars", title: "Transformerlar va attention" },

@@ -1,12 +1,11 @@
-import { Eye, EyeOff, LockKeyhole, ShieldCheck } from "lucide-react"
+import { Eye, EyeOff, ShieldCheck } from "lucide-react"
 import { useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate, Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 
 import { NeuralGrid } from "@/components/landing/NeuralGrid"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -15,45 +14,7 @@ import { getDefaultRoute } from "@/context/AuthContext"
 import { mockUsers } from "@/data/mockUsers"
 import { useAuth } from "@/hooks/useAuth"
 import type { UserRole } from "@/types/auth"
-
-type DemoAccount = {
-  role: UserRole
-  label: string
-  email: string
-  password: string
-  color: string
-}
-
-const DEMO_ACCOUNTS: DemoAccount[] = [
-  {
-    role: "student",
-    label: "Tinglovchi",
-    email: "student@airi.uz",
-    password: "Student@2026!",
-    color: "bg-sky-500/15 text-sky-300 border-sky-500/30 hover:bg-sky-500/25",
-  },
-  {
-    role: "teacher",
-    label: "Trener",
-    email: "teacher@airi.uz",
-    password: "Teacher@2026!",
-    color: "bg-violet-500/15 text-violet-300 border-violet-500/30 hover:bg-violet-500/25",
-  },
-  {
-    role: "admin",
-    label: "Admin",
-    email: "admin@airi.uz",
-    password: "Admin@2026!",
-    color: "bg-amber-500/15 text-amber-300 border-amber-500/30 hover:bg-amber-500/25",
-  },
-  {
-    role: "super_admin",
-    label: "Super Admin",
-    email: "superadmin@airi.uz",
-    password: "SuperAdmin@2026!",
-    color: "bg-red-500/15 text-red-300 border-red-500/30 hover:bg-red-500/25",
-  },
-]
+import LogosPlatform from "@/assets/training.png"
 
 function canAccessPath(role: UserRole, pathname?: string) {
   if (!pathname) return false
@@ -74,12 +35,6 @@ export function LoginPage() {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  function fillDemo(account: DemoAccount) {
-    setEmail(account.email)
-    setPassword(account.password)
-    setError("")
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!email || !password) {
@@ -97,11 +52,17 @@ export function LoginPage() {
       return
     }
 
-    const found = mockUsers.find((u) => u.email.toLowerCase() === email.trim().toLowerCase())
+    const found = mockUsers.find(
+      (u) => u.email.toLowerCase() === email.trim().toLowerCase()
+    )
     if (found) {
-      const fromPath = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname
+      const fromPath = (
+        location.state as { from?: { pathname?: string } } | null
+      )?.from?.pathname
       const destination =
-        fromPath && canAccessPath(found.role, fromPath) ? fromPath : getDefaultRoute(found.role)
+        fromPath && canAccessPath(found.role, fromPath)
+          ? fromPath
+          : getDefaultRoute(found.role)
       toast.success(`${found.fullName} sifatida tizimga kirdingiz`)
       navigate(destination, { replace: true })
     }
@@ -112,7 +73,7 @@ export function LoginPage() {
       {/* Background layers */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#08152b_0%,#010b2f_50%,#070b17_100%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(36,107,254,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(36,107,254,0.07)_1px,transparent_1px)] bg-size-[56px_56px]" />
-      <div className="pointer-events-none absolute top-0 left-1/2 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-blue-600/5 blur-[140px]" />
+      <div className="pointer-events-none absolute top-0 left-1/2 h-125 w-225 -translate-x-1/2 rounded-full bg-blue-600/5 blur-[140px]" />
       <div className="pointer-events-none absolute right-0 bottom-0 h-72 w-72 rounded-full bg-cyan-500/4 blur-[100px]" />
       <div className="pointer-events-none absolute bottom-1/3 left-0 h-56 w-56 rounded-full bg-indigo-600/4 blur-[90px]" />
       <div className="pointer-events-none absolute inset-0 opacity-15">
@@ -128,13 +89,21 @@ export function LoginPage() {
             transition={{ duration: 0.6 }}
             className="mb-8 text-center"
           >
-            <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-linear-to-br from-sky-500 to-[#246BFE] shadow-[0_0_24px_rgba(36,107,254,0.4)]">
-              <LockKeyhole className="h-7 w-7 text-white" />
+            <div className="place-items-centerborder mx-auto mb-5 grid h-20 w-20 border-white/10 shadow-[0_0_28px_rgba(36,107,254,0.45)] rounded-2xl">
+              <Link to="/">
+                <img
+                  src={LogosPlatform}
+                  alt="AIRI Training LMS"
+                  className="h-20 w-20 rounded-2xl object-contain"
+                />
+              </Link>
             </div>
             <p className="mb-2 font-heading text-xs font-bold tracking-[0.28em] text-sky-400 uppercase">
               Malaka oshirish platformasiga kirish
             </p>
-            <h1 className="font-heading text-3xl font-bold text-white">AIRI Training LMS</h1>
+            <h1 className="font-heading text-3xl font-bold text-white">
+              AIRI Training LMS
+            </h1>
           </motion.div>
 
           {/* Card */}
@@ -155,7 +124,10 @@ export function LoginPage() {
 
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="email" className="text-sm font-medium text-white/75">
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-medium text-white/75"
+                  >
                     Email
                   </Label>
                   <Input
@@ -173,7 +145,10 @@ export function LoginPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="password" className="text-sm font-medium text-white/75">
+                  <Label
+                    htmlFor="password"
+                    className="text-sm font-medium text-white/75"
+                  >
                     Parol
                   </Label>
                   <div className="relative">
@@ -192,17 +167,27 @@ export function LoginPage() {
                     <button
                       type="button"
                       onClick={() => setShowPassword((v) => !v)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 transition-colors hover:text-white/70"
-                      aria-label={showPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                      className="absolute top-1/2 right-3 -translate-y-1/2 text-white/40 transition-colors hover:text-white/70"
+                      aria-label={
+                        showPassword
+                          ? "Parolni yashirish"
+                          : "Parolni ko'rsatish"
+                      }
                     >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
                     </button>
                   </div>
                 </div>
 
                 {error && (
                   <Alert className="border-red-500/30 bg-red-500/10 text-red-300">
-                    <AlertDescription className="text-sm">{error}</AlertDescription>
+                    <AlertDescription className="text-sm">
+                      {error}
+                    </AlertDescription>
                   </Alert>
                 )}
               </div>
@@ -225,45 +210,15 @@ export function LoginPage() {
 
             <Separator className="my-6 bg-white/8" />
 
-            {/* Demo accounts */}
-            <div>
-              <div className="mb-4 flex items-center gap-3">
-                <div className="h-5 w-1 shrink-0 rounded-full bg-sky-400" />
-                <h3 className="font-heading text-sm font-bold tracking-wide text-white">
-                  Demo hisoblar
-                </h3>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {DEMO_ACCOUNTS.map((account) => (
-                  <button
-                    key={account.role}
-                    type="button"
-                    onClick={() => fillDemo(account)}
-                    className={`flex items-center justify-between rounded-xl border px-3 py-2.5 text-left transition-all ${account.color}`}
-                  >
-                    <span className="font-heading text-xs font-bold tracking-wide">
-                      {account.label}
-                    </span>
-                    <Badge
-                      variant="outline"
-                      className="border-current/30 bg-transparent px-1.5 py-0 text-[10px] opacity-70"
-                    >
-                      demo
-                    </Badge>
-                  </button>
-                ))}
-              </div>
-              <p className="mt-3 text-center text-xs text-white/30">
-                Tugmani bosing — email va parol avtomatik to'ldiriladi
-              </p>
-            </div>
-
             <div className="mt-5 flex items-center gap-2 text-xs text-white/35">
               <ShieldCheck className="h-4 w-4 shrink-0 text-sky-400/70" />
-              Parol localStorage'ga saqlanmaydi. Faqat sessiya ma'lumotlari xavfsiz saqlanadi.
+              AIRI Training LMS yopiq ta’lim muhiti hisoblanadi. Kirish huquqi
+              faqat ro‘yxatdan o‘tgan tinglovchilar va mas’ul xodimlarga
+              beriladi.
             </div>
+
             <p className="mt-3 text-center text-xs text-white/35">
-              Hisob administrator tomonidan beriladi
+              Login va parol administrator tomonidan beriladi
             </p>
           </motion.div>
         </div>
