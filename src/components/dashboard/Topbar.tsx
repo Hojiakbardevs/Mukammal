@@ -21,25 +21,19 @@ export function Topbar({ pageKey, role, onMenuOpen }: TopbarProps) {
   useEffect(() => {
     const tick = () => {
       const now = new Date()
-
       const date = now.toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "short",
         year: "numeric",
       })
-
       const clock = now.toLocaleTimeString("uz-UZ", {
         hour: "2-digit",
         minute: "2-digit",
       })
-
       setTime(`${date} · ${clock}`)
     }
-
     tick()
-
     const id = window.setInterval(tick, 30_000)
-
     return () => window.clearInterval(id)
   }, [])
 
@@ -71,7 +65,6 @@ export function Topbar({ pageKey, role, onMenuOpen }: TopbarProps) {
           <Link className="tb-icon" title="Landing" to="/">
             <Icon name="home" />
           </Link>
-
           <div className="tb-icon" title="Bildirishnomalar">
             <Icon name="bell" />
             <span className="dot" />
@@ -82,10 +75,7 @@ export function Topbar({ pageKey, role, onMenuOpen }: TopbarProps) {
       <div className="tb-right flex w-full min-w-0 items-center gap-2 md:w-auto md:justify-end">
         <div className="tb-search-wrap min-w-0 flex-1 md:flex-none">
           <Icon name="search" />
-          <input
-            className="tb-search min-w-0"
-            placeholder={placeholder}
-          />
+          <input className="tb-search min-w-0" placeholder={placeholder} />
         </div>
 
         <span className="kbd hidden lg:inline-flex">Ctrl K</span>
@@ -106,6 +96,7 @@ export function Topbar({ pageKey, role, onMenuOpen }: TopbarProps) {
         <span className="kbd mono hidden xl:inline-flex" style={{ marginLeft: 4 }}>
           {time}
         </span>
+
       </div>
     </header>
   )

@@ -18,7 +18,7 @@ const COVER_COLORS: Record<string, { from: string; to: string }> = {
 
 const FORMAT_LABELS: Record<string, string> = {
   blended: "Blended",
-  cohort: "Cohort-based",
+  cohort: "O'quv oqimi asosida",
   "self-paced": "Self-paced",
 }
 

@@ -1,4 +1,4 @@
-import { Bar, Card, CardHead, Donut, Icon, Pill, Stat } from "@/components/dashboard/LmsPrimitives"
+import { Bar, Card, Donut, Icon, Pill, Stat } from "@/components/dashboard/LmsPrimitives"
 import { ME, MY_GRADES } from "@/data/studentData"
 
 export function StudentGrades() {

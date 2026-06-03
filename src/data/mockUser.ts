@@ -22,8 +22,14 @@ export const mockUsers: Record<UserRole, MockUser> = {
   },
   admin: {
     name: "Rustam Abdullaev",
-    title: "Super Admin · AIRI",
+    title: "Admin · AIRI",
     initials: "RA",
     role: "admin",
+  },
+  super_admin: {
+    name: "Super Admin",
+    title: "Bosh administrator · AIRI",
+    initials: "SA",
+    role: "super_admin",
   },
 }

@@ -1,16 +1,20 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
+
 import { Icon } from "@/components/dashboard/LmsPrimitives"
+import { useAuth } from "@/hooks/useAuth"
 import { cn } from "@/lib/utils"
-import { adminNav, studentNav, teacherNav, type LmsNavEntry, type LmsRole } from "@/data/navItems"
+import {
+  adminNav,
+  studentNav,
+  superAdminNav,
+  teacherNav,
+  type LmsNavEntry,
+  type LmsRole,
+} from "@/data/navItems"
 import TrainingLogo from "@/assets/training.png"
 
-const roleUsers = {
-  student: { name: "Aziza Mahmudova", title: "NLP-26 · Level 4", init: "AM" },
-  teacher: { name: "Shukrullo Sadullayev", title: "Lead Trener · AI/ML", init: "SS" },
-  admin: { name: "Anvarxo'dja Kadirov", title: "Super Admin · Direktor", init: "AK" },
-} satisfies Record<LmsRole, { name: string; title: string; init: string }>
-
 function navForRole(role: LmsRole) {
+  if (role === "super_admin") return superAdminNav
   if (role === "admin") return adminNav
   if (role === "teacher") return teacherNav
   return studentNav
@@ -25,17 +29,24 @@ type SidebarProps = {
 }
 
 export function Sidebar({ role, collapsed, onToggle, mobileOpen, onMobileClose }: SidebarProps) {
-  const user = roleUsers[role]
-  const nav = navForRole(role)
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+  const effectiveRole = user?.role ?? role
+  const nav = navForRole(effectiveRole)
+
+  const displayName = user?.fullName ?? "Foydalanuvchi"
+  const displayTitle = user?.position ?? user?.title ?? ""
+  const displayInit = user?.initials ?? "?"
+
+  function handleLogout() {
+    logout()
+    navigate("/login")
+  }
 
   return (
     <>
       {mobileOpen && (
-        <div
-          className="sb-overlay"
-          onClick={onMobileClose}
-          aria-hidden="true"
-        />
+        <div className="sb-overlay" onClick={onMobileClose} aria-hidden="true" />
       )}
 
       <aside className={cn("sb", collapsed && "sb-collapsed", mobileOpen && "sb-mobile-open")}>
@@ -44,10 +55,10 @@ export function Sidebar({ role, collapsed, onToggle, mobileOpen, onMobileClose }
             <img src={TrainingLogo} alt="AIRI Training" />
           </div>
           {!collapsed && (
-            <div className="sb-brand-text">
-              <span className="sb-brand-name">AIRI Training</span>
-              <div className="sb-brand-sub">
-                {role === "student" ? "O'qish · O'sish" : "Ta'lim operatsiyalari"}
+          <div className="sb-brand-text">
+            <span className="sb-brand-name">AIRI Training</span>
+            <div className="sb-brand-sub">
+                {effectiveRole === "student" ? "O'qish · O'sish" : "Ta'lim operatsiyalari"}
               </div>
             </div>
           )}
@@ -55,20 +66,6 @@ export function Sidebar({ role, collapsed, onToggle, mobileOpen, onMobileClose }
             <Icon name={collapsed ? "chevron-right" : "chevron-left"} />
           </button>
         </div>
-
-        {!collapsed && (
-          <div className="sb-role-switch">
-            <NavLink to="/app" className={`sb-role-btn ${role === "student" ? "active" : ""}`}>
-              <Icon name="school" /> Tinglovchi
-            </NavLink>
-            <NavLink to="/teacher" className={`sb-role-btn ${role === "teacher" ? "active" : ""}`}>
-              <Icon name="chalkboard" /> Trener
-            </NavLink>
-            <NavLink to="/admin" className={`sb-role-btn ${role === "admin" ? "active" : ""}`}>
-              <Icon name="shield-half" /> Admin
-            </NavLink>
-          </div>
-        )}
 
         <nav className="sb-nav">
           {nav.map((item, index) => {
@@ -86,15 +83,26 @@ export function Sidebar({ role, collapsed, onToggle, mobileOpen, onMobileClose }
           })}
         </nav>
 
-        <div className={cn("sb-foot", collapsed && "sb-foot-sm")}>
-          <div className="sb-foot-avatar">{user.init}</div>
+        <div
+          className={cn("sb-foot", collapsed && "sb-foot-sm")}
+          role="button"
+          tabIndex={0}
+          onClick={!collapsed ? handleLogout : undefined}
+          onKeyDown={(e) => e.key === "Enter" && !collapsed && handleLogout()}
+          title={collapsed ? "Chiqish" : undefined}
+          style={{ cursor: "pointer" }}
+        >
+          <div className="sb-foot-avatar">{displayInit}</div>
           {!collapsed && (
             <>
               <div className="sb-foot-info">
-                <div className="sb-foot-name">{user.name}</div>
-                <div className="sb-foot-sub">{user.title}</div>
+                <div className="sb-foot-name">{displayName}</div>
+                <div className="sb-foot-sub">{displayTitle}</div>
               </div>
-              <Icon name="chevron-up-down" style={{ color: "rgba(255,255,255,0.4)", fontSize: 16, flexShrink: 0 }} />
+              <Icon
+                name="logout"
+                style={{ color: "rgba(255,255,255,0.4)", fontSize: 16, flexShrink: 0 }}
+              />
             </>
           )}
         </div>
@@ -114,7 +122,7 @@ function SidebarItem({ item, collapsed }: SidebarItemProps) {
     : item.badge?.kind === "mute" ? "b-mute"
     : ""
 
-  const link = (
+  return (
     <NavLink
       className={({ isActive }) => cn("sb-item", isActive && "active")}
       to={item.href}
@@ -130,6 +138,4 @@ function SidebarItem({ item, collapsed }: SidebarItemProps) {
       {collapsed && item.badge ? <span className="sb-badge-dot" /> : null}
     </NavLink>
   )
-
-  return link
 }

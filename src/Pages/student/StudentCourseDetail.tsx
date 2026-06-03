@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 
-import { Avatar, Bar, Btn, Card, CardHead, Donut, Icon, Pill, Tabs } from "@/components/dashboard/LmsPrimitives"
+import { Btn, Card, CardHead, Donut, Icon, Pill, Tabs } from "@/components/dashboard/LmsPrimitives"
 import { LESSON, ME, MY_COURSES } from "@/data/studentData"
 
 export function StudentCourseDetail() {

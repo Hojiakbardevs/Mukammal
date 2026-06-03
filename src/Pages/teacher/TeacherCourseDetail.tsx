@@ -112,7 +112,7 @@ export function TeacherCourseDetail() {
               <Icon name="circle-dot" /> Published
             </span>
             <span className="pill" style={{ background: "rgba(255,255,255,0.12)", color: "#fff", borderColor: "rgba(255,255,255,0.2)" }}>
-              Blended · Cohort-based
+              Blended · O'quv oqimi asosida
             </span>
             <span style={{ fontSize: 11.5, opacity: 0.7 }}>Course ID · AIF-26B</span>
           </div>
@@ -120,7 +120,7 @@ export function TeacherCourseDetail() {
             {course.title}
           </h2>
           <div style={{ fontSize: 13, opacity: 0.85 }}>
-            Spring '26 — Cohort B · 12-Yan → 30-May · Lead trainer: A. Tursunova
+            Spring '26 — O'quv oqimi B · 12-Yan → 30-May · Lead trainer: A. Tursunova
           </div>
           <div style={{ display: "flex", gap: 28, marginTop: 18, flexWrap: "wrap" }}>
             {[
@@ -437,7 +437,7 @@ export function TeacherCourseDetail() {
                   value="blended"
                   onChange={() => {}}
                   options={[
-                    { value: "cohort",     label: "Cohort",     icon: "users" },
+                    { value: "cohort",     label: "O'quv oqimi", icon: "users" },
                     { value: "self-paced", label: "Self-paced", icon: "user" },
                     { value: "blended",    label: "Blended",    icon: "shuffle" },
                   ]}

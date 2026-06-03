@@ -1,11 +1,7 @@
-import { mockUsers } from "@/data/mockUser"
-import { useRole } from "@/hooks/useRole"
+import { useContext } from "react"
+
+import { AuthContext } from "@/context/AuthContext"
 
 export function useAuth() {
-  const role = useRole()
-
-  return {
-    isAuthenticated: true,
-    user: mockUsers[role],
-  }
+  return useContext(AuthContext)
 }

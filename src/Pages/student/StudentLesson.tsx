@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
 
 import { Avatar, Bar, Btn, Card, Icon, Pill, Tabs } from "@/components/dashboard/LmsPrimitives"
 import { LESSON, ME } from "@/data/studentData"
@@ -183,7 +182,7 @@ export function StudentLesson() {
                     background: qa.trainer ? "var(--accent-light)" : "var(--bg4)",
                     borderLeft: `3px solid ${qa.trainer ? "var(--accent)" : "var(--border2)"}`,
                   }}>
-                    {qa.trainer && <Pill tone="blue" icon="chalkboard" style={{ marginRight: 6 }}>Trener</Pill>}
+                    {qa.trainer && <span style={{ marginRight: 6 }}><Pill tone="blue" icon="chalkboard">Trener</Pill></span>}
                     {qa.a}
                   </div>
                 </div>

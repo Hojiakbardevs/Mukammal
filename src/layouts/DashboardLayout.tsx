@@ -5,6 +5,7 @@ import { AIChatWidget } from "@/components/dashboard/AIChatWidget"
 import { Sidebar } from "@/components/dashboard/Sidebar"
 import { Topbar } from "@/components/dashboard/Topbar"
 import { getPageKeyFromPath, getRoleFromPath, pagePathByKey } from "@/data/navItems"
+import { useAuth } from "@/hooks/useAuth"
 
 export type LmsOutletContext = {
   pageKey: string
@@ -25,7 +26,8 @@ function useMediaQuery(query: string) {
 export function DashboardLayout() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const role = getRoleFromPath(pathname)
+  const { user } = useAuth()
+  const role = user?.role ?? getRoleFromPath(pathname)
   const pageKey = getPageKeyFromPath(pathname)
 
   const isMobile = useMediaQuery("(max-width: 767px)")
