@@ -1,102 +1,60 @@
-# Mukammal Training LMS
+# Open LMS AI Platform and Mukammal training named based 
 
-An open-source frontend-first learning management system for training centers, institutional education portals, and AI-assisted learning workflows.
+An open-source frontend-first platform for building modern learning management systems, AI-assisted education portals, and institutional knowledge-base interfaces.
 
-This project is built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. It provides a clean foundation for role-based LMS dashboards, course interfaces, student learning flows, teacher workspaces, admin controls, and future backend/API integration.
+This project is built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. It is designed as a clean foundation for LMS dashboards, course management, document workflows, semantic search interfaces, and role-based educational platforms.
 
-> Status: Work in progress. The current repository focuses on frontend architecture, UI flows, mock data, and reusable LMS interface patterns.
+> Status: Work in progress. The current version focuses on frontend architecture, UI patterns, and reusable application structure.
 
 ---
 
 ## Why this project exists
 
-Many training centers and education teams need a practical digital platform for:
+Many educational institutions, training centers, and public-sector organizations need digital platforms for:
 
-* managing courses, lessons, groups, and learning streams;
-* separating access by student, teacher, admin, and super admin roles;
-* tracking schedules, attendance, grades, certificates, and requests;
-* preparing a frontend that can later connect to a real backend API;
-* building AI-assisted education and knowledge workflows.
+* managing courses and lessons;
+* organizing students, teachers, and administrators;
+* uploading and searching documents;
+* building knowledge-base systems;
+* integrating AI-assisted workflows;
+* improving learning and internal knowledge management.
 
-Mukammal Training LMS is intended to be a reusable open-source foundation for those needs.
+This repository provides a reusable open-source foundation for those use cases.
 
-The long-term goal is to help developers build secure, maintainable, and AI-ready education platforms without starting from a blank Vite template every time.
-
----
-
-## Current Features
-
-### Public Pages
-
-* Landing page
-* Course overview pages
-* Registration page
-* Login flow
-* Unauthorized and not-found pages
-
-### Role-Based Dashboards
-
-* Student dashboard
-* Teacher dashboard
-* Admin dashboard
-* Super Admin dashboard
-* Protected routes by role
-* Role-based redirect after login
-* Local mock authentication for frontend testing
-
-### Student Area
-
-* Course list and course detail pages
-* Current lesson page
-* Tasks
-* Grades
-* Schedule
-* Certificates
-* Profile
-
-### Teacher Area
-
-* Teacher dashboard
-* Course management view
-* Course/module detail page
-* Schedule
-* Attendance
-* Grading queue
-* AI grading review page
-* Final grades
-* Student risk panel
-* Q&A moderation
-
-### Admin and Super Admin Area
-
-* Analytics dashboard
-* Course and learning stream views
-* User management UI
-* Roles and permissions UI
-* Certificate templates
-* Surveys
-* AI governance page
-* Audit log page
-* Moderation queue
-* Platform settings route for Super Admin
+The long-term goal is to make it easier for developers to build secure, maintainable, and AI-ready education platforms without starting from zero every time.
 
 ---
 
-## Planned Features
+## Key Features
 
-* Real backend authentication with JWT
-* API client layer
-* Django or FastAPI backend example
-* PostgreSQL database schema
-* Course, lesson, group, user, and application APIs
-* Role-based access control on the backend
-* Swagger/OpenAPI documentation
+### Current Focus
+
+* Modern React + TypeScript frontend architecture
+* Vite-based fast development environment
+* Reusable UI structure for dashboards and portals
+* Clean routing and page organization
+* Responsive layout foundation
+* Scalable component structure
+* ESLint-based code quality setup
+
+### Planned Features
+
+* Role-based dashboards:
+
+  * Super Admin
+  * Admin
+  * Teacher
+  * Student
+* Course and lesson management
+* Knowledge-base module
 * Document upload workflows
 * Semantic search interface
-* AI-assisted Q&A and learning support
+* AI-assisted document exploration
+* Authentication flow
+* API integration layer
+* PostgreSQL-backed backend example
 * Docker-based local development
-* Deployment guide
-* Automated tests
+* Security documentation and contribution workflow
 
 ---
 
@@ -108,21 +66,16 @@ The long-term goal is to help developers build secure, maintainable, and AI-read
 * TypeScript
 * Vite
 * Tailwind CSS
-* React Router
-* shadcn/ui-style component structure
-* Radix UI primitives
-* Lucide icons
 * ESLint
-* Prettier
 
 ### Planned Backend
 
 * Django or FastAPI
-* Django REST Framework or equivalent REST layer
 * PostgreSQL
-* JWT authentication
+* REST API
 * Role-based access control
-* Swagger/OpenAPI
+* File/document processing
+* Semantic search pipeline
 
 ### Planned AI / Search Layer
 
@@ -136,25 +89,17 @@ The long-term goal is to help developers build secure, maintainable, and AI-read
 ## Project Structure
 
 ```bash
-MukammalTrening/
+open-lms-ai-platform/
 ├── public/
 ├── src/
-│   ├── app/
 │   ├── assets/
 │   ├── components/
-│   ├── context/
-│   ├── data/
-│   ├── hooks/
-│   ├── layouts/
-│   ├── lib/
 │   ├── pages/
-│   │   ├── admin/
-│   │   ├── auth/
-│   │   ├── landing/
-│   │   ├── student/
-│   │   └── teacher/
+│   ├── layouts/
+│   ├── hooks/
+│   ├── lib/
 │   ├── types/
-│   ├── index.css
+│   ├── App.tsx
 │   └── main.tsx
 ├── index.html
 ├── package.json
@@ -163,7 +108,7 @@ MukammalTrening/
 └── README.md
 ```
 
-The frontend is organized around roles and application areas. As backend integration grows, API clients and feature-specific modules can be added under `src/lib`, `src/app`, or dedicated feature folders.
+The structure is intentionally simple at the beginning. As the project grows, modules such as `auth`, `courses`, `dashboard`, `knowledge-base`, and `admin` can be separated into feature-based folders.
 
 ---
 
@@ -172,11 +117,9 @@ The frontend is organized around roles and application areas. As backend integra
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/hojiakbardevs/mukammal-training-lms.git
-cd mukammal-training-lms
+git clone https://github.com/hojiakbardevs/open-lms-ai-platform.git
+cd open-lms-ai-platform
 ```
-
-If your repository uses a different remote name, clone that repository instead.
 
 ### 2. Install dependencies
 
@@ -190,7 +133,7 @@ npm install
 npm run dev
 ```
 
-The app usually runs at:
+The application will usually run at:
 
 ```bash
 http://localhost:5173
@@ -207,16 +150,10 @@ npm run dev
 Starts the local development server.
 
 ```bash
-npm run dev:host
-```
-
-Starts the development server and exposes it on the local network.
-
-```bash
 npm run build
 ```
 
-Type-checks and builds the project for production.
+Builds the project for production.
 
 ```bash
 npm run preview
@@ -230,90 +167,90 @@ npm run lint
 
 Runs ESLint checks.
 
-```bash
-npm run typecheck
-```
-
-Runs TypeScript checks without building.
-
-```bash
-npm run format
-```
-
-Formats TypeScript and React source files with Prettier.
-
 ---
 
 ## Environment Variables
 
-Create a local `.env` file when backend integration is added:
+Create a `.env.example` file for public documentation:
 
 ```env
 VITE_API_BASE_URL=http://localhost:8000/api
-VITE_APP_NAME=Mukammal Training LMS
+VITE_APP_NAME=Open LMS AI Platform
 ```
 
-Do not commit real `.env` files. Use `.env.example` for public documentation.
+Do not commit real `.env` files to the repository.
+
+Recommended `.gitignore` entries:
+
+```gitignore
+.env
+.env.*
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+```
 
 ---
 
 ## Roadmap
 
-### Phase 1 - Frontend Foundation
+### Phase 1 — Frontend Foundation
 
-* [x] Landing page
-* [x] Role-based dashboard shell
-* [x] Student dashboard pages
-* [x] Teacher dashboard pages
-* [x] Admin and Super Admin pages
-* [x] Protected route structure
-* [x] Mock authentication for UI testing
+* [ ] Clean application layout
+* [ ] Dashboard shell
+* [ ] Navigation structure
+* [ ] Reusable UI components
+* [ ] Responsive pages
+* [ ] Basic course pages
+* [ ] Basic knowledge-base pages
 
-### Phase 2 - Frontend Polish
+### Phase 2 — LMS Modules
 
-* [ ] Accessibility review
-* [ ] Responsive QA across main pages
-* [ ] Form validation improvements
-* [ ] Empty, loading, and error states
-* [ ] Component documentation
+* [ ] Course list
+* [ ] Course detail page
+* [ ] Lesson page
+* [ ] Student dashboard
+* [ ] Teacher dashboard
+* [ ] Admin dashboard
+* [ ] User role interface
 
-### Phase 3 - Backend Integration
+### Phase 3 — Backend Integration
 
 * [ ] API client structure
-* [ ] JWT authentication integration
-* [ ] User API
+* [ ] Authentication integration
 * [ ] Course API
-* [ ] Lesson API
-* [ ] Group API
-* [ ] Application/request API
-* [ ] Dashboard statistics API
+* [ ] User API
+* [ ] Document API
+* [ ] PostgreSQL backend example
 
-### Phase 4 - AI and Knowledge Workflows
+### Phase 4 — AI and Semantic Search
 
 * [ ] Document upload interface
+* [ ] Embedding pipeline example
 * [ ] Semantic search UI
-* [ ] AI-assisted course Q&A
-* [ ] AI grading support workflow
-* [ ] Governance and audit documentation
+* [ ] AI-assisted document Q&A
+* [ ] Search result ranking interface
 
-### Phase 5 - Security and Production Readiness
+### Phase 5 — Security and Production Readiness
 
 * [ ] Security policy
+* [ ] Input validation guidelines
 * [ ] Dependency audit workflow
 * [ ] Docker setup
 * [ ] Deployment guide
 * [ ] Contribution guide
-* [ ] Automated tests
 
 ---
 
 ## Security
 
-Security is a core goal because LMS platforms handle users, roles, learning progress, documents, and institutional data.
+Security is a core goal of this project because LMS and knowledge-base platforms often handle users, roles, documents, and institutional data.
 
 Planned security focus areas:
 
-* authentication and session flow review;
+* authentication flow review;
 * role-based access control;
 * secure file upload patterns;
 * API request validation;
@@ -350,8 +287,8 @@ Before contributing, please read `CONTRIBUTING.md`.
 This project can be adapted for:
 
 * online course platforms;
-* training center LMS systems;
-* teacher and student dashboards;
+* university training portals;
+* teacher/student dashboards;
 * institutional knowledge bases;
 * AI-assisted document search systems;
 * public-sector education platforms;
@@ -380,6 +317,6 @@ See the `LICENSE` file for details.
 
 The vision of this project is to build an open, practical, and developer-friendly foundation for AI-ready education platforms.
 
-Education systems are becoming more digital. Lessons, users, assignments, assessments, documents, and institutional knowledge need one coherent interface.
+Education systems are becoming more digital. Documents, lessons, users, assessments, and institutional knowledge are no longer separate islands. They need one coherent interface.
 
-Mukammal Training LMS is a step in that direction: a clean, extensible, open-source frontend where LMS workflows and AI-assisted learning systems can grow together.
+This repository is a step toward that direction: a clean, extensible, open-source platform where LMS workflows and AI-assisted knowledge systems can grow together.
