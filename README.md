@@ -1,620 +1,385 @@
-Albatta. Siz yuborgan TZ matnini yanada **rasmiyroq, aniqroq va topshiriq sifatida kuchliroq** qilib qayta tuzdim. Asosiy mazmun saqlangan: frontend ~80% tayyor, Ilhom backend, Javohir server/database/deploy, ikkalasi integratsiya va testingni yopadi. 
+# Mukammal Training LMS
+
+An open-source frontend-first learning management system for training centers, institutional education portals, and AI-assisted learning workflows.
+
+This project is built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS**. It provides a clean foundation for role-based LMS dashboards, course interfaces, student learning flows, teacher workspaces, admin controls, and future backend/API integration.
+
+> Status: Work in progress. The current repository focuses on frontend architecture, UI flows, mock data, and reusable LMS interface patterns.
 
 ---
 
-# Mukammal Training LMS loyihasi bo‘yicha texnik topshiriq
+## Why this project exists
 
-## Status
+Many training centers and education teams need a practical digital platform for:
 
-**Frontend qismi:** taxminan 80% tayyor.
-**Asosiy vazifa:** backend, database, API, server, integratsiya va testing ishlarini yakunlab, platformani to‘liq ishlaydigan holatga keltirish.
+* managing courses, lessons, groups, and learning streams;
+* separating access by student, teacher, admin, and super admin roles;
+* tracking schedules, attendance, grades, certificates, and requests;
+* preparing a frontend that can later connect to a real backend API;
+* building AI-assisted education and knowledge workflows.
 
----
+Mukammal Training LMS is intended to be a reusable open-source foundation for those needs.
 
-## 1. Umumiy maqsad
-
-**Mukammal Training LMS** — o‘quv kurslarini boshqarish, foydalanuvchilarni rollar bo‘yicha ajratish, darslar, guruhlar, arizalar, statistika va platforma kontentlarini boshqarish uchun ishlab chiqilayotgan LMS platforma.
-
-Frontend qismi asosiy ko‘rinishda tayyor bo‘lgani sababli, hozirgi bosqichda asosiy e’tibor quyidagi ishlarni yakunlashga qaratiladi:
-
-* Django va Django REST Framework asosida backend qismini ishlab chiqish;
-* PostgreSQL database model va relationlarini to‘g‘ri shakllantirish;
-* frontend uchun kerakli API endpointlarni tayyorlash;
-* Swagger/OpenAPI orqali API hujjatlarini berish;
-* backendni production serverga joylashtirish;
-* frontend va backend integratsiyasini yakunlash;
-* testing, bug fix va yakuniy demo flow’ni tayyorlash.
-
-Platforma yakunida frontend real API bilan ishlashi, foydalanuvchilar roliga qarab tizimga kirishi va barcha asosiy modullar barqaror ishlashi kerak.
+The long-term goal is to help developers build secure, maintainable, and AI-ready education platforms without starting from a blank Vite template every time.
 
 ---
 
-## 2. Loyiha doirasi
+## Current Features
 
-Loyiha doirasida quyidagi modullar to‘liq ishlashi shart:
+### Public Pages
 
-* autentifikatsiya va avtorizatsiya;
-* Super Admin paneli;
-* o‘qituvchi paneli;
-* talaba paneli;
-* foydalanuvchilar boshqaruvi;
-* kurslar boshqaruvi;
-* darslar boshqaruvi;
-* guruhlar boshqaruvi;
-* arizalar va so‘rovlar boshqaruvi;
-* dashboard va statistika;
-* media/static fayllar bilan ishlash;
-* demo yoki real kontentlarni database’ga kiritish;
-* frontend-backend integratsiyasi;
-* testing va yakuniy deploy.
+* Landing page
+* Course overview pages
+* Registration page
+* Login flow
+* Unauthorized and not-found pages
 
----
+### Role-Based Dashboards
 
-## 3. Texnologik talablar
+* Student dashboard
+* Teacher dashboard
+* Admin dashboard
+* Super Admin dashboard
+* Protected routes by role
+* Role-based redirect after login
+* Local mock authentication for frontend testing
 
-Backend quyidagi texnologiyalar asosida ishlab chiqilishi kerak:
+### Student Area
 
-* **Python**
-* **Django**
-* **Django REST Framework**
-* **PostgreSQL**
-* **JWT Authentication**
-* **Role-based Access Control**
-* **Swagger / OpenAPI documentation**
-* **Gunicorn**
-* **Nginx**
-* **Docker yoki virtual environment**
-* **Production `.env` configuration**
+* Course list and course detail pages
+* Current lesson page
+* Tasks
+* Grades
+* Schedule
+* Certificates
+* Profile
 
-Qo‘shimcha texnik talablar:
+### Teacher Area
 
-* API response formatlari bir xil standartda bo‘lishi kerak;
-* error response’lar tushunarli va yagona formatda qaytishi kerak;
-* listing endpointlarda pagination, filter va search imkoniyati bo‘lishi kerak;
-* media fayllar uchun to‘g‘ri URL va storage sozlamalari qilinishi kerak;
-* production holatda `DEBUG=False` bo‘lishi kerak;
-* secret key, database password va boshqa maxfiy ma’lumotlar `.env` orqali boshqarilishi kerak.
+* Teacher dashboard
+* Course management view
+* Course/module detail page
+* Schedule
+* Attendance
+* Grading queue
+* AI grading review page
+* Final grades
+* Student risk panel
+* Q&A moderation
 
----
+### Admin and Super Admin Area
 
-## 4. Mas’ul xodimlar
-
-## 4.1. Ilhom — Backend developer
-
-Ilhom quyidagi ishlar uchun mas’ul hisoblanadi:
-
-* Django project strukturasi;
-* backend app’larni yaratish;
-* database modellari va migrationlar;
-* Django REST Framework API endpointlar;
-* JWT login, refresh va logout flow;
-* role-based permissionlar;
-* Super Admin, O‘qituvchi va Talaba rollari;
-* users, courses, lessons, groups, applications va dashboard APIlari;
-* Swagger/OpenAPI hujjatlari;
-* API testing va backend bug fix.
+* Analytics dashboard
+* Course and learning stream views
+* User management UI
+* Roles and permissions UI
+* Certificate templates
+* Surveys
+* AI governance page
+* Audit log page
+* Moderation queue
+* Platform settings route for Super Admin
 
 ---
 
-## 4.2. Javohir — Server, Database va Deployment
+## Planned Features
 
-Javohir quyidagi ishlar uchun mas’ul hisoblanadi:
-
-* server muhitini tayyorlash;
-* PostgreSQL production database yaratish;
-* database user, permission va backup rejalarini sozlash;
-* backendni serverga deploy qilish;
-* Gunicorn va Nginx sozlamalari;
-* domain yoki subdomain orqali API’ni ochish;
-* `.env`, allowed hosts, CORS va production security sozlamalari;
-* static/media fayllarni servis qilish;
-* server loglari va minimal monitoringni yo‘lga qo‘yish.
-
----
-
-## 4.3. Ilhom va Javohir birgalikda
-
-Quyidagi ishlar Ilhom va Javohir tomonidan birgalikda bajariladi:
-
-* frontend va backend integratsiyasi;
-* API endpointlarni frontend talablariga moslashtirish;
-* database’ni demo yoki real kontent bilan to‘ldirish;
-* integratsiya testing;
-* role-based testing;
-* server testing;
-* bug fix;
-* yakuniy demo flow tayyorlash;
-* platformani topshirishga tayyor holatga keltirish.
+* Real backend authentication with JWT
+* API client layer
+* Django or FastAPI backend example
+* PostgreSQL database schema
+* Course, lesson, group, user, and application APIs
+* Role-based access control on the backend
+* Swagger/OpenAPI documentation
+* Document upload workflows
+* Semantic search interface
+* AI-assisted Q&A and learning support
+* Docker-based local development
+* Deployment guide
+* Automated tests
 
 ---
 
-## 5. Rollar va ruxsatlar
+## Tech Stack
 
-Platformada quyidagi rollar bo‘ladi:
+### Frontend
 
-* **Super Admin**
-* **O‘qituvchi**
-* **Talaba**
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* React Router
+* shadcn/ui-style component structure
+* Radix UI primitives
+* Lucide icons
+* ESLint
+* Prettier
 
-Asosiy talablar:
+### Planned Backend
 
-* har bir foydalanuvchi faqat o‘z roliga tegishli sahifa va ma’lumotlarni ko‘ra olishi kerak;
-* ruxsatsiz endpointlarga kirish qat’iy cheklanishi kerak;
-* noto‘g‘ri token yoki tokensiz so‘rov yuborilganda 401 qaytishi kerak;
-* ruxsati yetarli bo‘lmagan foydalanuvchiga 403 qaytishi kerak;
-* frontend refresh bo‘lganda sessiya va token flow to‘g‘ri ishlashi kerak.
+* Django or FastAPI
+* Django REST Framework or equivalent REST layer
+* PostgreSQL
+* JWT authentication
+* Role-based access control
+* Swagger/OpenAPI
 
----
+### Planned AI / Search Layer
 
-# 6. Funksional talablar
-
-## 6.1. Autentifikatsiya
-
-Quyidagi imkoniyatlar bo‘lishi kerak:
-
-* login;
-* logout;
-* access token;
-* refresh token;
-* token refresh;
-* password hashing;
-* foydalanuvchi rolini aniqlash;
-* admin tomonidan foydalanuvchi yaratish;
-* role-based permissionlar.
-
-**Natija:** foydalanuvchi tizimga kiradi, roli aniqlanadi va tegishli panelga yo‘naltiriladi.
+* Embedding models
+* Vector search
+* Document indexing
+* AI-assisted search and summarization workflows
 
 ---
 
-## 6.2. Super Admin paneli
+## Project Structure
 
-Super Admin quyidagilarni boshqara olishi kerak:
+```bash
+MukammalTrening/
+├── public/
+├── src/
+│   ├── app/
+│   ├── assets/
+│   ├── components/
+│   ├── context/
+│   ├── data/
+│   ├── hooks/
+│   ├── layouts/
+│   ├── lib/
+│   ├── pages/
+│   │   ├── admin/
+│   │   ├── auth/
+│   │   ├── landing/
+│   │   ├── student/
+│   │   └── teacher/
+│   ├── types/
+│   ├── index.css
+│   └── main.tsx
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── README.md
+```
 
-* foydalanuvchilar;
-* o‘qituvchilar;
-* talabalar;
-* kurslar;
-* darslar;
-* guruhlar;
-* arizalar;
-* dashboard statistikasi;
-* platforma kontentlari.
-
-**Natija:** Super Admin platformadagi asosiy boshqaruv amallarini to‘liq bajara oladi.
-
----
-
-## 6.3. Kurslar moduli
-
-Kurs ma’lumotlari:
-
-* nomi;
-* tavsifi;
-* davomiyligi;
-* o‘qituvchi yoki o‘qituvchilar;
-* status;
-* rasm yoki media;
-* yaratilgan sana;
-* yangilangan sana.
-
-API imkoniyatlari:
-
-* kurs yaratish;
-* kursni tahrirlash;
-* kursni o‘chirish;
-* kurslar ro‘yxatini olish;
-* bitta kurs ma’lumotini olish;
-* kursga o‘qituvchi biriktirish;
-* kursga guruh yoki talabalarni biriktirish.
-
-**Natija:** kurslar to‘liq boshqariladi va frontendda real API orqali ko‘rinadi.
+The frontend is organized around roles and application areas. As backend integration grows, API clients and feature-specific modules can be added under `src/lib`, `src/app`, or dedicated feature folders.
 
 ---
 
-## 6.4. Darslar moduli
+## Getting Started
 
-Dars ma’lumotlari:
+### 1. Clone the repository
 
-* nomi;
-* tavsifi;
-* video yoki fayl;
-* matnli kontent;
-* tartib raqami;
-* kursga bog‘lanish;
-* status.
+```bash
+git clone https://github.com/hojiakbardevs/mukammal-training-lms.git
+cd mukammal-training-lms
+```
 
-API imkoniyatlari:
+If your repository uses a different remote name, clone that repository instead.
 
-* dars yaratish;
-* darsni tahrirlash;
-* darsni o‘chirish;
-* kurs bo‘yicha darslar ro‘yxatini olish;
-* bitta dars ma’lumotini olish;
-* darslarni tartib bo‘yicha chiqarish.
+### 2. Install dependencies
 
-**Natija:** har bir kurs ichida darslar to‘g‘ri tartibda ishlaydi.
+```bash
+npm install
+```
 
----
+### 3. Start the development server
 
-## 6.5. Guruhlar moduli
+```bash
+npm run dev
+```
 
-Guruh ma’lumotlari:
+The app usually runs at:
 
-* guruh nomi;
-* biriktirilgan kurs;
-* o‘qituvchi;
-* talabalar;
-* boshlanish sanasi;
-* tugash sanasi;
-* status.
-
-API imkoniyatlari:
-
-* guruh yaratish;
-* guruhni tahrirlash;
-* guruh ma’lumotini olish;
-* guruhga o‘qituvchi biriktirish;
-* guruhga talaba qo‘shish;
-* guruhdan talabani olib tashlash.
-
-**Natija:** guruhlar kurs, o‘qituvchi va talabalar bilan to‘g‘ri bog‘langan holda ishlaydi.
+```bash
+http://localhost:5173
+```
 
 ---
 
-## 6.6. Foydalanuvchilar moduli
+## Available Scripts
 
-Foydalanuvchi ma’lumotlari:
+```bash
+npm run dev
+```
 
-* ism;
-* familiya;
-* telefon;
-* email;
-* rol;
-* status;
-* ro‘yxatdan o‘tgan sana.
+Starts the local development server.
 
-API imkoniyatlari:
+```bash
+npm run dev:host
+```
 
-* foydalanuvchi yaratish;
-* foydalanuvchini tahrirlash;
-* foydalanuvchini o‘chirish;
-* foydalanuvchilar ro‘yxatini olish;
-* rol bo‘yicha filter;
-* status bo‘yicha filter;
-* search;
-* pagination.
+Starts the development server and exposes it on the local network.
 
-**Natija:** Super Admin foydalanuvchilarni to‘liq boshqara oladi.
+```bash
+npm run build
+```
 
----
+Type-checks and builds the project for production.
 
-## 6.7. Arizalar va so‘rovlar moduli
+```bash
+npm run preview
+```
 
-Ariza ma’lumotlari:
+Previews the production build locally.
 
-* ism;
-* familiya;
-* telefon;
-* email;
-* tashkilot;
-* lavozim;
-* tanlangan kurs;
-* xabar;
-* status.
+```bash
+npm run lint
+```
 
-Statuslar:
+Runs ESLint checks.
 
-* yangi;
-* ko‘rib chiqilmoqda;
-* qabul qilindi;
-* rad etildi.
+```bash
+npm run typecheck
+```
 
-API imkoniyatlari:
+Runs TypeScript checks without building.
 
-* ariza yaratish;
-* arizalar ro‘yxatini olish;
-* ariza statusini o‘zgartirish;
-* arizani ko‘rish;
-* filter va search.
+```bash
+npm run format
+```
 
-**Natija:** kelgan arizalar admin panelda ko‘rinadi va statuslar orqali boshqariladi.
+Formats TypeScript and React source files with Prettier.
 
 ---
 
-## 6.8. Dashboard va statistika
+## Environment Variables
 
-Dashboard API orqali quyidagi ma’lumotlar qaytishi kerak:
+Create a local `.env` file when backend integration is added:
 
-* jami foydalanuvchilar soni;
-* jami talabalar soni;
-* jami o‘qituvchilar soni;
-* jami kurslar soni;
-* faol kurslar soni;
-* faol guruhlar soni;
-* yangi arizalar soni;
-* tugallangan kurslar soni.
+```env
+VITE_API_BASE_URL=http://localhost:8000/api
+VITE_APP_NAME=Mukammal Training LMS
+```
 
-Talab:
-
-* Super Admin uchun umumiy statistika;
-* O‘qituvchi uchun o‘ziga tegishli kurs va guruhlar statistikasi;
-* Talaba uchun o‘z kurslari va darslariga oid ma’lumotlar.
-
-**Natija:** har bir rol o‘ziga mos dashboard ma’lumotlarini ko‘radi.
+Do not commit real `.env` files. Use `.env.example` for public documentation.
 
 ---
 
-## 6.9. Database’ni kontent bilan to‘ldirish
+## Roadmap
 
-Database quyidagi ma’lumotlar bilan to‘ldirilishi kerak:
+### Phase 1 - Frontend Foundation
 
-* kurslar;
-* darslar;
-* demo guruhlar;
-* demo Super Admin account;
-* demo O‘qituvchi account;
-* demo Talaba account;
-* test uchun arizalar;
-* frontend sahifalarini tekshirish uchun yetarli data.
+* [x] Landing page
+* [x] Role-based dashboard shell
+* [x] Student dashboard pages
+* [x] Teacher dashboard pages
+* [x] Admin and Super Admin pages
+* [x] Protected route structure
+* [x] Mock authentication for UI testing
 
-**Natija:** platforma bo‘sh emas, demo ko‘rsatishga tayyor holatda bo‘ladi.
+### Phase 2 - Frontend Polish
 
----
+* [ ] Accessibility review
+* [ ] Responsive QA across main pages
+* [ ] Form validation improvements
+* [ ] Empty, loading, and error states
+* [ ] Component documentation
 
-# 7. Ishlar rejalari va deliverable’lar
+### Phase 3 - Backend Integration
 
-## 7.1. Backend vazifalari — Ilhom
+* [ ] API client structure
+* [ ] JWT authentication integration
+* [ ] User API
+* [ ] Course API
+* [ ] Lesson API
+* [ ] Group API
+* [ ] Application/request API
+* [ ] Dashboard statistics API
 
-| Vazifa                             | Natija                                          |
-| ---------------------------------- | ----------------------------------------------- |
-| Django project skeleton tayyorlash | Project local holatda ishga tushadi             |
-| PostgreSQL ulanishini sozlash      | Database ulanadi, migration ishlaydi            |
-| Auth va JWT flow qilish            | Login, refresh, logout ishlaydi                 |
-| RBAC permissionlar                 | Role bo‘yicha kirish cheklanadi                 |
-| Users CRUD                         | Admin userlarni boshqaradi                      |
-| Course CRUD                        | Kurslar yaratiladi va boshqariladi              |
-| Lesson CRUD                        | Darslar kursga bog‘lanadi                       |
-| Group CRUD                         | Guruhlar, talabalar va o‘qituvchilar bog‘lanadi |
-| Applications API                   | Arizalar qabul qilinadi va boshqariladi         |
-| Dashboard stats API                | Frontendga statistika qaytadi                   |
-| Swagger/OpenAPI                    | Frontend uchun API hujjat tayyor bo‘ladi        |
+### Phase 4 - AI and Knowledge Workflows
 
----
+* [ ] Document upload interface
+* [ ] Semantic search UI
+* [ ] AI-assisted course Q&A
+* [ ] AI grading support workflow
+* [ ] Governance and audit documentation
 
-## 7.2. Server va deploy vazifalari — Javohir
+### Phase 5 - Security and Production Readiness
 
-| Vazifa                           | Natija                                  |
-| -------------------------------- | --------------------------------------- |
-| Server muhitini tayyorlash       | Production environment tayyor           |
-| PostgreSQL production DB sozlash | Database xavfsiz va ishlaydigan holatda |
-| `.env` va secret management      | Maxfiy sozlamalar himoyalangan          |
-| Gunicorn + Nginx deploy          | Backend serverda ishlaydi               |
-| Domain/subdomain ulash           | API public URL orqali ochiladi          |
-| Static/media fayllarni sozlash   | Media va static fayllar ishlaydi        |
-| CORS/Allowed Hosts sozlash       | Frontend API bilan muammosiz ulanadi    |
-| Logging/monitoring               | Xatoliklarni kuzatish imkoni bo‘ladi    |
+* [ ] Security policy
+* [ ] Dependency audit workflow
+* [ ] Docker setup
+* [ ] Deployment guide
+* [ ] Contribution guide
+* [ ] Automated tests
 
 ---
 
-## 7.3. Integratsiya va yakunlash — Ilhom + Javohir
+## Security
 
-| Vazifa                    | Natija                                  |
-| ------------------------- | --------------------------------------- |
-| Frontend API mapping      | Frontend real API bilan ishlaydi        |
-| Token flow integratsiyasi | Login va refresh to‘g‘ri ishlaydi       |
-| Demo data seed            | Demo uchun ma’lumotlar tayyor           |
-| Integratsiya testing      | Asosiy sahifalar API bilan tekshiriladi |
-| Bug fix                   | Critical buglar yopiladi                |
-| Yakuniy demo flow         | Platforma topshirishga tayyor bo‘ladi   |
+Security is a core goal because LMS platforms handle users, roles, learning progress, documents, and institutional data.
 
----
+Planned security focus areas:
 
-# 8. Muddatlar
+* authentication and session flow review;
+* role-based access control;
+* secure file upload patterns;
+* API request validation;
+* dependency vulnerability checks;
+* safe environment variable handling;
+* frontend permission boundary review.
 
-Ishlar **2026-yil 18-maydan 2026-yil 25-maygacha** bajarilishi kerak.
-
-| Sana      | Vazifa                                                           | Mas’ul          |
-| --------- | ---------------------------------------------------------------- | --------------- |
-| 18-may    | Django backend skeleton, app struktura, PostgreSQL ulanishi      | Ilhom           |
-| 18–19-may | Server environment, production DB, `.env` tayyorlash             | Javohir         |
-| 19-may    | Auth, JWT, refresh token, RBAC permissionlar                     | Ilhom           |
-| 20-may    | Users, Teacher, Student modullari                                | Ilhom           |
-| 21-may    | Course va Lesson modullari                                       | Ilhom           |
-| 22-may    | Group, Applications va Dashboard stats                           | Ilhom           |
-| 23-may    | Demo/real data kiritish, serverda database tayyorlash            | Ilhom + Javohir |
-| 24-may    | Frontend-backend integratsiya testing, role testing, API testing | Ilhom + Javohir |
-| 25-may    | Bug fix, final deploy, demo flow va topshirish                   | Ilhom + Javohir |
+If you discover a security issue, please do not open a public issue with sensitive details. Use the process described in `SECURITY.md`.
 
 ---
 
-# 9. Testing rejasi
+## Contributing
 
-Testing alohida bosqich sifatida bajarilishi shart. Backend yozilgani loyiha tayyor degani emas. Loyiha faqat API, frontend, database, server va role flow to‘liq tekshirilgandan keyin topshirishga tayyor hisoblanadi.
+Contributions are welcome.
 
----
+You can help by:
 
-## 9.1. Backend API testing
+* improving UI components;
+* fixing bugs;
+* improving accessibility;
+* adding documentation;
+* creating backend examples;
+* improving security practices;
+* building AI/search workflow examples;
+* writing tests;
+* reviewing issues and pull requests.
 
-Ilhom quyidagilarni test qiladi:
-
-* login;
-* refresh token;
-* logout;
-* users CRUD;
-* courses CRUD;
-* lessons CRUD;
-* groups CRUD;
-* applications API;
-* dashboard stats;
-* pagination;
-* filter;
-* search;
-* error response format;
-* 401 va 403 permission holatlari.
-
-**Natija:** barcha endpointlar Postman, Swagger yoki boshqa testing vositasi orqali tekshirilgan bo‘lishi kerak.
+Before contributing, please read `CONTRIBUTING.md`.
 
 ---
 
-## 9.2. Frontend-backend integratsiya testing
+## Suggested Use Cases
 
-Ilhom va Javohir quyidagilarni tekshiradi:
+This project can be adapted for:
 
-* login sahifasi;
-* Super Admin dashboard;
-* O‘qituvchi dashboard;
-* Talaba dashboard;
-* kurslar sahifasi;
-* darslar sahifasi;
-* guruhlar sahifasi;
-* foydalanuvchilar sahifasi;
-* arizalar sahifasi;
-* statistika bloklari;
-* loading holatlar;
-* error holatlar;
-* form validation;
-* create/edit/delete amallari;
-* sahifa refresh bo‘lganda sessiya saqlanishi.
-
-**Natija:** frontend mock data bilan emas, real backend API bilan ishlashi kerak.
+* online course platforms;
+* training center LMS systems;
+* teacher and student dashboards;
+* institutional knowledge bases;
+* AI-assisted document search systems;
+* public-sector education platforms;
+* internal learning systems;
+* research and training management tools.
 
 ---
 
-## 9.3. Role-based testing
+## Maintainer
 
-Har bir rol alohida test qilinadi.
+Maintained by **Hojiakbar Abdulhakimov**.
 
-### Super Admin
-
-Tekshiriladi:
-
-* user yaratish;
-* o‘qituvchi qo‘shish;
-* talaba qo‘shish;
-* kurs yaratish;
-* dars qo‘shish;
-* guruh yaratish;
-* arizalarni ko‘rish;
-* dashboard statistikani ko‘rish.
-
-### O‘qituvchi
-
-Tekshiriladi:
-
-* o‘ziga biriktirilgan kurslarni ko‘rish;
-* o‘z guruhlarini ko‘rish;
-* o‘z talabalarini ko‘rish;
-* kurs darslarini ko‘rish;
-* Super Admin sahifalariga kira olmaslik.
-
-### Talaba
-
-Tekshiriladi:
-
-* o‘z kurslarini ko‘rish;
-* o‘z darslarini ko‘rish;
-* kurs kontentlarini ko‘rish;
-* admin va o‘qituvchi sahifalariga kira olmaslik.
+GitHub: [@hojiakbardevs](https://github.com/hojiakbardevs)
 
 ---
 
-## 9.4. Database testing
+## License
 
-Tekshiriladi:
+This project is planned to be released under the MIT License.
 
-* migrationlar to‘g‘ri ishlashi;
-* course-lesson relation;
-* group-student relation;
-* teacher-course relation;
-* application status flow;
-* delete/update holatlarida relationlar buzilmasligi;
-* demo data to‘g‘ri saqlanishi;
-* server database bilan backend ulanishi.
+See the `LICENSE` file for details.
 
 ---
 
-## 9.5. Server testing
+## Project Vision
 
-Javohir quyidagilarni test qiladi:
+The vision of this project is to build an open, practical, and developer-friendly foundation for AI-ready education platforms.
 
-* API domain/subdomain orqali ochilishi;
-* backend service restartdan keyin ishlashi;
-* PostgreSQL ulanishi;
-* static/media fayllar ishlashi;
-* CORS muammolari bo‘lmasligi;
-* allowed hosts to‘g‘ri sozlangani;
-* production mode’da debug chiqmasligi;
-* error loglar ko‘rinishi.
+Education systems are becoming more digital. Lessons, users, assignments, assessments, documents, and institutional knowledge need one coherent interface.
 
----
-
-# 10. Yakuniy demo flow
-
-Loyiha topshirilishidan oldin quyidagi flow to‘liq tekshirilishi kerak:
-
-1. Super Admin login qiladi.
-2. Yangi o‘qituvchi yaratadi.
-3. Yangi talaba yaratadi.
-4. Yangi kurs yaratadi.
-5. Kursga dars qo‘shadi.
-6. Guruh yaratadi.
-7. Guruhga o‘qituvchi va talabani biriktiradi.
-8. O‘qituvchi login qilib o‘z kurslarini ko‘radi.
-9. Talaba login qilib o‘z darslarini ko‘radi.
-10. Dashboard statistikasi yangilanganini tekshiradi.
-11. Ariza yuboriladi.
-12. Ariza admin panelda ko‘rinadi.
-13. Ariza statusi o‘zgartiriladi.
-14. Frontend refresh qilinganda sessiya to‘g‘ri saqlanadi.
-15. Har bir rol ruxsatsiz sahifalarga kira olmasligi tekshiriladi.
-
-**Natija:** ushbu flow xatosiz ishlasa, loyiha demo va topshirishga tayyor deb hisoblanadi.
-
----
-
-# 11. Qabul qilish mezonlari
-
-Loyiha quyidagi holatlar bajarilganda qabul qilinadi:
-
-* login ishlaydi;
-* refresh token ishlaydi;
-* har bir rol o‘z paneliga kiradi;
-* ruxsatsiz sahifalar va endpointlar bloklanadi;
-* Super Admin user, course, lesson, group va application modullarini boshqaradi;
-* O‘qituvchi o‘ziga biriktirilgan kurs va guruhlarni ko‘radi;
-* Talaba o‘z kurslari va darslarini ko‘radi;
-* dashboard statistikasi real database’dan keladi;
-* frontend mock data emas, real API bilan ishlaydi;
-* media/static fayllar serverda ishlaydi;
-* PostgreSQL database barqaror ishlaydi;
-* Swagger/OpenAPI hujjatlari tayyor;
-* server production holatda ishlaydi;
-* critical buglar yopilgan;
-* yakuniy demo flow muammosiz o‘tadi.
-
----
-
-# 12. Risklar va muhim eslatmalar
-
-Quyidagi xavflar oldindan hisobga olinishi kerak:
-
-* backend API frontenddagi mavjud strukturaga mos kelmasligi;
-* token va session flow’da xatolik chiqishi;
-* role permissionlar noto‘g‘ri ishlashi;
-* CORS yoki allowed hosts muammosi;
-* media fayllar serverda ochilmasligi;
-* database relationlar noto‘g‘ri qurilishi;
-* testing uchun yetarli demo data bo‘lmasligi;
-* oxirgi kunda bug fixga vaqt yetmasligi.
-
-Shu sababli testing ishlari oxirgi kunga qoldirilmasligi kerak. **24-may kuni integratsiya va testing to‘liq boshlanishi, 25-may esa final bug fix, deploy va demo kuni bo‘lishi kerak.**
-
----
-
-# 13. Yakuniy topshiriq
-
-Ilhom va Javohir ushbu texnik topshiriq asosida Mukammal Training LMS loyihasining backend, database, server, integratsiya va testing ishlarini yakunlashi kerak.
-
-Nafisa tomonidan platformaning kontent tuzilmasi va ishlash jarayonlari tushuntirib berilgan. Shu asosda database to‘ldiriladi va platforma demo ko‘rsatishga tayyor holatga keltiriladi.
-
-Loyihaning asosiy maqsadi — frontend qismi tayyor bo‘lgan Mukammal Training LMS platformasini real backend va server bilan ulab, to‘liq ishlaydigan mahsulot sifatida topshirish.
+Mukammal Training LMS is a step in that direction: a clean, extensible, open-source frontend where LMS workflows and AI-assisted learning systems can grow together.
